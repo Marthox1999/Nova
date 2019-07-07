@@ -1,4 +1,5 @@
 from django.db import models
+import hashlib
 
 class Cliente(models.Model):
     TIPO_DOC = {
