@@ -24,14 +24,27 @@ class Producto(models.Model):
 
 #Proveedor
 class Proveedor(models.Model):
-    pknit = models.AutoField(primary_key=True)
+    pknit = models.CharField(primary_key=True, max_length=16)
     direccion = models.CharField(max_length=128)
     telefono = models.CharField(max_length=10)
 
 #Bodega
 class Bodega(models.Model):
+    CIUDAD = {
+        ('BOG','Bogotá'),
+        ('MED','Medellín'),
+        ('CALI','Cali'),
+        ('B/Q','Barranquilla'),
+        ('CART','Cartagena'),
+        ('CUC','Cucuta'),
+        ('SOL','Soledad'),
+        ('IBG','Ibague'),
+        ('BCM','Bucaramanga'),
+        ('SOAC','Soacha'),
+    }
     pkBodega = models.AutoField(primary_key=True)
     direccion = models.CharField(max_length=128) 
+    ciudad = models.CharField(max_length=4, choices = CIUDAD, default='CALI')
 
 
 #DetallesProducto 
