@@ -1,12 +1,18 @@
 <!doctype html>
 <html style="background-color:#FEF0F0;">
     <head>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/style.css' %}">
+        
         <title>Nova</title>
     </head>
     <body style="background-color:#FEF0F0;">
+        
         {% include 'navbar.html' %}
         {% block content %}
         Todo lo demas
         {% endblock %}
+        
     </body>
 </html>
