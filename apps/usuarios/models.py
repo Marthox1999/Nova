@@ -2,16 +2,16 @@ from django.db import models
 import hashlib
 
 class Cliente(models.Model):
-    TIPO_DOC = {
+    TIPO_DOC = {  
         ('PAS','Pasaporte'),
-        ('CC','Cedula de Ciudadania'),
+        ('CC','Cedula de Ciudadania'), 
         ('TI','Tarjeta de Identidad'),
     }
     pkCliente = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=16)
     clave = models.CharField(max_length=16, editable=False)
     fechaNacimiento = models.DateField()
-    direccion = models.CharField(max_length=32)
+    direccion = models.CharField(max_length=32) 
     telefono = models.CharField(max_length=10)
     tipoDocumento = models.CharField(max_length=3, choices = TIPO_DOC)
     numeroDocumento = models.IntegerField()

@@ -16,7 +16,7 @@ class DescuentoProducto(models.Model):
 )
 
 #DescuentoCategoria
-class DescuentoCategoria(models.Model):
+class DescuentoCategoria(models.Model): 
     pkDescuentoCategoria = models.AutoField(primary_key=True)
     fkCategoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
     fechaInicio = models.DateField(default=timezone.now)
