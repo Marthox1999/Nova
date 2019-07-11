@@ -5,3 +5,4 @@ from django.http import HttpResponse
 
 def inicio(request, *args, **kwargs):
     return render(request, "ingreso.html", {})
+ 
