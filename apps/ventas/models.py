@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils import timezone
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 from inventario.models import Producto, Categoria, SubCategoria
+from usuarios.models import Cliente
 
 #DescuentoProducto
 class DescuentoProducto(models.Model):
@@ -9,7 +11,9 @@ class DescuentoProducto(models.Model):
     fkProducto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField() 
-    porcentajeDescuento = models.FloatField()
+    porcentajeDescuento = models.FloatField(
+    validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],
+)
 
 #DescuentoCategoria
 class DescuentoCategoria(models.Model):
@@ -17,7 +21,9 @@ class DescuentoCategoria(models.Model):
     fkCategoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField()
-    porcentajeDescuento = models.FloatField()
+    porcentajeDescuento = models.FloatField(
+    validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],
+)
 
 #DescuentoSubCategoria
 class DescuentoSubCategoria(models.Model):
@@ -25,12 +31,14 @@ class DescuentoSubCategoria(models.Model):
     fkSubCategoria = models.ForeignKey(SubCategoria,on_delete=models.CASCADE)
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField()
-    porcentajeDescuento = models.FloatField()
+    porcentajeDescuento = models.FloatField(
+    validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],
+)
 
 #Factura
 class Factura(models.Model):
     pkFactura = models.AutoField(primary_key=True)
-    nombreCliente = models.CharField(max_length=64)
+    fkCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
 
 #Detalles Factura
 class DetallesFactura(models.Model):
@@ -48,16 +56,17 @@ class PagosCredito(models.Model):
     }
     pkPagosCredito = models.AutoField(primary_key=True)
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    numeroAprobacion = models.IntegerField() #donde se genera automatico?
+    numeroAprobacion = models.CharField(max_length=4) #donde se genera automatico?
     fechaAprobacion = models.DateField()
-    entidadAprobacion = models.CharField(max_length=1,choices=ENTIDAD)
-    porcentajePago = models.FloatField()
-
+    entidadAprobacion = models.CharField(max_length=2,choices=ENTIDAD)
+    porcentajePago = models.FloatField([MinValueValidator(0.1), MaxValueValidator(1)],
+)
 #classDebito
 class PagosDebito(models.Model):
     pkPagosDebito = models.AutoField(primary_key=True)
     numeroTarjetaDebito = models.IntegerField()#min_length=16
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    numeroPago = models.IntegerField() 
+    numeroPago = models.CharField(max_length=4) 
     ahorros = models.BooleanField()
-    porcentajePago = models.FloatField()
+    porcentajePago = models.FloatField([MinValueValidator(0.1), MaxValueValidator(1)],
+)
