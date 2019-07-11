@@ -15,12 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-#from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-from usuarios.views import inicio
 
 urlpatterns = [
-    path('', inicio, name='inicio'),
+    path('', include('usuarios.urls'), name='inicio'),
     path('admin/', admin.site.urls),
 ]
 
