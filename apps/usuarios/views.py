@@ -3,5 +3,7 @@ from django.http import HttpResponse
 # Create your views here.
 
 
+
 def ingreso(request, *args, **kwargs):
     return render(request, "usuarios/ingreso.html", {})
+

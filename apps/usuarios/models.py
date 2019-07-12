@@ -7,7 +7,7 @@ class Cliente(models.Model):
         ('CC','Cedula de Ciudadania'),
         ('TI','Tarjeta de Identidad'),
     }
-    pkCliente = models.AutoField(primary_key=True)
+    pkCliente = models.AutoField(primary_key=True)  
     nombre = models.CharField(max_length=16)
     clave = models.CharField(max_length=16, editable=False)
     fechaNacimiento = models.DateField()
