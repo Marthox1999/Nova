@@ -1,7 +1,8 @@
 from django.urls import include, path
+from usuarios.views import ingreso, duenioIngreso
 
-from usuarios.views import ingreso
 
 urlpatterns = [
     path('', ingreso, name='ingreso'),
+    path('duenioIngreso/', duenioIngreso, name='duenioIngreso'),
 ]
