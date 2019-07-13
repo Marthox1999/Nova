@@ -35,3 +35,8 @@ class AdministradorDuenio (models.Model):
 def save(self, *args, **kwargs):        
         self.field_md5 = hashlib.md5.new(self.field).digest()
         super(Model, self).save(*args, **kwargs)
+
+
+def crear(cliente):
+    print (cliente)
+    return 'cliente'

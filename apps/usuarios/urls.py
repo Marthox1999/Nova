@@ -4,5 +4,5 @@ from usuarios.views import ingreso, registro
 
 urlpatterns = [
     path('', ingreso, name='ingreso'),
-    path('registroCliente',registro)
+    path('registroCliente',registro),
 ]

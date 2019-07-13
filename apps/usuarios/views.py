@@ -1,31 +1,26 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from usuarios.models import crear
 # Create your views here.
 #from .forms import NameForm
 
 def ingreso(request, *args, **kwargs):
     return render(request, "usuarios/ingreso.html", {})
-'''
-def get_name(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('thanks')
-
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm()
-
-    return render(request, 'usuarios/registroCliente.html', {'form': form})
-    '''
-
-
   
 def registro(request, *args, **kwargs):
-    return render(request, "usuarios/registroCliente.html",{})
+    registrar = request.POST
+    if(request.method == 'POST'):
+        cliente = {
+            'nombre': registrar.get('nombreCliente'),
+            'direccion': registrar.get('direccionCliente'),
+            'telefono': registrar.get('telefonoCliente'),
+            'tipoDocumento': registrar.get('tipoDocumento'),
+            'documento': registrar.get('documentoCliente'),
+            'fechaNacimiento': registrar.get('fechaNacimiento')
+        }
+        respuesta = crear(cliente)
+        return render(request, "usuarios/confirmacion.html",{})
+
+    return render(request, "usuarios/registroCliente.html",{'form':registrar})
+
