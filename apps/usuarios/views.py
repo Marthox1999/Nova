@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 from usuarios.models import Cliente
 
@@ -21,9 +23,14 @@ def registro(request, *args, **kwargs):
             tipoDocumento = registrar.get('tipoDocumento'),
             numeroDocumento = registrar.get('documentoCliente'),
         )
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            messages.error(request, 'Algunos campos no son validos')
+            return render(request, "usuarios/registroCliente.html",{})
         aux.save()
-        print('paso 0.0')
-        return render(request, "usuarios/confirmacion.html",{})
+        messages.success(request, 'Cliente creado exitosamente, ahora tienes una cuenta en Nova :D')
+        return render(request, "usuarios/registroCliente.html",{})
 
     return render(request, "usuarios/registroCliente.html",{'form':registrar})
 
