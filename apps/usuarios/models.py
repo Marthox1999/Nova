@@ -1,5 +1,7 @@
 from django.db import models
 import hashlib
+from django.core.validators import RegexValidator
+
 
 class Cliente(models.Model):
     TIPO_DOC = {
@@ -7,12 +9,12 @@ class Cliente(models.Model):
         ('CC','Cedula de Ciudadania'),
         ('TI','Tarjeta de Identidad'),
     }
-    pkCliente = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=32)
+    nombre = models.CharField(max_length=32, unique=True, primary_key=True)
     clave = models.CharField(max_length=32, editable=True)
     fechaNacimiento = models.DateField()
     direccion = models.CharField(max_length=32)
-    telefono = models.CharField(max_length=10)
+    telefono_regex = RegexValidator(regex=r'^\+?1?\d{7,10}$', message="El telefono debe tener formato: '+7777777'. Up to 10 digits allowed.")
+    telefono = models.CharField(validators=[telefono_regex], max_length=12, blank=True) # validators should be a list
     tipoDocumento = models.CharField(max_length=3, choices = TIPO_DOC)
     numeroDocumento = models.IntegerField()
 

@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 
 from usuarios.models import Cliente
@@ -11,6 +12,7 @@ from usuarios.models import Cliente
 def ingreso(request, *args, **kwargs):
     return render(request, "usuarios/ingreso.html", {})
   
+@csrf_protect
 def registro(request, *args, **kwargs):
     registrar = request.POST
     if(request.method == 'POST'):  
@@ -26,11 +28,12 @@ def registro(request, *args, **kwargs):
         try:
             aux.full_clean()
         except ValidationError as e:
-            messages.error(request, 'Algunos campos no son validos')
+            messages.info(request, 'Algunos campos no son validos')
             return render(request, "usuarios/registroCliente.html",{})
+        nombre =registrar.get('nombreCliente')
         aux.save()
-        messages.success(request, 'Cliente creado exitosamente, ahora tienes una cuenta en Nova :D')
-        return render(request, "usuarios/registroCliente.html",{})
+        messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
+        return redirect(to='ingreso')
 
-    return render(request, "usuarios/registroCliente.html",{'form':registrar})
+    return render(request, "usuarios/clienteregistro.html",{'form':registrar})
 
