@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
 {% endblock %}
+
 {% block content %}
 <div class="container" style="background-color:#FEF0F0;">
         <!-- contact  -->
@@ -53,7 +54,7 @@
                             <input id="datepicker" name='fechaNacimiento' class="form-control">
                             <script>
                               $(function () {
-                                $("#datepicker").datepicker();
+                                $("#datepicker").datepicker({format:'yyyy-mm-dd'},);
                               });
                             </script>
                         </div>
@@ -65,9 +66,9 @@
                             </div>
                         </div>
                     </form>
-                  <div class="alert alert-success" role="alert">
-                      <a href="#" class="alert-link">Correcto!</a>
-                  </div>
+                <div class="alert alert-success" role="alert">
+                    <a href="#" class="alert-link">Correcto!</a>
+                </div>
                 </div>
               </div>
             </div>
