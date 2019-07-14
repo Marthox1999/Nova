@@ -35,7 +35,7 @@ def clienteInicio(request, *args, **kwargs):
 
   
 @csrf_protect
-def registro(request, *args, **kwargs):
+def clienteregistro(request, *args, **kwargs):
     registrar = request.POST
     if(request.method == 'POST'):  
         aux = Cliente(
@@ -50,8 +50,8 @@ def registro(request, *args, **kwargs):
         try:
             aux.full_clean()
         except ValidationError as e:
-            messages.info(request, 'Algunos campos no son validos')
-            return render(request, "usuarios/registroCliente.html",{})
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "usuarios/clienteregistro.html",{'form':registrar})
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
