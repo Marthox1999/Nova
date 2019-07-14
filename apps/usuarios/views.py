@@ -21,7 +21,7 @@ def clienteIngreso(request, *args, **kwargs):
         nombre=ingresar.get('username')
         if (aux.autenticarCliente()):
             messages.success(request, f'¡Bienvenido {nombre}!')
-            return redirect('/homepage')
+            return redirect(to='inicioCliente')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/ingreso.html',{'form':ingresar})

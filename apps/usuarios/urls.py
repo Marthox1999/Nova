@@ -5,5 +5,5 @@ from usuarios.views import clienteIngreso, clienteCerrarSesion, clienteInicio
 urlpatterns = [
     path('clienteingresar', clienteIngreso, name='ingreso'),
     path('clientecerrarsesion', clienteCerrarSesion, name='cerrarsesion'),
-    path('homepage', clienteInicio, name='inicioCliente'),
+    path('clienteinicio', clienteInicio, name='inicioCliente'),
 ]
