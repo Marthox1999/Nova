@@ -20,5 +20,3 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls'), name='inicio'),
     path('admin/', admin.site.urls),
 ]
-
-#urlpatterns += staticfiles_urlpatterns()
