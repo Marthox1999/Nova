@@ -5,13 +5,13 @@ from django.db import models
 #Categoria
 class Categoria(models.Model):
     pkCategoria = models.AutoField(primary_key=True)
-    nombreCategoria = models.CharField(max_length=256)
+    nombreCategoria = models.CharField(max_length=256, unique=True)
 
 #Subcategoria
 class SubCategoria(models.Model):
     pkSubCategoria = models.AutoField(primary_key=True)
     fkCategoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    nombreSubCategoria = models.CharField(max_length=256)
+    nombreSubCategoria = models.CharField(max_length=256, unique=True)
 
 #Producto
 class Producto(models.Model):
