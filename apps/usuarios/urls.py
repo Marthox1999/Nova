@@ -1,7 +1,9 @@
 from django.urls import include, path
-
-from usuarios.views import ingreso
+from django.contrib.auth import views as auth_views
+from usuarios.views import clienteIngreso, clienteCerrarSesion, clienteInicio
 
 urlpatterns = [
-    path('', ingreso, name='ingreso'),
+    path('clienteingresar', clienteIngreso, name='ingreso'),
+    path('clientecerrarsesion', clienteCerrarSesion, name='cerrarsesion'),
+    path('homepage', clienteInicio, name='inicioCliente'),
 ]
