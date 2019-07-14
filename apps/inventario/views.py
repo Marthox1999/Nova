@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from inventario.aniadirCategoriaForm import AniadirCategoriaForm
+#from inventario.aniadirCategoriaForm import AniadirCategoriaForm
 from django.http import HttpResponseRedirect
+
 
 # Create your views here.
 
@@ -17,8 +18,14 @@ def aniadirCategoria(request):
     return render(request, 'inventario/aniadirCategoriaForm.html', {'form':form})
 """
 
+def categoria(request, *args, **kwargs):
+    return render(request, "inventario/categoria.html", {})
+
 def aniadirCategoria(request, *args, **kwargs):
     return render(request, "inventario/aniadirCategoria.html", {})
 
-def categoria(request, *args, **kwargs):
-    return render(request, "inventario/categoria.html", {})
+def productos(request, *args, **kwargs):
+    return render(request, "inventario/productos.html", {})
+
+def aniadirProductos(request, *args, **kwargs):
+    return render(request, "inventario/aniadirProductos.html", {})
