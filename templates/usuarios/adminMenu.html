@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
+
+<!-- contact  -->
+<div class="col-md-6 col-md-offset-3">
+  <!-- class="col-md-6 col-md-offset-3" -->
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h2> Bienvenido : {{objeto.nombreUsuario}} </h2>
+      </center>
+      <br>
+      </br>
+      <hr>
+    </div>
+  </div>
+
+  <div class="ps-section--offer">
+    <!-- <div class="ps-column"><a class="ps-offer" href="product-listing.html"><img src="images/banner/home-banner-1.png" alt=""></a></div>-->
+    <div class="ps-column"><a class="ps-offer" href="duenioAdminAgregar.html"><img src="{% static 'images/paginaPrincipal_duenio/contratar.png' %}" alt=""></a></div>
+  </div>
+  <br>
+</div> 
+
+
+{% endblock %}
