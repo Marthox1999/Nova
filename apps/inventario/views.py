@@ -5,6 +5,11 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from inventario.models import Bodega, Categoria
 
+def bodegaInicio(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,'inventario/bodegainicio.html', context,{})
+
 @csrf_protect
 def bodegaRegistro(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -32,5 +37,4 @@ def bodegaRegistro(request, *args, **kwargs):
 def consultarcategorias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
-    print(categorias)
     return render(request,'inventario/categoriasconsultar.html', context,{})
