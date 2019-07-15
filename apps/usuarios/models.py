@@ -19,7 +19,7 @@ class Cliente(models.Model):
 #super().save(*args, **kwargs) para guardar en esta tabla
 def save(self, *args, **kwargs):        
         self.field_md5 = hashlib.md5.new(self.field).digest()
-        super(Model, self).save(*args, **kwargs)
+        super(Cliente, self).save(*args, **kwargs)
 
 class AdministradorDuenio (models.Model):
     TIPO = {
@@ -34,4 +34,4 @@ class AdministradorDuenio (models.Model):
 #super().save(*args, **kwargs) para guardar en esta tabla
 def save(self, *args, **kwargs):        
         self.field_md5 = hashlib.md5.new(self.field).digest()
-        super(Model, self).save(*args, **kwargs)
+        super(AdministradorDuenio, self).save(*args, **kwargs)

@@ -26,6 +26,29 @@ def paginaPrincipal_duenio(request, *args, **kwargs):
     return render(request, "usuarios/paginaPrincipal_duenio.html",context)
 
 
+def agregarAdmin(request, *args, **kwargs):
+    agregar = request.POST
+    if(request.method=='POST'):
+        admin=AdministradorDuenio(
+            nombreUsuario=agregar.get('nombreAdmin'), 
+            clave=agregar.get('claveAdmin'),
+            tipo='ADMIN'
+        )
+        try:
+            admin.full_clean()
+        except ValidationError as e:
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "usuarios/agregarAdmin.html",{'form':agregar})
+        nombre =agregar.get('nombreAdmin')
+        admin.save()
+        messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
+        return redirect(to='paginaPrincipal_duenio')
+    return render(request,"usuarios/agregarAdmin.html",{'form':agregar})
+    
+
+
+    return render(request, "usuarios/agregarAdmin.html")
+
 def logout_request(request):
     logout(request)
     messages.info(request, "salio de la app")
