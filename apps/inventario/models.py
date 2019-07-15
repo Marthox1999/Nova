@@ -8,7 +8,7 @@ class Categoria(models.Model):
     nombreCategoria = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.nombreCategoria
+        return "id:"+str(self.pkCategoria)+ ", nombre:" +self.nombreCategoria
 
 #Subcategoria
 class SubCategoria(models.Model):

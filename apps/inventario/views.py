@@ -28,3 +28,9 @@ def bodegaRegistro(request, *args, **kwargs):
         categorias = Categoria.objects.all()
         context={'categorias':categorias}
     return render(request, 'inventario/bodegaregistro.html', context,{'form':crearBodega})
+
+def consultarcategorias(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    print(categorias)
+    return render(request,'inventario/categoriasconsultar.html', context,{})

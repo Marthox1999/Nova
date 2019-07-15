@@ -1,3 +1,34 @@
 {% extends 'base.html' %}
 
-<h1>Estas son tus categorias</h1>
+{% block content %}
+
+<div class="container" style="background-color:#FEF0F0;">
+          <!-- contact  -->
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" style="padding: 75px">
+      <div class="panel-login panel" style="padding: 5px">
+        <div class="panel-heading" style="background-color:#FEF0F0;">
+            <div class="row mb_20">
+                <h1 style="text-align: center">Tus categorias</h1>
+            </div>
+          <hr>
+        </div>
+        <div class="panel-body" style="background-color:#FEF0F0;">
+          <div class="col-sm-6 col-sm-offset-3">
+            {% for categoria in categorias %}
+                  <a href="/usuarios/clienteinicio/{{categoria}}">{{categoria}}</a>
+              {% empty %}
+              <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                  <a>Todavia no hay categorias</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
