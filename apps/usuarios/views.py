@@ -25,19 +25,19 @@ def clienteIngreso(request, *args, **kwargs):
             return redirect(to='inicioCliente')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
-    return render(request, 'usuarios/ingreso.html',{'form':ingresar})
+    return render(request, 'usuarios/clienteingreso.html',{'form':ingresar})
 
 def clienteCerrarSesion(request, *args, **kwargs):
-    return render(request, 'usuarios/ingreso.html',{})
+    return render(request, 'usuarios/clienteingreso.html',{})
 
 def clienteInicio(request, *args, **kwargs):
-    return render(request, 'usuarios/inicioCliente.html',{})
+    return render(request, 'usuarios/clienteoinicio.html',{})
 
-  
+
 @csrf_protect
-def clienteregistro(request, *args, **kwargs):
+def clienteRegistro(request, *args, **kwargs):
     registrar = request.POST
-    if(request.method == 'POST'):  
+    if(request.method == 'POST'):
         aux = Cliente(
             nombre= registrar.get('nombreCliente'),
             clave = registrar.get('claveCliente'),
@@ -58,4 +58,3 @@ def clienteregistro(request, *args, **kwargs):
         return redirect(to='ingreso')
 
     return render(request, "usuarios/clienteregistro.html",{'form':registrar})
-
