@@ -9,15 +9,6 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-
-def ingreso(request, *args, **kwargs):
-    return render(request, "usuarios/ingreso.html", {})
-
-
-def duenioIngreso(request, *args, **kwargs):
-    return render(request, "usuarios/duenioIngreso.html", {})
-
-
 def paginaPrincipal_duenio(request, *args, **kwargs):
     duenio = AdministradorDuenio.objects.get(pkAdministradorDuenio=1)
     context = {
@@ -26,7 +17,7 @@ def paginaPrincipal_duenio(request, *args, **kwargs):
     return render(request, "usuarios/paginaPrincipal_duenio.html",context)
 
 
-def agregarAdmin(request, *args, **kwargs):
+def duenioAdminAgregar(request, *args, **kwargs):
     agregar = request.POST
     if(request.method=='POST'):
         admin=AdministradorDuenio(
@@ -38,38 +29,33 @@ def agregarAdmin(request, *args, **kwargs):
             admin.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            return render(request, "usuarios/agregarAdmin.html",{'form':agregar})
+            return render(request, "usuarios/duenioAdminAgregar.html",{'form':agregar})
         nombre =agregar.get('nombreAdmin')
         admin.save()
-        messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
-        return redirect(to='paginaPrincipal_duenio')
-    return render(request,"usuarios/agregarAdmin.html",{'form':agregar})
+        messages.success(request, f'¡Bienvenido {nombre} !')
+        return redirect(to='duenioAdminAgregar')
+    return render(request,"usuarios/duenioAdminAgregar.html",{'form':agregar})
     
 
+def adminMenu(request, *args, **kwargs):
+    return render(request,"usuarios/adminMenu.html", {})
 
-    return render(request, "usuarios/agregarAdmin.html")
 
-def logout_request(request):
-    logout(request)
-    messages.info(request, "salio de la app")
-    return redirect("usuarios:duenioIngreso.html")
-
-def login_request(request):
-    if request.method == "POST":
-        form=AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request,user)
-                messages.info(request,f"tu nombre de usuario es {username}")
-                return redirect("usuarios/paginaPrincial_duenio.html")
-            else:
-                messages.error(request, "contrasenia o usuario incorrectos")
+def duenioAdminIngreso(request, *args, **kwargs):
+    ingresar = request.POST
+    print(request)
+    if(request.method == 'POST'):
+        admin = AdministradorDuenio(
+            nombreUsuario=ingresar.get('nombreDuenioAdmin'),
+            clave=ingresar.get('claveDuenioAdmin'),
+            tipo='ADMIN'
+        )
+        nombre=ingresar.get('nombreDuenioAdmin')
+        if (admin.autenticarDuenioAdmin()):
+            messages.success(request, f'¡Bienvenido {nombre}!')
+            return redirect(to='paginaPrincipal_duenio')
         else:
-            messages.error(request, "contrasenia o usuario incorrectos")
+            messages.info(request, 'Cuenta de usuario o contraseña invalida')
+    return render(request, 'usuarios/duenioAdminIngreso.html',{'form':ingresar})
 
-    form = AuthenticationForm()
-    return render(request, "usuarios/paginaPrincipal_duenio.html", {"form":form})
-
+ 

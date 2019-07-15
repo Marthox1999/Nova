@@ -1,10 +1,10 @@
 from django.urls import include, path
-from usuarios.views import ingreso, duenioIngreso, paginaPrincipal_duenio, agregarAdmin
+from usuarios.views import duenioAdminIngreso, paginaPrincipal_duenio, duenioAdminAgregar, adminMenu
 
 
 urlpatterns = [
-    path('', ingreso, name='ingreso'),
-    path('duenioIngreso/', duenioIngreso, name='duenioIngreso'),
+    path('duenioAdminIngreso/', duenioAdminIngreso, name='duenioAdminIngreso'),
     path('principalDuenio/', paginaPrincipal_duenio, name='paginaPrincipal_duenio'),
-    path('agregarAdmin/', agregarAdmin, name='agregarAdmin'),
+    path('duenioAdminAgregar/', duenioAdminAgregar, name='duenioAdminAgregar'),
+    path('adminMenu/', adminMenu, name='adminMenu'),
 ]
