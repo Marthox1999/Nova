@@ -62,8 +62,17 @@ def duenioAdminIngreso(request, *args, **kwargs):
             clave=ingresar.get('claveDuenioAdmin'),
             tipo='ADMIN'
         )
+
+        duenio=AdministradorDuenio(
+            nombreUsuario=ingresar.get('nombreDuenioAdmin'),
+            clave=ingresar.get('claveDuenioAdmin'),
+            tipo='CEO'
+        )
         nombre=ingresar.get('nombreDuenioAdmin')
-        if (admin.autenticarDuenioAdmin()):
+        if (admin.autenticarAdmin()):
+            messages.success(request, f'¡Bienvenido {nombre}!')
+            return redirect(to='paginaPrincipal_admin')
+        elif (duenio.autenticarDuenio()):
             messages.success(request, f'¡Bienvenido {nombre}!')
             return redirect(to='paginaPrincipal_duenio')
         else:
