@@ -5,10 +5,12 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.utils import timezone
 from usuarios.models import Cliente
+from inventario.models import Categoria
 
 def clienteIngreso(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     ingresar = request.POST
-    print(request)
     if(request.method == 'POST'):
         aux = Cliente(
             nombre=ingresar.get('username'),
@@ -25,17 +27,24 @@ def clienteIngreso(request, *args, **kwargs):
             return redirect(to='inicioCliente')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
-    return render(request, 'usuarios/clienteingreso.html',{'form':ingresar})
+    return render(request, 'usuarios/clienteingreso.html', context,{'form':ingresar})
 
 def clienteCerrarSesion(request, *args, **kwargs):
-    return render(request, 'usuarios/clienteingreso.html',{})
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request, 'usuarios/clienteingreso.html', context, {})
 
 def clienteInicio(request, *args, **kwargs):
-    return render(request, 'usuarios/clienteinicio.html',{})
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    print(categorias)
+    return render(request, 'usuarios/clienteinicio.html', context, {})
 
 
 @csrf_protect
 def clienteRegistro(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     registrar = request.POST
     if(request.method == 'POST'):
         aux = Cliente(
@@ -51,10 +60,10 @@ def clienteRegistro(request, *args, **kwargs):
             aux.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            return render(request, "usuarios/clienteregistro.html",{'form':registrar})
+            return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
         return redirect(to='ingreso')
 
-    return render(request, "usuarios/clienteregistro.html",{'form':registrar})
+    return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})

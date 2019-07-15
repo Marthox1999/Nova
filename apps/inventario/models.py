@@ -7,6 +7,9 @@ class Categoria(models.Model):
     pkCategoria = models.AutoField(primary_key=True)
     nombreCategoria = models.CharField(max_length=256)
 
+    def __str__(self):
+        return self.nombreCategoria
+
 #Subcategoria
 class SubCategoria(models.Model):
     pkSubCategoria = models.AutoField(primary_key=True)
@@ -43,15 +46,15 @@ class Bodega(models.Model):
         ('SOAC','Soacha'),
     }
     pkBodega = models.AutoField(primary_key=True)
-    direccion = models.CharField(max_length=128) 
+    direccion = models.CharField(max_length=128)
     ciudad = models.CharField(max_length=4, choices = CIUDAD, default='CALI')
 
 
-#DetallesProducto 
+#DetallesProducto
 class DetallesProducto(models.Model):
     fkProducto =  models.ForeignKey(Producto, on_delete=models.CASCADE)
     talla = models.CharField(max_length=32)
     nit = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     color = models.CharField(max_length=64)#quizas una lista de colores en vez de escribirlo?
     fkBodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
-    cantidad = models.IntegerField() 
+    cantidad = models.IntegerField()

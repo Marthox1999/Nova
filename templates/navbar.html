@@ -8,9 +8,10 @@
       <img style="padding: 7px; height:45px; width: 120px" src="{% static 'images/nova.jpg' %}"/>
     </a>
   </li>
-  <li><a href="#Hombres">Hombres</a></li>
-  <li><a href="#Mujeres">Mujeres</a></li>
-  <li><a href="#Niños">Niños</a></li>
-  <li><a href="#Accesorios">Accesorios</a></li>
+  {% for categoria in categorias %}
+      <li><a href="/usuarios/clienteinicio/{{categoria}}">{{categoria}}</a></li>
+      {% empty %}
+      <p>Todavia no hay categorias</p>
+  {% endfor %}
   <li style="float:right"><a class="active" href="#LogOut">Cerrar Sesion</a></li>
 </ul>
