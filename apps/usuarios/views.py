@@ -31,7 +31,7 @@ def clienteCerrarSesion(request, *args, **kwargs):
     return render(request, 'usuarios/clienteingreso.html',{})
 
 def clienteInicio(request, *args, **kwargs):
-    return render(request, 'usuarios/clienteoinicio.html',{})
+    return render(request, 'usuarios/clienteinicio.html',{})
 
 
 @csrf_protect
