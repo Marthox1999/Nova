@@ -7,9 +7,6 @@ class Categoria(models.Model):
     pkCategoria = models.AutoField(primary_key=True)
     nombreCategoria = models.CharField(max_length=256)
 
-    def __str__(self):
-        return "id:"+str(self.pkCategoria)+ ", nombre:" +self.nombreCategoria
-
 #Subcategoria
 class SubCategoria(models.Model):
     pkSubCategoria = models.AutoField(primary_key=True)

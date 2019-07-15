@@ -16,7 +16,9 @@
         <div class="panel-body" style="background-color:#FEF0F0;">
           <div class="col-sm-6 col-sm-offset-3">
             {% for categoria in categorias %}
-                  <a href="/usuarios/clienteinicio/{{categoria}}">{{categoria}}</a>
+                  <a href="/usuarios/clienteinicio/{{categoria}}">
+                    id:{{categoria.pkCategoria}} nombre:{{categoria.nombreCategoria}}
+                  </a>
               {% empty %}
               <div class="row">
                 <div class="col-sm-6 col-sm-offset-3">

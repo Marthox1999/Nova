@@ -9,7 +9,7 @@
     </a>
   </li>
   {% for categoria in categorias %}
-      <li><a href="/usuarios/clienteinicio/{{categoria}}">{{categoria}}</a></li>
+      <li><a href="/usuarios/clienteinicio/{{categoria}}">{{categoria.nombreCategoria}}</a></li>
       {% empty %}
       <p>Todavia no hay categorias</p>
   {% endfor %}
