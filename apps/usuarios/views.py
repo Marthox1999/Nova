@@ -7,7 +7,19 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from usuarios.models import AdministradorDuenio
 from django.contrib.auth.decorators import login_required
 # Create your views here.
+from usuarios.models import AdministradorDuenio
 
+
+
+def ingreso(request, *args, **kwargs):
+    return render(request, "usuarios/ingreso.html", {})
+
+def paginaPrincipal_admin(request, *args, **kwargs):
+    admin = AdministradorDuenio.objects.get(pkAdministradorDuenio=1)
+    context = {
+        'objeto' : admin
+    }
+    return render(request, "usuarios/paginaPrincipal_admin.html",context)
 
 def paginaPrincipal_duenio(request, *args, **kwargs):
     duenio = AdministradorDuenio.objects.get(pkAdministradorDuenio=1)
@@ -59,3 +71,4 @@ def duenioAdminIngreso(request, *args, **kwargs):
     return render(request, 'usuarios/duenioAdminIngreso.html',{'form':ingresar})
 
  
+
