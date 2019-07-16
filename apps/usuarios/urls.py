@@ -1,5 +1,5 @@
 from django.urls import include, path
-from usuarios.views import duenioAdminIngreso, paginaPrincipal_duenio, duenioAdminAgregar, paginaPrincipal_admin, ingreso, adminMenu
+from usuarios.views import *
 
 app_name='usuarios'
 
