@@ -5,3 +5,7 @@ from django.http import HttpResponse
 
 def ingreso(request, *args, **kwargs):
     return render(request, "usuarios/ingreso.html", {})
+
+def inicioAdministrador(request, *args, **kwargs):
+    return render(request, "usuarios/inicioAdministrador.html", {})
+

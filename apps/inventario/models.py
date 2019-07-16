@@ -1,17 +1,18 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
 #Categoria
 class Categoria(models.Model):
     pkCategoria = models.AutoField(primary_key=True)
-    nombreCategoria = models.CharField(max_length=256)
+    nombreCategoria = models.CharField(max_length=256, unique=True)
 
 #Subcategoria
 class SubCategoria(models.Model):
     pkSubCategoria = models.AutoField(primary_key=True)
     fkCategoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
-    nombreSubCategoria = models.CharField(max_length=256)
+    nombreSubCategoria = models.CharField(max_length=256, unique=True)
 
 #Producto
 class Producto(models.Model):
@@ -26,7 +27,8 @@ class Producto(models.Model):
 class Proveedor(models.Model):
     pknit = models.CharField(primary_key=True, max_length=16)
     direccion = models.CharField(max_length=128)
-    telefono = models.CharField(max_length=10)
+    telefono_regex = RegexValidator(regex=r'^\+?1?\d{7,10}$', message="El telefono debe tener formato: '+7777777'. Up to 10 digits allowed.")
+    telefono = models.CharField(validators=[telefono_regex], max_length=12, blank=True)
 
 #Bodega
 class Bodega(models.Model):
