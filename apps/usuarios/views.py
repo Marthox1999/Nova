@@ -59,3 +59,6 @@ def clienteregistro(request, *args, **kwargs):
 
     return render(request, "usuarios/clienteregistro.html",{'form':registrar})
 
+def inicioAdministrador(request, *args, **kwargs):
+    return render(request, "usuarios/inicioAdministrador.html", {})
+
