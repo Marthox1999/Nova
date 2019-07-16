@@ -22,7 +22,7 @@ def clienteIngreso(request, *args, **kwargs):
         nombre=ingresar.get('username')
         if (aux.autenticarCliente()):
             messages.success(request, f'¡Bienvenido {nombre}!')
-            return redirect(to='inicioCliente')
+            return redirect(to='usuarios:inicioCliente')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/ingreso.html',{'form':ingresar})
@@ -33,7 +33,7 @@ def clienteCerrarSesion(request, *args, **kwargs):
 def clienteInicio(request, *args, **kwargs):
     return render(request, 'usuarios/inicioCliente.html',{})
 
-  
+   
 @csrf_protect
 def clienteregistro(request, *args, **kwargs):
     registrar = request.POST
@@ -55,7 +55,7 @@ def clienteregistro(request, *args, **kwargs):
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
-        return redirect(to='ingreso')
+        return redirect(to='usuarios:ingreso')
 
     return render(request, "usuarios/clienteregistro.html",{'form':registrar})
 
