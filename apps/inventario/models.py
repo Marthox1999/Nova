@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
@@ -26,7 +27,8 @@ class Producto(models.Model):
 class Proveedor(models.Model):
     pknit = models.CharField(primary_key=True, max_length=16)
     direccion = models.CharField(max_length=128)
-    telefono = models.CharField(max_length=10)
+    telefono_regex = RegexValidator(regex=r'^\+?1?\d{7,10}$', message="El telefono debe tener formato: '+7777777'. Up to 10 digits allowed.")
+    telefono = models.CharField(validators=[telefono_regex], max_length=12, blank=True)
 
 #Bodega
 class Bodega(models.Model):

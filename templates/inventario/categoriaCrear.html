@@ -6,14 +6,11 @@
 
 <div class="container" style="background-color:#FEF0F0;">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel-default panel">
-                <div class="panel-heading" style="background-color:#FEF0F0;">
-                    <div class="row mb_20">
-                        <div class="col-xs-6">
-                            <a class="active">Añadir Categoria</a>
-                        </div>
-                    </div>
+        <div class="col-md-6 col-md-offset-3" style="padding: 75px">
+            <div class="panel-login panel" style="padding: 5px">
+                <div class="panel-heading" style="background-color:#FEF0F0; text-align: center">
+                    <h2>Añadir Categoria</h2>
+                    <hr>
                 </div>
                 <div class="panel-body" style="background-color:#FEF0F0;">
                     <div class="row">
@@ -22,11 +19,7 @@
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <label for="inputNombreCategoria">Nombre de la categoria</label>
-                                    <input id="inputNombreCategoria" name="nombreCategoria" type="text" class="form-control">
-                                    <small id="nombreAyuda" class="text-muted">
-                                        El nombre de la categoria debe ser único
-                                    </small>
-                                    
+                                    <input id="inputNombreCategoria" name="nombreCategoria" type="text" class="form-control" placeholder="Nombre de la categoria">
                                 </div>
 
                                 

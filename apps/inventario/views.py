@@ -7,19 +7,6 @@ from inventario.models import Categoria, Proveedor
 
 # Create your views here.
 
-"""
-def aniadirCategoria(request):
-    if request.method == 'POST':
-        form = AniadirCatgoriaForm(request.POST)
-        if form.is_Valid():
-            form.save()
-        return HttpResponseRedirect('aniadirCategoria')
-    else:
-        form = AniadirCategoriaForm()
-
-    return render(request, 'inventario/aniadirCategoriaForm.html', {'form':form})
-"""
-
 def categoria(request, *args, **kwargs):
     return render(request, "inventario/categoria.html", {})
 
@@ -59,6 +46,6 @@ def aniadirProveedor(request, *args, **kwargs):
             aux.full_clean()
         except ValidationError as e:
             
-            return render(request, "inventario/proveedor.html",{})
+            return render(request, "inventario/proveedorCrear.html",{})
         aux.save()
     return render(request, "inventario/proveedorCrear.html", {})
