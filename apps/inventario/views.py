@@ -19,7 +19,7 @@ def aniadirCategoria(request, *args, **kwargs):
         try:
             aux.full_clean()
         except ValidationError as e:
-            return render(request, "inventario/categoria.html",{})
+            return render(request, "inventario/categoriaCrear.html",{})
         aux.save()
     return render(request, "inventario/categoriaCrear.html", {})
 
