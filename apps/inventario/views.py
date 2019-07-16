@@ -29,7 +29,7 @@ def bodegaRegistro(request, *args, **kwargs):
             return render(request,'inventario/bodegaregistro.html', context,{'form':crearBodega})
         bodega.save()
         messages.success(request, 'La bodega ha sido creada correctamente')
-        return redirect(to='registro')
+        return redirect(to='inventario:registro')
         categorias = Categoria.objects.all()
         context={'categorias':categorias}
     return render(request, 'inventario/bodegaregistro.html', context,{'form':crearBodega})

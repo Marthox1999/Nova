@@ -24,7 +24,7 @@ def clienteIngreso(request, *args, **kwargs):
         nombre=ingresar.get('username')
         if (aux.autenticarCliente()):
             messages.success(request, f'¡Bienvenido {nombre}!')
-            return redirect(to='inicioCliente')
+            return redirect(to='usuarios:inicioCliente')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/clienteingreso.html', context,{'form':ingresar})
@@ -64,6 +64,6 @@ def clienteRegistro(request, *args, **kwargs):
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
-        return redirect(to='ingresoCliente')
+        return redirect(to='usuario:ingresoCliente')
 
     return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
