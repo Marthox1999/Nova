@@ -28,9 +28,11 @@
               <form id="login-form" method="post"  name="ingresoCliente">
                 {% csrf_token %}
                 <div class="form-group">
+                  <label for="username">Nombre de Usuario</label>
                   <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nombre de usuario">
                 </div>
                 <div class="form-group">
+                  <label for="password">Clave</label>
                   <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Contraseña">
                 </div>
 								<!--

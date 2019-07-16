@@ -8,7 +8,7 @@ from usuarios.models import Cliente
 
 def clienteIngreso(request, *args, **kwargs):
     ingresar = request.POST
-    print(request)
+    print(request)  
     if(request.method == 'POST'):
         aux = Cliente(
             nombre=ingresar.get('username'),
