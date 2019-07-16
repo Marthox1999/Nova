@@ -11,7 +11,7 @@
   {% for categoria in categorias %}
       <li><a href="/usuarios/clienteinicio/{{categoria.nombreCategoria}}">{{categoria.nombreCategoria}}</a></li>
       {% empty %}
-      <p>Todavia no hay categorias</p>
+      <p>Vacio</p>
   {% endfor %}
   <li style="float:right"><a class="active" href="#LogOut">Cerrar Sesion</a></li>
 </ul>
