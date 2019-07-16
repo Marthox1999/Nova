@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 
 
-{% block content %}
+{% block head %}
 
 {% load static %}
 
+{% endblock %}
+
+
+{% block content %}
 <link rel="stylesheet" href="{% static 'css/modf_categoria.css' %}">
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
+
 <!-- contact  -->
 <div class="page-color">
   <div class="col-md-6 col-md-offset-3">
@@ -14,7 +19,7 @@
     <div class="panel-login panel">
       <div class="panel-heading">
         <center>
-          <h2> Modificar Categoría </h2>
+          <h2> Modificar Categoria </h2>
         </center>
         <br>
         </br>
@@ -24,68 +29,72 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-lg-12">
-            <form class='login-form' method='post'> <!-- id="login-form" action="#" method="post" -->
-              {% csrf_token %}
+              <form method='post' id='seleccionCategoria-form' name='seleccionar_categoria' class='login-form'>
+                  {% csrf_token %}
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Categoría</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option value="null">Categoría</option>
-                  <option value="1">Hombre</option>
-                  <option value="2">Mujer</option>
-                  <option value="3">Niños</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label for="exampleFormControlSelect1">subCategoría</label>                 
-                  <select class="form-control" id="exampleFormControlSelect1">
-                    <option value="null">subCategoría</option>
-                    <option value="1">pantalones</option>
-                    <option value="2">camisas</option>
-                    <option value="3">zapatos</option>
+                  <label for="categoria">Categoria</label>
+                  <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
+                    <option value="-1"  name='vacio'>Categoria</option>
+                    {% for categoria in categorias %}
+                      <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}} >{{categoria.nombreCategoria}}</option>
+                      {% empty %}
+                    {% endfor %}
                   </select>
-                        
-                  <button type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-plus"></span>
-                  </button>                                  
+                </div>
+              </form>
+              <div class="form-group">
+                <label for="subCategoria">subCategoria</label>                 
+                  <select class="form-control" id="subCategoria" name="subCategoria">
+                    <option value="null">subCategoria</option>
+                    {% for subCategoria in subCategorias %}
+                      <option value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
+                      {% empty %}
+                    {% endfor %}
+                  </select>                           
+              </div>
+            
+            <form id=seleccionCategoria name='modificar_categoria' class='login-form' method='post'>
+              <div class="ps-section--offer">
+                <div class="ps-column"><a class="ps-offer">
+                    <!-- ESPACIO RESERVADO PARA MODIFICAR CATEGORIA  -->
+                    <img src="{% static 'images/paginaPrincipal_admin/home-banner-1.png' %}" alt="">
+                  </a>
+                </div>
+
+                <!--  AGREGAR, MODIFICAR, ELIMINAR SUBCATEGORIA -->
+                <div class="ps-column">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="exampleFormControlInput1">Nombre de subCategoria</label>
+                    <input type="text" class="form-control" name="nombreSubcategoria" id="exampleFormControlInput1" placeholder="">                
+                  </div>
+                  
+                  <div class="form-group row">
+                    <!-- Agregar subCategoria -->
+                    <div class="form-group ps-column">
+                      <input type="submit" name="add-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Agregar">
+                      <span class="glyphicon glyphicon-plus"></span>
+                    </div>
+
+                    <!-- Modificar subCategoria -->
+                    <div class="form-group ps-column">
+                      <input type="submit" name="modify-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Modificar">
+                      <span class="glyphicon glyphicon-wrench"></span>
+                    </div>
+
+                    <!-- Eliminar subCategoria -->
+                    <div class="form-group ps-column">
+                      <input type="submit" name="delete-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar">
+                      <span class="glyphicon glyphicon-wrench"></span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="ps-section--offer">
-      <div class="ps-column"><a class="ps-offer">
-          <!-- RESERVED SPACE FOR MODIFY CATEGORY  -->
-          <img src="{% static 'images/paginaPrincipal_admin/home-banner-1.png' %}" alt="">
-        </a>
-      </div>
-      <div class="ps-column">
-        <form class='login-form' method='post'>
-            {% csrf_token %}
-            <div class="form-group">
-              <label for="exampleFormControlInput1">Nombre de subCategoría</label>
-              <input type="text" class="form-control" name="nombreSubcategoria" id="exampleFormControlInput1" placeholder="">                
-            </div>
-            <div class="form-group row">
-              <div class="form-group ps-column">
-                  <input type="submit" name="add-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Agregar">
-                  <span class="glyphicon glyphicon-plus"></span>
-              </div>
-              <div class="form-group ps-column">
-                  <input type="submit" name="modify-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Modificar">
-                  <span class="glyphicon glyphicon-wrench"></span>
-              </div>
-              <div class="form-group ps-column">
-                  <input type="submit" name="delete-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar">
-                  <span class="glyphicon glyphicon-wrench"></span>
-              </div>
-            </div>
-            </div>
-        </form>  
-      </div>
-    </div>
+    </div>    
     <br>
   </div>
 </div>
