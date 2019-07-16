@@ -6,8 +6,8 @@
           <div class="row">
             <div class="col-md-6 col-md-offset-3" style="padding: 75px">
               <div class="panel-login panel" style="padding: 5px">
-                <div class="panel-heading" style="background-color:#FEF0F0;">
-                  <h1 style="text-indent: 40px">Agregar Administrador</h1>
+                <div class="panel-heading" style="background-color:#FEF0F0; text-align: center">
+                  <h2>Agregar Administrador</h2>
                   <hr>
                 </div>
                 <div class="panel-body" style="background-color:#FEF0F0;">
@@ -17,9 +17,11 @@
                             {% csrf_token %}
                             {{form.as_p}}
                             <div class="form-group">
+                              <label for ="nombreAdmin">Nombre de Usuario</label>
                               <input type="text" name="nombreAdmin" id="nombreAdmin" tabindex="1" class="form-control" placeholder="Nombre de Usuario" value="">
                             </div>
                             <div class="form-group">
+                                <label for ="claveAdmin">Clave</label>
                               <input type="text" name="claveAdmin" id="claveAdmin" tabindex="1" class="form-control" placeholder="Clave">
                             </div>
                             <div class="form-group">

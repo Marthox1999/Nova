@@ -1,7 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from inventario.models import Categoria, SubCategoria
+from django.http import HttpResponseRedirect
+from django.core.exceptions import ValidationError
+from django.views.decorators.csrf import csrf_protect
+from inventario.models import *
+
 # Create your views here.
+
+def categoria(request, *args, **kwargs):
+    return render(request, "inventario/categoria.html", {})
 
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -20,10 +27,45 @@ def modificar_categoria(request, *args, **kwargs):
 
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
     return render(request, "inventario/modificar_categoria.html", context, {})
-
-def prueba(request, *args, **kwargs):
-    categorias = Categoria.objects.all()
-    context={'categorias':categorias}
-    print(request.POST)
-    return render(request, "prueba.html", context, {})
     
+
+@csrf_protect
+def aniadirCategoria(request, *args, **kwargs):
+    if request.method == 'POST':
+        crear = request.POST
+        nombre = crear.get('nombreCategoria')
+        aux = Categoria( nombreCategoria = nombre )
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            return render(request, "inventario/categoriaCrear.html",{})
+        aux.save()
+    return render(request, "inventario/categoriaCrear.html", {})
+
+def productos(request, *args, **kwargs):
+    return render(request, "inventario/productos.html", {})
+
+def aniadirProductos(request, *args, **kwargs):
+    return render(request, "inventario/productosCrear.html", {})
+
+
+def proveedor(request, *args, **kwargs):
+    return render(request, "inventario/proveedor.html", {})
+
+def aniadirProveedor(request, *args, **kwargs):
+    if request.method == 'POST':
+        crear = request.POST
+        nit = crear.get('nitProveedor')
+        direccion = crear.get('direccionProveedor')
+        telefono = crear.get('telefonoProveedor')
+
+        aux = Proveedor( pknit = nit, direccion = direccion, telefono = telefono)
+        
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            
+            return render(request, "inventario/proveedorCrear.html",{})
+        aux.save()
+    return render(request, "inventario/proveedorCrear.html", {})
+
