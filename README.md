@@ -1,4 +1,9 @@
-# ProyectoDesarrolloII
+
+# Nova 
+
+[![postgreSQL version](https://img.shields.io/badge/Django-v2.0_v3.0-purple.svg?style=flat-square)](https://www.postgresql.org/)
+
+## Proyecto Desarrollo II 
 
 Para la primera instalación:
 
@@ -19,6 +24,3 @@ nota: ultima columna es el nombre del docker (debe ser algo como con web)
 ```
 docker ps -a
 ```
-
-
-
