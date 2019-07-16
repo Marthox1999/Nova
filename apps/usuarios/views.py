@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from usuarios.models import AdministradorDuenio
 # Create your views here.
-from usuarios.models import AdministradorDuenio
+from usuarios.models import 
+from django.core.exceptions import ValidationError
 
 
 

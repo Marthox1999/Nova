@@ -29,7 +29,7 @@ class AdministradorDuenio (models.Model):
     }
     pkAdministradorDuenio = models.AutoField(primary_key=True)
     nombreUsuario = models.CharField(max_length=8)
-    clave = models.CharField(max_length=100, editable=True)
+    clave = models.CharField(max_length=128, editable=True)
     tipo = models.CharField(max_length=5, choices=TIPO) 
 
     #super().save(*args, **kwargs) para guardar en esta tabla
@@ -39,12 +39,10 @@ class AdministradorDuenio (models.Model):
 
     def autenticarAdmin(self, *args, **kwargs):
         auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='ADMIN').exists()
-        #aux= AdministradorDuenio.objects.
         return auth
 
     def autenticarDuenio(self, *args, **kwargs):
         auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='CEO').exists()
-        #aux= AdministradorDuenio.objects.
         return auth
 
 

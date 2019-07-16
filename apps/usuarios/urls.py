@@ -9,8 +9,6 @@ urlpatterns = [
     path('principalAdmin/',paginaPrincipal_admin,name='paginaPrincipal_admin'),
     path('duenioAdminIngreso/', duenioAdminIngreso, name='duenioAdminIngreso'),
     path('principalDuenio/', paginaPrincipal_duenio, name='paginaPrincipal_duenio'),
-    #path('duenioAdminAgregar/', duenioAdminAgregar, name='duenioAdminAgregar'),
-    #path('adminMenu/', adminMenu, name='adminMenu'),
     path('adminMenu/', adminMenu, name='duenioAdminMenu'),
     path('duenioAdminAgregar/', duenioAdminAgregar, name='duenioAgregarAdmin'),
 ]
