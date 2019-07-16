@@ -13,88 +13,104 @@
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
 
 <!-- contact  -->
-<div class="page-color">
-  <div class="col-md-6 col-md-offset-3">
-    <!-- class="col-md-6 col-md-offset-3" -->
-    <div class="panel-login panel">
-      <div class="panel-heading">
-        <center>
-          <h2> Modificar Categoria </h2>
-        </center>
-        <br>
-        </br>
-        <hr>
-      </div>
+<div class="col-md-6 col-md-offset-3">
+  <br>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> Modificar Categoria </h1>
+      </center>
+    </div>
+  </div>
 
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-lg-12">
-              <form method='post' id='seleccionCategoria-form' name='seleccionar_categoria' class='login-form'>
-                  {% csrf_token %}
-              <div class="form-group">
-                  <label for="categoria">Categoria</label>
-                  <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
-                    <option value="-1"  name='vacio'>Categoria</option>
-                    {% for categoria in categorias %}
-                      <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}} >{{categoria.nombreCategoria}}</option>
-                      {% empty %}
-                    {% endfor %}
-                  </select>
-                </div>
-              </form>
-              <div class="form-group">
-                <label for="subCategoria">subCategoria</label>                 
-                  <select class="form-control" id="subCategoria" name="subCategoria">
-                    <option value="null">subCategoria</option>
-                    {% for subCategoria in subCategorias %}
-                      <option value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
-                      {% empty %}
-                    {% endfor %}
-                  </select>                           
-              </div>
-            
-            <form id=seleccionCategoria name='modificar_categoria' class='login-form' method='post'>
-              <div class="ps-section--offer">
-                <div class="ps-column"><a class="ps-offer">
-                    <!-- ESPACIO RESERVADO PARA MODIFICAR CATEGORIA  -->
-                    <img src="{% static 'images/paginaPrincipal_admin/home-banner-1.png' %}" alt="">
-                  </a>
-                </div>
+  <div class="panel-body">    
+    <div class="row">
+      <form method='post' id='seleccionCategoria-form' name='seleccionar_categoria' class='login-form'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
+            <option value="-1"  name='vacio'>Categoria</option>
+            {% for categoria in categorias %}
+              <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+              {% empty %}
+              {% endfor %}
+          </select>
+        </div>
+      </form>
+    </div>
+    <br>
 
-                <!--  AGREGAR, MODIFICAR, ELIMINAR SUBCATEGORIA -->
-                <div class="ps-column">
-                  {% csrf_token %}
-                  <div class="form-group">
-                    <label for="exampleFormControlInput1">Nombre de subCategoria</label>
-                    <input type="text" class="form-control" name="nombreSubcategoria" id="exampleFormControlInput1" placeholder="">                
-                  </div>
-                  
-                  <div class="form-group row">
-                    <!-- Agregar subCategoria -->
-                    <div class="form-group ps-column">
-                      <input type="submit" name="add-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Agregar">
-                      <span class="glyphicon glyphicon-plus"></span>
-                    </div>
+    <div class="row">
+      <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <input type="text" name="nombreCategoria" id="nombreCategoria" placeholder="Nombre" value="{{nombreCategoria}}"></input>
+          
+          <label for="idCategoria">Id Categoria</label>
+          <input type="text" readonly placeholder="id" value="{{idCategoria}}"></input>          
+        </div>
 
-                    <!-- Modificar subCategoria -->
-                    <div class="form-group ps-column">
-                      <input type="submit" name="modify-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Modificar">
-                      <span class="glyphicon glyphicon-wrench"></span>
-                    </div>
+        <div class="form-group">
+          <input type="submit" name="modfCat-submit" id="modfCat-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
+        </div>
+      </form>
+    </div>
+    <br><br>
+  </div>
 
-                    <!-- Eliminar subCategoria -->
-                    <div class="form-group ps-column">
-                      <input type="submit" name="delete-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar">
-                      <span class="glyphicon glyphicon-wrench"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> SubCategoria </h1>
+      </center>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <input type="text" readonly value="{{nombreCategoria}}"></input>
+        </div>
+
+        <div class="form-group">
+          <label for="subCategoria">SubCategoria</label>                 
+          <select class="form-control" id="subCategoria" name="subCategoria">
+            <option value="null">subCategoria</option>
+            {% for subCategoria in subCategorias %}
+              <option value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
+              {% empty %}
+              {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subCategoria">Nombre</label>
+          <input type="text" name="nombreSubCategoria" id="nombreSubCategoria" placeholder="Nombre"></input>
+
+          <label for="idSubCategoria">Id SubCategoria</label>
+          <input type="text" readonly placeholder="id">{{idSubCategoria}}</input>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <input type="submit" name="agregarSubCat-submit" id="agregarSubCat-submit" tabindex="4" class="form-control btn btn-register" value="Agregar"></input>
+          </div>
+          <br>
+          <div>
+            <input type="submit" name="modfSubCat-submit" id="modfSubCat-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
+          </div>
+          <br>
+          <div>
+            <input type="submit" name="eliminarSubCat-submit" id="eliminarSubCat-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar"></input>
           </div>
         </div>
-      </div>
-    </div>    
+      </form>
+    </div>
     <br>
   </div>
 </div>

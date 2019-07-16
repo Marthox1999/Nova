@@ -10,11 +10,15 @@ def modificar_categoria(request, *args, **kwargs):
     subCategorias = {}
     if(idCategoria=='-1'):
         print("entro")
+        nombreCategoria = ""
+        idCategoria = ""
         subCategorias = {}
     else:
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        nombreCategoria = categoriaObject.nombreCategoria
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    context={'categorias':categorias, 'subCategorias':subCategorias}
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
     return render(request, "inventario/modificar_categoria.html", context, {})
 
 def prueba(request, *args, **kwargs):
