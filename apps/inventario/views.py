@@ -1,5 +1,5 @@
 from django.shortcuts import render
-#from inventario.aniadirCategoriaForm import AniadirCategoriaForm
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_protect
@@ -10,6 +10,10 @@ from inventario.models import Categoria, Proveedor
 def categoria(request, *args, **kwargs):
     return render(request, "inventario/categoria.html", {})
 
+def modificar_categoria(request, *args, **kwargs):
+    return render(request, "inventario/modificar_categoria.html", {})
+  
+  
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
     if request.method == 'POST':
@@ -49,3 +53,4 @@ def aniadirProveedor(request, *args, **kwargs):
             return render(request, "inventario/proveedorCrear.html",{})
         aux.save()
     return render(request, "inventario/proveedorCrear.html", {})
+
