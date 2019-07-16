@@ -54,7 +54,7 @@ def clienteregistro(request, *args, **kwargs):
             return render(request, "usuarios/clienteregistro.html",{'form':registrar})
         nombre =registrar.get('nombreCliente')
         aux.save()
-        messages.success(request, f'{nombre} bienvenido(a) a Nova :D')
+        messages.success(request, f'¡{nombre} bienvenido(a) a Nova!')
         return redirect(to='usuarios:ingreso')
 
     return render(request, "usuarios/clienteregistro.html",{'form':registrar})
