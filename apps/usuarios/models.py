@@ -38,12 +38,12 @@ class AdministradorDuenio (models.Model):
         super(AdministradorDuenio, self).save(*args, **kwargs)
 
     def autenticarAdmin(self, *args, **kwargs):
-        auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest()).exists()
+        auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='ADMIN').exists()
         #aux= AdministradorDuenio.objects.
         return auth
 
     def autenticarDuenio(self, *args, **kwargs):
-        auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest()).exists()
+        auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='CEO').exists()
         #aux= AdministradorDuenio.objects.
         return auth
 
