@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_protect
 from inventario.models import *
+from django.core.exceptions import ValidationError
+from django.contrib import messages
 
 # Create your views here.
 
@@ -14,9 +16,31 @@ def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST  
     idCategoria = modificar.get('categoria')
+
+    idCategoriaSubCat = modificar.get('idCat')
+    nombreSubCat = modificar.get('nombreSubCategoria')
+    accionSubCatSubmit = modificar.get('SubCat-submit')
+
+    if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
+        aux = SubCategoria(
+            fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
+            nombreSubCategoria=nombreSubCat
+        )        
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            print("socorro")
+            context={'categorias':categorias}
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/modificar_categoria.html", context, {})
+
+        aux.save()
+        context={'categorias':categorias}
+        messages.success(request, 'SubCategoria agregada con exito')
+        return render(request, "inventario/modificar_categoria.html", context, {})
+
     subCategorias = {}
-    if(idCategoria=='-1'):
-        print("entro")
+    if(idCategoria=='-1' or idCategoria==None):
         nombreCategoria = ""
         idCategoria = ""
         subCategorias = {}

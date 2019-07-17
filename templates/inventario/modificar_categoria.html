@@ -49,7 +49,7 @@
           <input type="text" name="nombreCategoria" id="nombreCategoria" placeholder="Nombre" value="{{nombreCategoria}}"></input>
           
           <label for="idCategoria">Id Categoria</label>
-          <input type="text" readonly placeholder="id" value="{{idCategoria}}"></input>          
+          <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>          
         </div>
 
         <div class="form-group">
@@ -75,6 +75,8 @@
         <div class="form-group">
           <label for="categoria">Categoria</label>
           <input type="text" readonly value="{{nombreCategoria}}"></input>
+          <label for="idCategoria">Id Categoria</label>
+          <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>
         </div>
 
         <div class="form-group">
@@ -98,15 +100,15 @@
 
         <div class="form-row">
           <div>
-            <input type="submit" name="agregarSubCat-submit" id="agregarSubCat-submit" tabindex="4" class="form-control btn btn-register" value="Agregar"></input>
+            <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Agregar"></input>
           </div>
           <br>
           <div>
-            <input type="submit" name="modfSubCat-submit" id="modfSubCat-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
+            <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
           </div>
           <br>
           <div>
-            <input type="submit" name="eliminarSubCat-submit" id="eliminarSubCat-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar"></input>
+            <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar"></input>
           </div>
         </div>
       </form>
