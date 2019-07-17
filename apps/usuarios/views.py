@@ -46,7 +46,7 @@ def clienteInicio(request, *args, **kwargs):
     return render(request, 'usuarios/clienteinicio.html', context, {})
 
 @csrf_protect
-def clienteRegistro(request, *args, **kwargs):
+def clienteregistro(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
     registrar = request.POST
@@ -96,7 +96,7 @@ def duenioAdminAgregar(request, *args, **kwargs):
     agregar = request.POST
     if(request.method=='POST'):
         admin=AdministradorDuenio(
-            nombreUsuario=agregar.get('nombreAdmin'), 
+            nombreUsuario=agregar.get('nombreAdmin'),
             clave=agregar.get('claveAdmin'),
             tipo='ADMIN'
         )
@@ -110,7 +110,7 @@ def duenioAdminAgregar(request, *args, **kwargs):
         messages.success(request, f'¡Bienvenido {nombre} !')
         return redirect(to='usuarios:duenioAgregarAdmin')
     return render(request,"usuarios/duenioAdminAgregar.html",{'form':agregar})
-    
+
 
 def adminMenu(request, *args, **kwargs):
     return render(request,"usuarios/adminMenu.html", {})
@@ -141,5 +141,3 @@ def duenioAdminIngreso(request, *args, **kwargs):
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/duenioAdminIngreso.html',{'form':ingresar})
-
- 

@@ -29,7 +29,7 @@ def bodegaRegistro(request, *args, **kwargs):
             return render(request,'inventario/bodegaregistro.html', context,{'form':crearBodega})
         bodega.save()
         messages.success(request, 'La bodega ha sido creada correctamente')
-        return redirect(to='inventario:registro')
+        return redirect(to='inventario:bodegaregistro')
         categorias = Categoria.objects.all()
         context={'categorias':categorias}
     return render(request, 'inventario/bodegaregistro.html', context,{'form':crearBodega})
@@ -44,8 +44,8 @@ def categoria(request, *args, **kwargs):
 
 def modificar_categoria(request, *args, **kwargs):
     return render(request, "inventario/modificar_categoria.html", {})
-  
-  
+
+
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
     if request.method == 'POST':
@@ -77,11 +77,11 @@ def aniadirProveedor(request, *args, **kwargs):
         telefono = crear.get('telefonoProveedor')
 
         aux = Proveedor( pknit = nit, direccion = direccion, telefono = telefono)
-        
+
         try:
             aux.full_clean()
         except ValidationError as e:
-            
+
             return render(request, "inventario/proveedorCrear.html",{})
         aux.save()
     return render(request, "inventario/proveedorCrear.html", {})
