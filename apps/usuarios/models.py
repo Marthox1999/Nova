@@ -2,23 +2,21 @@ from django.db import models
 import hashlib
 from django.core.validators import RegexValidator
 
-
 class Cliente(models.Model):
-    TIPO_DOC = {
+    TIPO_DOC = {  
         ('PAS','Pasaporte'),
-        ('CC','Cedula de Ciudadania'),
+        ('CC','Cedula de Ciudadania'), 
         ('TI','Tarjeta de Identidad'),
     }
 
     nombre = models.CharField(max_length=32, unique=True, primary_key=True)
-    clave = models.CharField(max_length=32, editable=True)
+    clave = models.CharField(max_length=128, editable=True)
     fechaNacimiento = models.DateField()
-    direccion = models.CharField(max_length=32)
+    direccion = models.CharField(max_length=32) 
     telefono_regex = RegexValidator(regex=r'^\+?1?\d{7,10}$', message="El telefono debe tener formato: '+7777777'. Up to 10 digits allowed.")
     telefono = models.CharField(validators=[telefono_regex], max_length=12, blank=True) # validators should be a list
     tipoDocumento = models.CharField(max_length=3, choices = TIPO_DOC)
     numeroDocumento = models.IntegerField()
-
 
     #super().save(*args, **kwargs) para guardar en esta tabla
     def save(self, *args, **kwargs):
@@ -30,6 +28,7 @@ class Cliente(models.Model):
                                     clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest()).exists()
         return auth
 
+
 class AdministradorDuenio (models.Model):
     TIPO = {
         ('ADMIN','Administrador'),
@@ -37,11 +36,19 @@ class AdministradorDuenio (models.Model):
     }
     pkAdministradorDuenio = models.AutoField(primary_key=True)
     nombreUsuario = models.CharField(max_length=8)
-    clave = models.CharField(max_length=16, editable=False)
-    tipo = models.CharField(max_length=5, choices=TIPO)
+    clave = models.CharField(max_length=128, editable=True)
+    tipo = models.CharField(max_length=5, choices=TIPO) 
 
     #super().save(*args, **kwargs) para guardar en esta tabla
-    def save(self, *args, **kwargs):       
+    def save(self, *args, **kwargs):        
         self.clave = hashlib.md5(self.clave.encode('utf-8')).hexdigest()
         super(AdministradorDuenio, self).save(*args, **kwargs)
+
+    def autenticarAdmin(self, *args, **kwargs):
+        auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='ADMIN').exists()
+        return auth
+
+    def autenticarDuenio(self, *args, **kwargs):
+        auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='CEO').exists()
+        return auth
 
