@@ -9,11 +9,13 @@ from usuarios.models import AdministradorDuenio
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from usuarios.models import Cliente
+from inventario.models import Categoria
 
 
 def clienteIngreso(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     ingresar = request.POST
-    print(request)  
     if(request.method == 'POST'):
         aux = Cliente(
             nombre=ingresar.get('username'),
@@ -30,19 +32,25 @@ def clienteIngreso(request, *args, **kwargs):
             return redirect(to='usuarios:inicioCliente')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
-    return render(request, 'usuarios/ingreso.html',{'form':ingresar})
+    return render(request, 'usuarios/clienteingreso.html', context,{'form':ingresar})
 
 def clienteCerrarSesion(request, *args, **kwargs):
-    return render(request, 'usuarios/ingreso.html',{})
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request, 'usuarios/clienteingreso.html', context, {})
 
 def clienteInicio(request, *args, **kwargs):
-    return render(request, 'usuarios/inicioCliente.html',{})
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    print(categorias)
+    return render(request, 'usuarios/clienteinicio.html', context, {})
 
-   
 @csrf_protect
 def clienteregistro(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     registrar = request.POST
-    if(request.method == 'POST'):  
+    if(request.method == 'POST'):
         aux = Cliente(
             nombre= registrar.get('nombreCliente'),
             clave = registrar.get('claveCliente'),
@@ -56,7 +64,7 @@ def clienteregistro(request, *args, **kwargs):
             aux.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            return render(request, "usuarios/clienteregistro.html",{'form':registrar})
+            return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'¡{nombre} bienvenido(a) a Nova!')
@@ -88,7 +96,7 @@ def duenioAdminAgregar(request, *args, **kwargs):
     agregar = request.POST
     if(request.method=='POST'):
         admin=AdministradorDuenio(
-            nombreUsuario=agregar.get('nombreAdmin'), 
+            nombreUsuario=agregar.get('nombreAdmin'),
             clave=agregar.get('claveAdmin'),
             tipo='ADMIN'
         )
@@ -102,7 +110,7 @@ def duenioAdminAgregar(request, *args, **kwargs):
         messages.success(request, f'¡Bienvenido {nombre} !')
         return redirect(to='usuarios:duenioAgregarAdmin')
     return render(request,"usuarios/duenioAdminAgregar.html",{'form':agregar})
-    
+
 
 def adminMenu(request, *args, **kwargs):
     return render(request,"usuarios/adminMenu.html", {})
@@ -133,6 +141,3 @@ def duenioAdminIngreso(request, *args, **kwargs):
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/duenioAdminIngreso.html',{'form':ingresar})
-
- 
-
