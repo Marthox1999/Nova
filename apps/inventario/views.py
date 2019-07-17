@@ -1,13 +1,45 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_protect
 from inventario.models import *
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 
-# Create your views here.
+
+def bodegaInicio(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,'inventario/bodegainicio.html', context,{})
+
+@csrf_protect
+def bodegaRegistro(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    crearBodega = request.POST
+    if(request.method == 'POST'):
+        bodega = Bodega(
+            direccion = crearBodega.get('direccion'),
+            ciudad = crearBodega.get('ciudad')
+        )
+        print(crearBodega.get('direccion'))
+        print(crearBodega.get('ciudad'))
+        try:
+            bodega.full_clean()
+        except ValidationError as e:
+            messages.info(request, 'Alguno(s) campo(s) no es(son) validos')
+            return render(request,'inventario/bodegaregistro.html', context,{'form':crearBodega})
+        bodega.save()
+        messages.success(request, 'La bodega ha sido creada correctamente')
+        return redirect(to='inventario:bodegaregistro')
+        categorias = Categoria.objects.all()
+        context={'categorias':categorias}
+    return render(request, 'inventario/bodegaregistro.html', context,{'form':crearBodega})
+
+def consultarcategorias(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,'inventario/categoriasconsultar.html', context,{})
 
 def categoria(request, *args, **kwargs):
     return render(request, "inventario/categoria.html", {})
@@ -50,8 +82,7 @@ def modificar_categoria(request, *args, **kwargs):
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
-    return render(request, "inventario/modificar_categoria.html", context, {})
-    
+    return render(request, "inventario/modificar_categoria.html", context, {}) 
 
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
@@ -84,12 +115,11 @@ def aniadirProveedor(request, *args, **kwargs):
         telefono = crear.get('telefonoProveedor')
 
         aux = Proveedor( pknit = nit, direccion = direccion, telefono = telefono)
-        
+
         try:
             aux.full_clean()
         except ValidationError as e:
-            
+
             return render(request, "inventario/proveedorCrear.html",{})
         aux.save()
     return render(request, "inventario/proveedorCrear.html", {})
-

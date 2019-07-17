@@ -3,10 +3,15 @@
 <link href="{% static 'css/navbar.css' %}"  rel="stylesheet">
 
 <ul>
-  <li><img style="padding: 7px; height:45px; width: 120px" src="{% static 'images/nova.jpg' %}"/></li>
-  <li><a href="#Hombres">Hombres</a></li>
-  <li><a href="#Mujeres">Mujeres</a></li>
-  <li><a href="#Niños">Niños</a></li>
-  <li><a href="#Accesorios">Accesorios</a></li>
+  <li>
+    <a href="/usuarios/clienteinicio" style="padding: 1px; background-color: white;">
+      <img style="padding: 7px; height:45px; width: 120px" src="{% static 'images/nova.jpg' %}"/>
+    </a>
+  </li>
+  {% for categoria in categorias %}
+      <li><a href="/usuarios/clienteinicio/{{categoria.nombreCategoria}}">{{categoria.nombreCategoria}}</a></li>
+      {% empty %}
+      <p>Vacio</p>
+  {% endfor %}
   <li style="float:right"><a class="active" href="#LogOut">Cerrar Sesion</a></li>
 </ul>
