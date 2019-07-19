@@ -42,7 +42,6 @@ def clienteCerrarSesion(request, *args, **kwargs):
 def clienteInicio(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
-    print(categorias)
     return render(request, 'usuarios/clienteinicio.html', context, {})
 
 @csrf_protect
@@ -64,32 +63,39 @@ def clienteregistro(request, *args, **kwargs):
             aux.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
+            context={'categorias':categorias}
             return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'¡{nombre} bienvenido(a) a Nova!')
         return redirect(to='usuarios:ingreso')
 
-    return render(request, "usuarios/clienteregistro.html",{'form':registrar})
+    return render(request, "usuarios/clienteregistro.html",context, {'form':registrar})
 
 def paginaPrincipal_admin(request):
-
+    categorias = Categoria.objects.all()
     admin = AdministradorDuenio.objects.get(pkAdministradorDuenio =  1)
     #admin = get_object_or_404(AdministradorDuenio, pkAdministradorDuenio=id_dueno)
     context = {
-        'objeto' : admin
+        'objeto' : admin,
+        'categorias': categorias
     }
     return render(request, "usuarios/paginaPrincipal_admin.html",context)
 
 def paginaPrincipal_duenio(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     duenio = AdministradorDuenio.objects.get(pkAdministradorDuenio=1)
     context = {
-        'objeto' : duenio
+        'objeto' : duenio,
+        'categorias': categorias
     }
     return render(request, "usuarios/paginaPrincipal_duenio.html",context)
 
 
 def duenioAdminAgregar(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     agregar = request.POST
     if(request.method=='POST'):
         admin=AdministradorDuenio(
@@ -101,19 +107,23 @@ def duenioAdminAgregar(request, *args, **kwargs):
             admin.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            return render(request, "usuarios/duenioAdminAgregar.html",{'form':agregar})
+            return render(request, "usuarios/duenioAdminAgregar.html",context,{'form':agregar})
         nombre =agregar.get('nombreAdmin')
         admin.save()
         messages.success(request, f'¡Bienvenido {nombre} !')
         return redirect(to='usuarios:duenioAgregarAdmin')
-    return render(request,"usuarios/duenioAdminAgregar.html",{'form':agregar})
+    return render(request,"usuarios/duenioAdminAgregar.html",context,{'form':agregar})
 
 
 def adminMenu(request, *args, **kwargs):
-    return render(request,"usuarios/adminMenu.html", {})
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,"usuarios/adminMenu.html",context, {})
 
 
 def duenioAdminIngreso(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
     ingresar = request.POST
     if(request.method == 'POST'):
         admin = AdministradorDuenio(
@@ -137,4 +147,4 @@ def duenioAdminIngreso(request, *args, **kwargs):
             return redirect(to='usuarios:paginaPrincipal_duenio')
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
-    return render(request, 'usuarios/duenioAdminIngreso.html',{'form':ingresar})
+    return render(request, 'usuarios/duenioAdminIngreso.html',context,{'form':ingresar})
