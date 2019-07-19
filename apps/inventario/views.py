@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_protect
+from inventario.models import *
+from django.core.exceptions import ValidationError
 from django.contrib import messages
-from inventario.models import Bodega, Categoria, Proveedor
+
 
 def bodegaInicio(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -43,8 +45,44 @@ def categoria(request, *args, **kwargs):
     return render(request, "inventario/categoria.html", {})
 
 def modificar_categoria(request, *args, **kwargs):
-    return render(request, "inventario/modificar_categoria.html", {})
+    categorias = Categoria.objects.all()
+    modificar = request.POST  
+    idCategoria = modificar.get('categoria')
 
+    idCategoriaSubCat = modificar.get('idCat')
+    nombreSubCat = modificar.get('nombreSubCategoria')
+    accionSubCatSubmit = modificar.get('SubCat-submit')
+
+    if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
+        aux = SubCategoria(
+            fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
+            nombreSubCategoria=nombreSubCat
+        )        
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            print("socorro")
+            context={'categorias':categorias}
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/modificar_categoria.html", context, {})
+
+        aux.save()
+        context={'categorias':categorias}
+        messages.success(request, 'SubCategoria agregada con exito')
+        return render(request, "inventario/modificar_categoria.html", context, {})
+
+    subCategorias = {}
+    if(idCategoria=='-1' or idCategoria==None):
+        nombreCategoria = ""
+        idCategoria = ""
+        subCategorias = {}
+    else:
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        nombreCategoria = categoriaObject.nombreCategoria
+        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
+    return render(request, "inventario/modificar_categoria.html", context, {}) 
 
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
