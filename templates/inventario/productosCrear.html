@@ -4,71 +4,172 @@
 
 {% block content %}
 
-<div class="container" style="background-color:#FEF0F0;">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel-default panel">
-                <div class="panel-heading" style="background-color:#FEF0F0;">
-                    <div class="row mb_20">
-                        <div class="col-xs-6">
-                            <a class="active">Añadir Categoria</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body" style="background-color:#FEF0F0;">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <form id="formulario-producto" action="#" method="post">
-                                
-                                <div class="form-group">
-                                    <label for="inputCategoria">Nombre de la categoria</label>
-                                    <input id="inputCategoria" type="text" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputSubCategoria">Nombre de la sub-categoria</label>
-                                    <input id="inputSubCategoria" type="text" class="form-control">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="TextareaDescripcion">Descripción del producto</label>
-                                    <textarea class="form-control" id="TextareaDescripcion" rows="3"></textarea>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputIva">Iva (%)</label>
-                                    <input id="inputIva" type="text" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="inputPrecio">Precio</label>
-                                    <input id="inputPrecio" type="text" class="form-control">
-                                </div>
-                               
-
-                                <div class="custom-file">
-                                    <label for="buscadorImagen">Imagen</label>
-                                    <div>
-                                        <input type="file" class="custom-file-input" id="buscadorImagen" lang="es-ES">
-                                        <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-sm-6 col-sm-offset-3">
-                                            <input type="submit" name="aniadirCategoria" id="categoria-submit" tabindex="4" class="form-control btn" value="Añadir Producto">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="col-md-6 col-md-offset-3">
+  <br>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> Crear Productos </h1>
+      </center>
     </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <form id="formulario-producto" action="#" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
+              <option value="-1"  name='vacio'>Categoria</option>
+              {% for categoria in categorias %}
+                <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+                {% empty %}
+                {% endfor %}
+            </select>
+            <div class="hidden">
+              <input type="text" name="idCat" id="idCat" value="{{idCategoria}}"></input>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="subCategoria">SubCategoria</label>                 
+            <select class="form-control" id="subCategoria" name="subCategoria">
+              <option value="null">subCategoria</option>
+              {% for subCategoria in subCategorias %}
+                <option value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
+                {% empty %}
+                {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+              <label for="inputNombre">Nombre</label>
+              <input id="inputNombre" name="inputNombre" type="text" class="form-control">
+          </div>
+                  
+          <div class="form-group">
+            <label for="DescrProducto">Descripción del producto</label>
+            <textarea class="form-control" id="DescrProducto" name="DescrProducto" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="inputIva">Iva (%)</label>
+            <input id="inputIva" name="inputIva" type="number" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="inputPrecio">Precio</label>
+            <input id="inputPrecio" name="inputPrecio" type="text" class="form-control">
+          </div>
+          
+          <div class="form-group">
+            <div class="custom-file">
+              <label for="buscadorImagen">Imagen</label>
+              <div>
+                <input type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES">
+                <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <input type="submit" name="productos-submit" id="productos-submit" tabindex="4" class="form-control btn" value="Crear Producto">
+              </div>
+            </div>
+          </div>                  
+        </form>
+      </div>
+    </div>    
+  </div>
+
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> Agregar Productos </h1>
+      </center>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <form id="formulario-producto" action="#" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="producto">Producto</label>
+            <select class="form-control" id="producto" name="producto">
+              <option value="-1"  name='vacio'>Producto</option>
+              {% for producto in productos %}
+                <option value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}}</option>
+                {% empty %}
+                {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="proveedor">Proveedor</label>
+            <select class="form-control" id="proveedor" name="proveedor">
+              <option value="-1"  name='vacio'>Proveedor</option>
+              {% for proveedor in proveedores %}
+                <option value={{proveedor.pknit}} name={{proveedor.pknit}}>{{proveedor.pknit}}</option>
+                {% empty %}
+                {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="bodega">Bodega</label>
+            <select class="form-control" id="bodega" name="bodega">
+              <option value="-1"  name='vacio'>Bodega</option>
+              {% for bodega in bodegas %}
+                <option value={{bodega.pkBodega}} name={{bodega.pkBodega}}>{{bodega.pkBodega}} - {{bodega.ciudad}}</option>
+                {% empty %}
+                {% endfor %}
+            </select>
+            </div>
+
+          <div class="form-group">
+            <label for="talla">Talla</label>
+            <select class="form-control" id="talla" name="talla">{
+                  ('XS','xs'),
+                  ('S','s'),
+                  ('M','m'),                  
+                  ('L','l'),
+                  ('XL','xl'),
+              }
+                <option value="XS">xs</option>
+                <option value="S">s</option>
+                <option value="M">m</option>                
+                <option value="L">l</option>
+                <option value="XL">xl</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="inputCant">Cantidad</label>
+            <input id="inputCant" name="inputCant" type="number" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="inputColor">Color</label>
+            <input id="inputColor" name="inputColor" type="text" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <input type="submit" name="productos-submit" id="productos-submit" tabindex="4" class="form-control btn" value="Agregar Productos">
+              </div>
+            </div>
+          </div> 
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

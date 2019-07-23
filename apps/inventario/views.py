@@ -100,7 +100,6 @@ def modificar_categoria(request, *args, **kwargs):
         try:
             aux.full_clean()
         except ValidationError as e:
-            print("socorro")
             context={'categorias':categorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/modificar_categoria.html", context, {})
@@ -151,7 +150,99 @@ def productos(request, *args, **kwargs):
 
 def aniadirProductos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    context={'categorias':categorias}
+    productos = Producto.objects.all()
+    proveedores = Proveedor.objects.all()
+    bodegas = Bodega.objects.all()
+
+    modificar = request.POST  
+    idCategoria = modificar.get('categoria')
+    submitReq = modificar.get('productos-submit')
+    print(modificar)
+
+    subCategorias = {}
+    if(idCategoria=='-1' or idCategoria==None):
+        subCategorias = {}
+    else:
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+
+    #CREAR PRODUCTOS ------------------------------------
+    idSubCat = modificar.get('subCategoria')
+    nombre = modificar.get('inputNombre')
+    descripcion = modificar.get('DescrProducto')
+    if(modificar.get('inputPrecio')=="" or modificar.get('inputPrecio')==None):
+        precio = 0
+    else:
+        precio = int(modificar.get('inputPrecio'))
+    if(modificar.get('inputIva')=="" or modificar.get('inputIva')==None):
+        iva = 0
+    else:
+        iva = int(modificar.get('inputIva'))*precio/100
+    imagen = modificar.get('buscadorImagen')
+
+    if(submitReq=="Crear Producto" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0) and not(imagen=="")):
+        aux = Producto(
+            fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
+            nombre = nombre,
+            descripcion = descripcion,
+            iva = iva,
+            precio = precio,
+            rutaImagen = imagen
+        )
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/productosCrear.html", context, {})
+
+        aux.save()
+        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+        messages.success(request, 'Producto creado con exito')
+        return render(request, "inventario/productosCrear.html", context, {})
+    elif(submitReq=="Crear Producto"):
+        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+        messages.info(request, 'Alguno(s) campo(s) no son validos')
+        return render(request, "inventario/productosCrear.html", context, {})
+
+    #AGREGAR PRODUCTOS ----------------------------------------------
+    idProducto = modificar.get('producto')
+    idProveedor = modificar.get('proveedor')
+    idBodega = modificar.get('bodega')
+    talla = modificar.get('talla')
+    if(modificar.get('inputCant')=="" or modificar.get('inputCant')==None):
+        cantidad = 0
+    else:
+        cantidad = int(modificar.get('inputCant'))
+    color = modificar.get('inputColor')
+
+    if(submitReq=="Agregar Productos" and not(idProducto=="-1") and not(idProveedor=="-1") and not(idBodega=="-1") and not(talla=="") and not(color=="") and not(cantidad<=0)):
+        aux = DetallesProducto(
+            fkProducto = Producto.objects.get(pkProducto=idProducto),
+            talla = talla,
+            nit = Proveedor.objects.get(pknit=idProveedor),
+            color = color,
+            fkBodega = Bodega.objects.get(pkBodega=idBodega),
+            cantidad = cantidad,
+        )        
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+            context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/productosCrear.html", context, {})
+
+        aux.save()
+        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+        messages.success(request, 'Productos agregados con exito')
+        return render(request, "inventario/productosCrear.html", context, {})
+    else:
+        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+        messages.info(request, 'Alguno(s) campo(s) no son validos')
+        return render(request, "inventario/productosCrear.html", context, {})
+
+
+    context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
     return render(request, "inventario/productosCrear.html", context, {})
 
 
