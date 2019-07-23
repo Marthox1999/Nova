@@ -43,10 +43,21 @@ def consultarcategorias(request, *args, **kwargs):
 
 def eliminarCategorias(request, idCategoria):
     if(idCategoria != 0):
-        Categoria.objects.get(pkCategoria=idCategoria).delete()
-    categorias = Categoria.objects.all()
-    context={'categorias':categorias}
-    return render(request,'inventario/categoriasEliminar.html', context,{})
+        try:
+            Categoria.objects.get(pkCategoria=idCategoria).delete()
+            categorias = Categoria.objects.all()
+            context={'categorias':categorias}
+            messages.success(request, 'Categoria eliminada exitosamente')
+            return render(request,'inventario/categoriasEliminar.html', context,{})
+        except:
+            categorias = Categoria.objects.all()
+            context={'categorias':categorias}
+            messages.warning(request, 'Esta categoria ya ha sido eliminada')
+            return render(request,'inventario/categoriasEliminar.html', context,{})
+    else:
+        categorias = Categoria.objects.all()
+        context={'categorias':categorias}
+        return render(request,'inventario/categoriasEliminar.html', context,{})
 
 def categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
