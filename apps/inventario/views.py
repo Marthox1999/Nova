@@ -36,6 +36,25 @@ def bodegaRegistro(request, *args, **kwargs):
         context={'categorias':categorias}
     return render(request, 'inventario/bodegaregistro.html', context,{'form':crearBodega})
 
+def bodegaconsulta(request, *args, **kwargs):
+    categorias = Categoria.objects.all() #para cargar las categorias en el navbar
+    bodegas = Bodega.objects.all()
+
+    modificar = request.POST
+    idBodega = modificar.get('bodega')
+
+    if(idBodega=='-1' or idBodega==None):
+        ciudadBodega = ""
+        dirBodega = ""
+    else:
+        BodegaObject = Bodega.objects.get(pkBodega=idBodega)
+        ciudadBodega = BodegaObject.ciudad
+        dirBodega = BodegaObject.direccion
+
+
+    context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}    
+    return render(request, 'inventario/bodegaconsulta.html', context, {})
+
 def consultarcategorias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}

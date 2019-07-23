@@ -5,6 +5,7 @@ app_name = 'inventario'
 urlpatterns = [
     path('bodegainicio', bodegaInicio, name='bodegainicio'),
     path('bodegaregistro', bodegaRegistro, name='bodegaregistro'),
+    path('bodegaconsulta', bodegaconsulta, name='bodegaconsulta'),
     path('consultarcategorias', consultarcategorias, name='consultarcategorias'),
     path('modificarCategoria/',modificar_categoria,name='modificar_categoria'),
     path('categoria', categoria, name='categoria'),
