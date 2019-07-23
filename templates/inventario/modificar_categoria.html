@@ -1,82 +1,117 @@
 {% extends 'base.html' %}
 
 
-{% block content %}
+{% block head %}
 
 {% load static %}
 
+{% endblock %}
+
+
+{% block content %}
 <link rel="stylesheet" href="{% static 'css/modf_categoria.css' %}">
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
 
 <!-- contact  -->
-<div class="page-color">
-  <div class="col-md-6 col-md-offset-3">
-    <!-- class="col-md-6 col-md-offset-3" -->
-    <div class="panel-login panel">
-      <div class="panel-heading">
-        <center>
-          <h2> Modificar Categoría </h2>
-        </center>
-        <br>
-        </br>
-        <hr>
-      </div>
+<div class="col-md-6 col-md-offset-3">
+  <br>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> Modificar Categoria </h1>
+      </center>
+    </div>
+  </div>
 
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-lg-12">
+  <div class="panel-body">    
+    <div class="row">
+      <form method='post' id='seleccionCategoria-form' name='seleccionar_categoria' class='login-form'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
+            <option value="-1"  name='vacio'>Categoria</option>
+            {% for categoria in categorias %}
+              <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+              {% empty %}
+              {% endfor %}
+          </select>
+        </div>
+      </form>
+    </div>
+    <br>
 
-            <form>
-              <div class="form-group">
-                <label for="exampleFormControlSelect1">Example select</label>
-                <select class="form-control" id="exampleFormControlSelect1">
-                  <option>Categoría</option>
-                  <option>Hombre</option>
-                  <option>Mujer</option>
-                  <option>Niños</option>
-                </select>
-              </div>
-            </form>
+    <div class="row">
+      <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <input type="text" name="nombreCategoria" id="nombreCategoria" placeholder="Nombre" value="{{nombreCategoria}}"></input>
+          
+          <label for="idCategoria">Id</label>
+          <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>          
+        </div>
 
-            <form id="login-form" action="#" method="post">
-              <div class="ps-product-action">
-                <div class="ps-product__filter">
-                  <select class="ps-select selectpicker">
-                    <option value="1">Categoria</option>
-                    <option value="2">Hombre</option>
-                    <option value="3">Mujer</option>
-                    <option value="3">Niños</option>
-                  </select>
-                </div>
-                <div class="ps-product__filter">
-                  <select class="ps-select selectpicker">
-                    <option value="1">subCategoria</option>
-                    <option value="2">Camisas</option>
-                    <option value="3">Jeans</option>
-                    <option value="3">Gorras</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="row">
-                  <div class="col-sm-6 col-sm-offset-3">
-                    <input type="submit" name="login-submit" id="login-submit" tabindex="4"
-                      class="form-control btn btn-login" value="Ingresar">
-                  </div>
-                </div>
-              </div>
+        <div class="form-group">
+          <input type="submit" name="modfCat-submit" id="modfCat-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
+        </div>
+      </form>
+    </div>
+    <br><br>
+  </div>
+
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> SubCategoria </h1>
+      </center>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <input type="text" readonly value="{{nombreCategoria}}"></input>
+          <label for="idCategoria">Id</label>
+          <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>
+        </div>
+
+        <div class="form-group">
+          <label for="subCategoria">SubCategoria</label>                 
+          <select class="form-control" id="subCategoria" name="subCategoria">
+            <option value="null">subCategoria</option>
+            {% for subCategoria in subCategorias %}
+              <option value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
+              {% empty %}
+              {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subCategoria">Nombre</label>
+          <input type="text" name="nombreSubCategoria" id="nombreSubCategoria" placeholder="Nombre"></input>
+
+          <label for="idSubCategoria">Id</label>
+          <input type="text" readonly placeholder="id">{{idSubCategoria}}</input>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Agregar"></input>
+          </div>
+          <br>
+          <div>
+            <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
+          </div>
+          <br>
+          <div>
+            <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Eliminar"></input>
           </div>
         </div>
-      </div>
-
-    </div>
-
-    <div>
-      <div class="ps-column"><a class="ps-offer">
-          <!-- RESERVED SPACE FOR MODIFY CATEGORY  -->
-      </div>
-      <div class="ps-column">
-
-      </div>
+      </form>
     </div>
     <br>
   </div>
