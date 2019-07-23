@@ -15,4 +15,5 @@ urlpatterns = [
     path('productosCrear', aniadirProductos, name='aniadirProductos'),
     path('proveedor', proveedor, name='proveedor'),
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
+    path('descuentoCrear/<int:categoria>/<int:subcategoria>', crearDescuento, name='descuentoCrear')
 ]

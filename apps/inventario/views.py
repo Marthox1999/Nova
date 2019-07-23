@@ -177,3 +177,25 @@ def aniadirProveedor(request, *args, **kwargs):
         aux.save()
     messages.success(request, 'Proveedor agregado con exito')
     return render(request, "inventario/proveedorCrear.html",context ,{})
+
+def crearDescuento(request, categoria, subcategoria):
+    if(categoria != 0):
+        categorias = Categoria.objects.all()
+        subcategorias = SubCategoria.objects.filter(fkCategoria=categoria)
+        productos = []
+        context={'categorias':categorias, 'subcategorias':subcategorias, 'productos':productos}
+        return render(request, "inventario/creardescuentos.html", context, {})
+    elif(subcategoria != 0):
+        categorias = Categoria.objects.all()
+        subcategorias = SubCategoria.objects.filter(fkCategoria=categoria)
+        productos = Producto.objects.filter(fkSubCategoria=subcategoria)
+        context={'categorias':categorias, 'subcategorias':subcategorias, 'productos':productos}
+        return render(request, "inventario/creardescuentos.html", context, {})
+    else:
+        categorias = Categoria.objects.all()
+        subcategorias = []
+        productos = []
+        context={'categorias':categorias, 'subcategorias':subcategorias, 'productos':productos}
+        return render(request, "inventario/creardescuentos.html", context, {})
+
+    return render(request, "inventario/creardescuentos.html", context, {})
