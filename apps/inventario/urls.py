@@ -1,5 +1,7 @@
 from django.urls import include, path
 from inventario.views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'inventario'
 urlpatterns = [
@@ -16,5 +18,4 @@ urlpatterns = [
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
     path('productosCategorias/<str:categoria>/', productosCategoriasVista, name='productosCategorias'),
     path('productosCategorias/<str:categoria>/<str:subCategoria>/', productosSubCategoriasVista, name='productosSubCategorias'),
-
-]
+] 
