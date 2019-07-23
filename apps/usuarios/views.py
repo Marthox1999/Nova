@@ -148,3 +148,9 @@ def duenioAdminIngreso(request, *args, **kwargs):
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/duenioAdminIngreso.html',context,{'form':ingresar})
+
+def productosCategoriasVista(request):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request, 'cliente/productoCategoriaVista.html', context, {})
+
