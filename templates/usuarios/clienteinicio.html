@@ -1,3 +1,25 @@
 {% extends 'base.html' %}
 
-<h1>Estas dentro de la pagina</h1>
+{% block head %}
+
+{% load static %}
+
+{% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
+
+<div class="ps-section--offer">
+        {% for categoria in categorias %}
+        <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productosCategorias' categoria=categoria.pkCategoria %}"><img src="{% static 'images/paginaPrincipal_duenio/categorias.png' %}" alt=""></a></div>
+        {% empty %}
+                <p>Vacio</p>
+        {% endfor %}
+</div>
+
+
+
+
+{% endblock %}
+
