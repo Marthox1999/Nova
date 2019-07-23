@@ -41,6 +41,13 @@ def consultarcategorias(request, *args, **kwargs):
     context={'categorias':categorias}
     return render(request,'inventario/categoriasconsultar.html', context,{})
 
+def eliminarCategorias(request, idCategoria):
+    if(idCategoria != 0):
+        Categoria.objects.get(pkCategoria=idCategoria).delete()
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,'inventario/categoriasEliminar.html', context,{})
+
 def categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
@@ -48,7 +55,7 @@ def categoria(request, *args, **kwargs):
 
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    modificar = request.POST  
+    modificar = request.POST
     idCategoria = modificar.get('categoria')
 
     idCategoriaSubCat = modificar.get('idCat')
@@ -71,13 +78,13 @@ def modificar_categoria(request, *args, **kwargs):
         messages.success(request, 'Categoria modificada exitosamente')
         return render(request, "inventario/modificar_categoria.html", context, {})
 
-        
+
 
     if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
         aux = SubCategoria(
             fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
             nombreSubCategoria=nombreSubCat
-        )        
+        )
         try:
             aux.full_clean()
         except ValidationError as e:
@@ -97,12 +104,12 @@ def modificar_categoria(request, *args, **kwargs):
         idCategoria = ""
         subCategorias = {}
     else:
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)
         nombreCategoria = categoriaObject.nombreCategoria
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
-    return render(request, "inventario/modificar_categoria.html", context, {}) 
+    return render(request, "inventario/modificar_categoria.html", context, {})
 
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
@@ -122,7 +129,7 @@ def aniadirCategoria(request, *args, **kwargs):
 
         aux.save()
         messages.success(request, 'Categoria agregada con exito')
-        
+
     return render(request, "inventario/categoriaCrear.html",context, {})
 
 def productos(request, *args, **kwargs):

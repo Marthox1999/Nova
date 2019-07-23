@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load static %}
+<div class="container" style="background-color:#FEF0F0;">
+          <!-- contact  -->
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" style="padding: 75px">
+      <div class="panel-login panel" style="padding: 5px">
+        <div class="panel-heading" style="background-color:#FEF0F0;">
+            <div class="row mb_20">
+                <h1 style="text-align: center">Tus categorias</h1>
+            </div>
+          <hr>
+        </div>
+        <div class="panel-body" style="background-color:#FEF0F0; text-align: center; font-size: 30px">
+          {% for categoria in categorias %}
+            <div class="row mb_20">
+              {{categoria.nombreCategoria}}   <a style="padding: 25px" href="{% url 'inventario:eliminarCategorias' idCategoria=categoria.pkCategoria %}" class="ps-offer"><img src="{% static 'images/Iconos/delete.png' %}"></a>
+            </div>
+          {% empty %}
+            <a>Todavia no hay categorias</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
