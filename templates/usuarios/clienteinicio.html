@@ -1,25 +1,33 @@
 {% extends 'base.html' %}
 
-{% block head %}
-
-{% load static %}
-
-{% endblock %}
-
 
 {% block content %}
+
+{% load static %}
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
 
-<div class="ps-section--offer">
+<!-- contact  -->
+<div class="col-md-6 col-md-offset-3">
+  <!-- class="col-md-6 col-md-offset-3" -->
+  <br>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> CATEGORIAS </h1>
+      </center>
+    </div>
+  </div>
+  <div class="ps-section--offer">
         {% for categoria in categorias %}
         <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productosCategorias' categoria=categoria.pkCategoria %}"><img src="{% static 'images/paginaPrincipal_duenio/categorias.png' %}" alt=""></a></div>
         {% empty %}
                 <p>Vacio</p>
         {% endfor %}
+  <br>
 </div>
 
 
-
-
 {% endblock %}
+
+
 

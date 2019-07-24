@@ -9,11 +9,11 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
-<div>
-    <div id="column-left" class="col-sm-4 col-lg-3 ">
+<div style="padding: 5px">
+    <div id="column-left" class="col-sm-4 col-lg-3 " >
         <div id="category-menu" class="navbar collapse in mb_40" aria-expanded="true" style="" role="button">
             <div class="heading-part">
-            <h2 class="main_title">Top category</h2>
+            <h2 class="main_title" >SUBCATEGORIAS</h2>
             </div>
             <ul class="nav  main-navigation collapse in">
             {% for sub in subCategorias %}
@@ -24,14 +24,14 @@
             </ul>
         </div>
     </div>
-    <div class="product-layout  product-grid  col-md-4 col-sm-6 col-xs-12 ">
+    <div class="product-layout  product-grid  col-md-4 col-sm-6 col-xs-12">
         {%for producto in productos %}
             <div class="item">
             <div class="product-thumb clearfix mb_30">
                 <div class="image product-imageblock"> <img data-name="product_image" src="{{producto.rutaImagen.url}}"  title="Producto" class="img-responsive" /> 
                 </div>
                 <div class="caption product-detail text-center">
-                <h6 data-name="product_name" class="product-name mt_20"><a href="#" title="Casual Shirt With Ruffle Hem">{{producto.descripcion}}</a></h6>
+                <h6 data-name="product_name" class="product-name mt_20"><a href="#" title="{{producto.descripcion}}">{{producto.descripcion}}</a></h6>
                 <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{producto.precio}}</span></span>
                 </div>
             </div>
