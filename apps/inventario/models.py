@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import RegexValidator
-
 # Create your models here.
 
 #Categoria
@@ -14,6 +13,7 @@ class SubCategoria(models.Model):
     fkCategoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     nombreSubCategoria = models.CharField(max_length=256, unique=True)
 
+
 #Producto
 class Producto(models.Model):
     pkProducto = models.AutoField(primary_key=True)
@@ -22,7 +22,7 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=1024)
     iva = models.FloatField()
     precio = models.IntegerField()
-    rutaImagen = models.ImageField(upload_to = '../productosImagenes', default = '..productosImagenes/no-img.jpg')###############
+    rutaImagen = models.ImageField(upload_to = '../media/productosImagenes')###############
 
 #Proveedor
 class Proveedor(models.Model):

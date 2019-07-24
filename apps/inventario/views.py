@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from inventario.models import *
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-
+from django.core.files.storage import FileSystemStorage
 
 def bodegaInicio(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -148,16 +148,18 @@ def productos(request, *args, **kwargs):
     context={'categorias':categorias}
     return render(request, "inventario/productos.html",context, {})
 
-def aniadirProductos(request, *args, **kwargs):
+def aniadirReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     productos = Producto.objects.all()
     proveedores = Proveedor.objects.all()
     bodegas = Bodega.objects.all()
 
     modificar = request.POST  
+    print("#################")
+    print(request.FILES)
+    print("#################")
     idCategoria = modificar.get('categoria')
     submitReq = modificar.get('productos-submit')
-    print(modificar)
 
     subCategorias = {}
     if(idCategoria=='-1' or idCategoria==None):
@@ -166,7 +168,7 @@ def aniadirProductos(request, *args, **kwargs):
         categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    #CREAR PRODUCTOS ------------------------------------
+    #CREAR REFERENCIAS ------------------------------------
     idSubCat = modificar.get('subCategoria')
     nombre = modificar.get('inputNombre')
     descripcion = modificar.get('DescrProducto')
@@ -178,9 +180,11 @@ def aniadirProductos(request, *args, **kwargs):
         iva = 0
     else:
         iva = int(modificar.get('inputIva'))*precio/100
-    imagen = modificar.get('buscadorImagen')
-
+    #imagen = request.FILES['buscadorImagen']
+    #imagen = request.FILES['buscadorImagen']
+    imagen = " "
     if(submitReq=="Crear Producto" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0) and not(imagen=="")):
+        print(imagen)
         aux = Producto(
             fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
             nombre = nombre,
@@ -194,16 +198,36 @@ def aniadirProductos(request, *args, **kwargs):
         except ValidationError as e:
             context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            return render(request, "inventario/productosCrear.html", context, {})
-
+            return render(request, "inventario/referenciasCrear.html", context, {})
+        #aux.rutaImagen.save()
         aux.save()
         context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
         messages.success(request, 'Producto creado con exito')
-        return render(request, "inventario/productosCrear.html", context, {})
+        return render(request, "inventario/referenciasCrear.html", context, {})
     elif(submitReq=="Crear Producto"):
         context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
         messages.info(request, 'Alguno(s) campo(s) no son validos')
-        return render(request, "inventario/productosCrear.html", context, {})
+        return render(request, "inventario/referenciasCrear.html", context, {})
+
+    context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+    return render(request, "inventario/referenciasCrear.html", context, {})
+
+def aniadirProductos(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    productos = Producto.objects.all()
+    proveedores = Proveedor.objects.all()
+    bodegas = Bodega.objects.all()
+
+    modificar = request.POST  
+    idCategoria = modificar.get('categoria')
+    submitReq = modificar.get('productos-submit')
+
+    subCategorias = {}
+    if(idCategoria=='-1' or idCategoria==None):
+        subCategorias = {}
+    else:
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
     #AGREGAR PRODUCTOS ----------------------------------------------
     idProducto = modificar.get('producto')
@@ -236,11 +260,10 @@ def aniadirProductos(request, *args, **kwargs):
         context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
         messages.success(request, 'Productos agregados con exito')
         return render(request, "inventario/productosCrear.html", context, {})
-    else:
+    elif(submitReq=="Agregar Productos"):
         context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
         messages.info(request, 'Alguno(s) campo(s) no son validos')
         return render(request, "inventario/productosCrear.html", context, {})
-
 
     context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
     return render(request, "inventario/productosCrear.html", context, {})
