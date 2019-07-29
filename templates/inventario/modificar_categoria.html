@@ -70,18 +70,18 @@
 
   <div class="panel-body">
     <div class="row">
-      <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
-        {% csrf_token %}
+
         <div class="form-group">
           <label for="categoria">Categoria</label>
           <input type="text" readonly value="{{nombreCategoria}}"></input>
           <label for="idCategoria">Id</label>
           <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>
         </div>
-
+        <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
         <div class="form-group">
           <label for="subCategoria">SubCategoria</label>                 
-          <select class="form-control" id="subCategoria" name="subCategoria">
+          <select class="form-control" id="subCategoria" name="subCategoria" onChange="form.submit();">
             <option value="null">subCategoria</option>
             {% for subCategoria in subCategorias %}
               <option value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
@@ -89,15 +89,16 @@
               {% endfor %}
           </select>
         </div>
-
+        </form>
+        <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
         <div class="form-group">
           <label for="subCategoria">Nombre</label>
-          <input type="text" name="nombreSubCategoria" id="nombreSubCategoria" placeholder="Nombre"></input>
+          <input type="text" name="nombreSubCategoria" id="nombreSubCategoria" placeholder="Nombre" value="{{nombreSubCategoria}}"></input>
 
           <label for="idSubCategoria">Id</label>
-          <input type="text" readonly placeholder="id">{{idSubCategoria}}</input>
+          <input type="text" readonly placeholder="id" value="{{idSubCategoria}}"></input>
         </div>
-
         <div class="form-row">
           <div>
             <input type="submit" name="SubCat-submit" id="SubCat-submit" tabindex="4" class="form-control btn btn-register" value="Agregar"></input>
