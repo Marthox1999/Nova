@@ -15,4 +15,6 @@ urlpatterns = [
     path('clienteregistro',clienteregistro, name='registro'),
     path('clientecerrarsesion', clienteCerrarSesion, name='cerrarsesion'),
     path('clienteinicio', clienteInicio, name='inicioCliente'),
+
+    path('duenioAdminModificar', duenioAdminModificar, name='duenioModificarAdmin'),
 ]

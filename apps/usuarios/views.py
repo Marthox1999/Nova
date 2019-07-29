@@ -148,3 +148,13 @@ def duenioAdminIngreso(request, *args, **kwargs):
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/duenioAdminIngreso.html',context,{'form':ingresar})
+
+
+def duenioAdminModificar(request, *args, **kwargs):
+    
+    categorias = Categoria.objects.all()
+    usuarios = AdministradorDuenio.objects.filter(tipo='ADMIN')
+    modificar = request.POST
+    if(modificar='POST'):
+        
+    return render(request, 'usuarios/duenioAdminModificar.html',context,{})
