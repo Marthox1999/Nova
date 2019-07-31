@@ -4,27 +4,27 @@
 
 {% block content %}
 
-<div class="container" style="background-color:#FEF0F0;">
-  <br>
-  <div class="panel-login panel">
-    <div class="panel-heading">
-      <center>
-        <h1> Crear Referencias </h1>
-      </center>
-    </div>
-  </div>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
 
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-lg-12">                            
-        <a href="{% url 'inventario:aniadirReferencias' %}" type="button" class="btn btn-primary btn-lg btn-block">Añadir Referencias</a>
-        <a href="{% url 'inventario:aniadirProductos' %}" type="button" class="btn btn-primary btn-lg btn-block">Añadir Productos</a>
-        <a  type="button" class="btn btn-primary btn-lg btn-block">Modificar Producto</a>
-        <a  type="button" class="btn btn-primary btn-lg btn-block">Buscar producto</a>
-        <a  type="button" class="btn btn-primary btn-lg btn-block">Eliminar producto</a>              
+<div class="col-md-6 col-md-offset-3">
+    <!-- class="col-md-6 col-md-offset-3" -->
+    <br>
+    <div class="panel-login panel">
+      <div class="panel-heading">
+        <center>
+          <h2> Gestion de Productos </h2>
+        </center>
       </div>
     </div>
-  </div>
-</div>
+  
+    <div class="ps-section--offer">
+      <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productosCrearPrincipal' %}"><img src="{% static 'images/menu_CRUD/agregar.png' %}" alt=""></a></div>
+    </div>
+    <div class="ps-section--offer">
+      <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productosModificarPrincipal' %}"><img src="{% static 'images/menu_CRUD/modificar.png' %}" alt=""></a></div>
+    </div>
+    <br>
+</div> 
 
 {% endblock %}

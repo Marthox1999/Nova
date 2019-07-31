@@ -148,11 +148,13 @@ def productos(request, *args, **kwargs):
     context={'categorias':categorias}
     return render(request, "inventario/productos.html",context, {})
 
+def productosCrearPrincipal(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request, "inventario/productosCrearPrincipal.html",context, {})
+
 def aniadirReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    productos = Producto.objects.all()
-    proveedores = Proveedor.objects.all()
-    bodegas = Bodega.objects.all()
 
     modificar = request.POST  
     print("#################")
@@ -268,6 +270,37 @@ def aniadirProductos(request, *args, **kwargs):
     context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
     return render(request, "inventario/productosCrear.html", context, {})
 
+def productosModificarPrincipal(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request, "inventario/productosModificarPrincipal.html",context, {})
+
+def modificarReferencias(request, idCategoria, idSubCategoria, idProducto):
+    categorias = Categoria.objects.all()
+    subcategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+    productos = Producto.objects.filter(fkSubCategoria=idSubCategoria)
+    categoria = idCategoria
+    subcategoria = idSubCategoria
+    producto = idProducto
+    context={
+        'categorias':categorias,
+        'subcategorias':subcategorias, 
+        'productos':productos,
+        'categoria':categoria,
+        'subcategoria':subcategoria,
+        'producto':producto
+        }
+    print(context)
+
+    if request.method == 'POST':
+        data = request.POST
+
+    return render(request, "inventario/referenciasModificar.html",context, {})
+
+def modificarProductos(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request, "inventario/productosModificar.html",context, {})
 
 def proveedor(request, *args, **kwargs):
     categorias = Categoria.objects.all()

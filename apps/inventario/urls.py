@@ -14,8 +14,12 @@ urlpatterns = [
     path('categoriaCrear', aniadirCategoria, name='aniadirCategoria'),
     path('categoriaModificar', modificar_categoria, name='modificar_categoria'),
     path('productos', productos, name='productos'),
+    path('productosCrearPrincipal', productosCrearPrincipal, name='productosCrearPrincipal'),
     path('productosCrear', aniadirProductos, name='aniadirProductos'),
     path('referenciasCrear', aniadirReferencias, name='aniadirReferencias'),
+    path('productosModificarPrincipal', productosModificarPrincipal, name='productosModificarPrincipal'),
+    path('productosModificar', modificarProductos, name='modificarProductos'),
+    path('referenciasModificar/<int:idCategoria>/<int:idSubCategoria>/<int:idProducto>', modificarReferencias, name='modificarReferencias'),
     path('proveedor', proveedor, name='proveedor'),
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
 
