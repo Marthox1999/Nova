@@ -9,7 +9,7 @@ class Cliente(models.Model):
         ('TI','Tarjeta de Identidad'),
     }
 
-    nombre = models.CharField(max_length=32, unique=True, primary_key=True)
+    nombre = models.CharField(max_length=128, unique=True, primary_key=True)
     clave = models.CharField(max_length=128, editable=True)
     fechaNacimiento = models.DateField()
     direccion = models.CharField(max_length=32) 

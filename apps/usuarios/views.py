@@ -46,7 +46,7 @@ def clienteInicio(request, nombre):
     return render(request, 'usuarios/clienteinicio.html', context, {})
 
 @csrf_protect
-def clienteregistro(request, *args, **kwargs):
+def clienteregistro(request):
     categorias = Categoria.objects.all()
     context={'categorias':categorias, 'nombre':'noRegistrado'}
     registrar = request.POST
@@ -64,14 +64,13 @@ def clienteregistro(request, *args, **kwargs):
             aux.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            context={'categorias':categorias, 'nombre': 'noRegistrado'}
             return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
         nombre =registrar.get('nombreCliente')
         aux.save()
         messages.success(request, f'¡{nombre} bienvenido(a) a Nova!')
         return render(request, 'usuarios/clienteingreso.html', context,{})
-
     return render(request, "usuarios/clienteregistro.html",context, {'form':registrar})
+
 
 def paginaPrincipal_admin(request):
     categorias = Categoria.objects.all()

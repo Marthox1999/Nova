@@ -11,14 +11,14 @@
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
 <div style="padding: 5px">
     <div id="column-left" class="col-sm-4 col-lg-3 " >
-        <div id="category-menu" class="navbar collapse in mb_40" aria-expanded="true" style="" role="button">
+        <div id="category-menu" class="navbar collapse in mb_40" aria-expanded="true" style ="" role="button">
         <div class="nav-responsive">
             <div class="heading-part">
             <h2 class="main_title" >SUBCATEGORIAS</h2>
             </div>
             {% for sub in subCategorias %}
                 <ul class="nav  main-navigation collapse in">
-                    <li><a href="{% url 'inventario:productosSubCategorias' categoria=categoria subCategoria=sub.pkSubCategoria %}" style="padding: 2px; background-color: white;">{{sub.nombreSubCategoria}}</a></li>
+                    <li><a href="{% url 'inventario:productosSubCategorias' nombre=nombre categoria=categoria subCategoria=sub.pkSubCategoria %}" style="padding: 2px; background-color: white;">{{sub.nombreSubCategoria}}</a></li>
                 </ul>
             {% endfor %}
         </div>
