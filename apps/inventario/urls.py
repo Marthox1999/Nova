@@ -19,7 +19,7 @@ urlpatterns = [
     path('referenciasCrear', aniadirReferencias, name='aniadirReferencias'),
     path('productosModificarPrincipal', productosModificarPrincipal, name='productosModificarPrincipal'),
     path('productosModificar', modificarProductos, name='modificarProductos'),
-    path('referenciasModificar/<int:idCategoria>/<int:idSubCategoria>/<int:idProducto>', modificarReferencias, name='modificarReferencias'),
+    path('referenciasModificar', modificarReferencias, name='modificarReferencias'),
     path('proveedor', proveedor, name='proveedor'),
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
 
