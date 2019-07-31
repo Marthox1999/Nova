@@ -19,8 +19,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 
-urlpatterns = [
-    path('', include('inventario.urls')),
+urlpatterns = [    
     path('usuarios/', include('usuarios.urls', namespace='usuarios')),
     path('inventario/', include('inventario.urls', namespace='inventario')),
     path('ventas/', include('ventas.urls', namespace='ventas')),
