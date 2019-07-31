@@ -14,8 +14,8 @@ from inventario.models import Categoria
 
 def clienteIngreso(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    context={'categorias':categorias}
     ingresar = request.POST
+    context={'categorias':categorias, 'nombre':'noRegistrado'}
     if(request.method == 'POST'):
         aux = Cliente(
             nombre=ingresar.get('username'),
@@ -28,8 +28,9 @@ def clienteIngreso(request, *args, **kwargs):
         )
         nombre=ingresar.get('username')
         if (aux.autenticarCliente()):
+            context={'categorias':categorias, 'nombre':nombre}
             messages.success(request, f'¡Bienvenido {nombre}!')
-            return redirect(to='usuarios:inicioCliente')
+            return render(request, 'usuarios/clienteinicio.html', context,{})
         else:
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/clienteingreso.html', context,{'form':ingresar})
@@ -150,3 +151,6 @@ def duenioAdminIngreso(request, *args, **kwargs):
     return render(request, 'usuarios/duenioAdminIngreso.html',context,{'form':ingresar})
 
 
+def clientePerfil(request, nombre):
+    context = {'nombre':nombre}
+    return render(request,"usuarios/clientePerfil.html", context, {})

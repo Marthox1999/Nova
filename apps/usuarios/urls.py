@@ -15,4 +15,5 @@ urlpatterns = [
     path('clienteregistro',clienteregistro, name='registro'),
     path('clientecerrarsesion', clienteCerrarSesion, name='cerrarsesion'),
     path('clienteinicio', clienteInicio, name='inicioCliente'),
+    path('clientePerfil/<str:nombre>/', clientePerfil, name='clientePerfil'),
 ]

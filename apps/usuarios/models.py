@@ -28,6 +28,10 @@ class Cliente(models.Model):
                                     clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest()).exists()
         return auth
 
+    def buscarCliente(self, *args, **kwargs):
+        aux = Cliente.objects.filter(nombre=self.nombre,
+                                    clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest())
+        return aux
 
 class AdministradorDuenio (models.Model):
     TIPO = {
