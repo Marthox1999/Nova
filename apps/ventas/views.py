@@ -45,19 +45,19 @@ def crearDescuentoCategoria(request, idCategoria):
         fechaInicio = data.get('fecha_inicio')
         fechaFin = data.get('fecha_fin')
         descuento = data.get('descuento')
-        '''
-        if fechaInicio > fechaFin:
+        try:
+            categoria = Categoria.objects.get(pkCategoria = idCategoria)
+            newDescuento = DescuentoCategoria(
+                fkCategoria = categoria,
+                fechaInicio = fechaInicio,
+                fechaFin = fechaFin,
+                porcentajeDescuento = descuento
+            )
+            newDescuento.save()
+            messages.success(request, 'EL descuento ha sido creado exitosamente')
+        except:
             messages.info(request, 'Alguno(s) campo(s) no es(son) validos')
-            return render(request,'inventario/bodegaregistro.html', context,{'form':data})
-        '''
-        newDescuento = DescuentoCategoria(
-            fkCategoria = idCategoria,
-            fechaInicio = fechaInicio,
-            fechaFin = fechaFin,
-            porcentajeDescuento = descuento
-        )
-        newDescuento.save()
-        messages.success(request, 'EL descuento ha sido creado exitosamente')
+            return redirect(to='ventas:descuentoCrear')
         return redirect(to='ventas:descuentoCrear')
 
     return render(request, "ventas/creardescuentos.html", context, {})
@@ -81,13 +81,9 @@ def crearDescuentoSubCategoria(request, idCategoria, idSubCategoria):
         fechaInicio = data.get('fecha_inicio')
         fechaFin = data.get('fecha_fin')
         descuento = data.get('descuento')
-        '''
-        if fechaInicio > fechaFin:
-            messages.info(request, 'Alguno(s) campo(s) no es(son) validos')
-            return render(request,'inventario/bodegaregistro.html', context,{'form':data})
-        '''
+        subcategoria = SubCategoria.objects.get(pkSubCategoria = idSubCategoria)
         newDescuento = DescuentoSubCategoria(
-            fkSubCategoria = idSubCategoria,
+            fkSubCategoria = subcategoria,
             fechaInicio = fechaInicio,
             fechaFin = fechaFin,
             porcentajeDescuento = descuento
@@ -120,13 +116,9 @@ def crearDescuentoProducto(request, idCategoria, idSubCategoria, idProducto):
         fechaInicio = data.get('fecha_inicio')
         fechaFin = data.get('fecha_fin')
         descuento = data.get('descuento')
-        '''
-        if fechaInicio > fechaFin:
-            messages.info(request, 'Alguno(s) campo(s) no es(son) validos')
-            return render(request,'inventario/bodegaregistro.html', context,{'form':data})
-        '''
+        producto = Producto.objects.get(pkProducto = idProducto)
         newDescuento = DescuentoProducto(
-            fkProducto = idProducto,
+            fkProducto = producto,
             fechaInicio = fechaInicio,
             fechaFin = fechaFin,
             porcentajeDescuento = descuento
