@@ -1,6 +1,7 @@
 {% extends 'baseAdmin.html' %}
 
 
+
 {% block content %}
 
 <div class="col-md-6 col-md-offset-3">
@@ -8,7 +9,7 @@
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
-        <h1> Añadir Productos </h1>
+        <h1> Modificar Productos </h1>
       </center>
     </div>
   </div>
@@ -31,6 +32,7 @@
 
           <div class="form-group">
             <label for="proveedor">Proveedor</label>
+            <input readonly id="proveedor" name="proveedor" type="text" class="form-control">
             <select class="form-control" id="proveedor" name="proveedor">
               <option value="-1"  name='vacio'>Proveedor</option>
               {% for proveedor in proveedores %}
@@ -53,7 +55,7 @@
 
           <div class="form-group">
             <label for="talla">Talla</label>
-            <select class="form-control" id="talla" name="talla">{
+            <select readonly class="form-control" id="talla" name="talla">{
                   ('XS','xs'),
                   ('S','s'),
                   ('M','m'),                  
@@ -70,7 +72,7 @@
 
           <div class="form-group">
             <label for="inputColor">Color</label>
-            <select class="form-control" id="inputColor" name="inputColor">
+            <select readonly class="form-control" id="inputColor" name="inputColor">
               <option value=""> Color </option>
               <option value="negro">Negro</option>
               <option value="blanco">Blanco</option>
@@ -90,7 +92,7 @@
 
           <div class="form-group">
             <label for="inputCant">Cantidad</label>
-            <input id="inputCant" name="inputCant" type="number" class="form-control">
+            <input required id="inputCant" name="inputCant" type="number" class="form-control">
           </div>
 
           <div class="form-group">

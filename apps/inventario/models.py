@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import RegexValidator
-
 # Create your models here.
 
 #Categoria
@@ -14,10 +13,12 @@ class SubCategoria(models.Model):
     fkCategoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     nombreSubCategoria = models.CharField(max_length=256, unique=True)
 
+
 #Producto
 class Producto(models.Model):
     pkProducto = models.AutoField(primary_key=True)
     fkSubCategoria = models.ForeignKey(SubCategoria, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=300, default = "null")
     descripcion = models.CharField(max_length=1024)
     iva = models.FloatField()
     precio = models.IntegerField()
@@ -50,10 +51,25 @@ class Bodega(models.Model):
 
 
 #DetallesProducto
-class DetallesProducto(models.Model):
+class DetallesProducto(models.Model):            
+    COLOR = {
+        ('negro',' Negro'),
+        ('blanco','Blanco'),
+        ('amarillo','Amarillo'),
+        ('azul','Azul'),
+        ('rojo','Rojo'),
+        ('verde','Verde'),
+        ('morado','Morado'),
+        ('naranja','Naranja'),
+        ('rosado','Rosado'),
+        ('gris','Gris'),
+        ('marron','Marrón'),
+        ('beige','Beige'),
+        ('otros','Otro'),
+    }
     fkProducto =  models.ForeignKey(Producto, on_delete=models.CASCADE)
     talla = models.CharField(max_length=32)
     nit = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    color = models.CharField(max_length=64)#quizas una lista de colores en vez de escribirlo?
+    color = models.CharField(max_length=64, choices=COLOR)
     fkBodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
