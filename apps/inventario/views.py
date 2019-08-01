@@ -200,7 +200,7 @@ def aniadirReferencias(request, *args, **kwargs):
         iva = int(modificar.get('inputIva'))*precio/100
     #imagen = request.FILES['buscadorImagen']
     #imagen = request.FILES['buscadorImagen']
-    imagen = " "
+    imagen = modificar.get('buscadorImagen')
     if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0) and not(imagen=="")):
         print(imagen)
         aux = Producto(
