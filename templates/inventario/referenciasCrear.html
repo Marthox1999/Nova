@@ -17,7 +17,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-lg-12">
-        <form id="formulario-producto" action="#" method="post">
+        <form id="formulario-producto"  enctype="multipart/form-data" method="post">
           {% csrf_token %}
           <div class="form-group">
             <label for="categoria">Categoria</label>
@@ -71,9 +71,8 @@
             <div class="custom-file">
               <label for="buscadorImagen">Imagen</label>
               <div>
-                <input required type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" accept="image/*">
-                
-                <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
+                <input required type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" accept="image/*">   
+                <label class="custom-file-label"  for="buscadorImagen">Seleccionar Archivo</label>
               </div>
             </div>
           </div>
