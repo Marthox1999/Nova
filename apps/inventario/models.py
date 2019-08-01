@@ -21,7 +21,7 @@ class Producto(models.Model):
     descripcion = models.CharField(max_length=1024)
     iva = models.FloatField()
     precio = models.IntegerField()
-    rutaImagen = models.ImageField(upload_to = '../productosImagenes', default = '..productosImagenes/no-img.jpg')###############
+    rutaImagen = models.ImageField(upload_to = '../media/productosImagenes')###############
 
 #Proveedor
 class Proveedor(models.Model):

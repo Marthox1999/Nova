@@ -176,3 +176,15 @@ def aniadirProveedor(request, *args, **kwargs):
     messages.success(request, 'Proveedor agregado con exito')
     return render(request, "inventario/proveedorCrear.html",context ,{})
 
+def productosCategoriasVista(request, nombre, categoria):
+    categorias = Categoria.objects.all()
+    subCategorias=SubCategoria.objects.filter(fkCategoria=categoria)
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'categoria':categoria, 'nombre':nombre}
+    return render(request, 'inventario/productoCategoriaVista.html', context, {})
+
+def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
+    categorias = Categoria.objects.all()
+    subCategorias= SubCategoria.objects.filter(fkCategoria=categoria)
+    productos=Producto.objects.filter(fkSubCategoria=subCategoria)
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
+    return render(request, 'inventario/productoCategoriaVista.html', context, {})

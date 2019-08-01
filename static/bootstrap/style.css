@@ -148,7 +148,7 @@ hr {
     padding: 5px 15px;
 }
 .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus {
-    background-color: #e40001;
+    background-color: #e2bfbf;
     color: #fff;
 }
 ul {
@@ -624,7 +624,7 @@ i.right {
 }
 .nav>li>a:hover, .nav>li>a:focus {
     background: transparent;
-    color: #e40001;
+    color: #e2bfbf;
 }
 #product-tab .nav li {
     display: inline-block;
@@ -1153,11 +1153,11 @@ label.checkme {
     color: #000;
 }
 .nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
-    background-color: #e40001;
+    background-color: #e2bfbf;
     color: #fff;
 }
 #menu>li>a::before {
-    background: #e40001 none repeat scroll 0 0;
+    background: #e2bfbf none repeat scroll 0 0;
     bottom: 0;
     content: "";
     display: block;
@@ -1384,7 +1384,7 @@ label.checkme {
     width: 100%;
 }
 .category {
-    background: #e40001 none repeat scroll 0 0;
+    background: #e2bfbf none repeat scroll 0 0;
     color: #fff;
     font-size: 14px;
     font-weight: 600;
@@ -1573,7 +1573,7 @@ input#amount {
 }
 .bannertext>p {
     font-size: 16px;
-    color: #e40001;
+    color: #e2bfbf;
 }
 .bannertext .cms_btn {
     opacity: 0;
@@ -1615,7 +1615,7 @@ input#amount {
     text-transform: uppercase;
 }
 .main_title:after {
-    border-bottom: 3px solid #e40001;
+    border-bottom: 3px solid #e2bfbf;
     content: "";
     display: block;
     margin-bottom: -3px;
@@ -1692,7 +1692,7 @@ input#amount {
     width: auto;
 }
 .breadcrumb li a:hover {
-    color: #e40001!important;
+    color: #e2bfbf!important;
 }
 
 /* ----------------------------------------------
@@ -2011,7 +2011,7 @@ blockquote {
     width: 36px;
 }
 .pagination-nav ul li.active a {
-    background: #e40001 none repeat scroll 0 0;
+    background: #e2bfbf none repeat scroll 0 0;
     color: #fff;
 }
 .pagination-nav ul li {
@@ -2352,7 +2352,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
     color: #fff;
 }
 .footer-block a:hover {
-    color: #e40001;
+    color: #e2bfbf;
 }
 .footer .form-group>input {
     width: 100%;
@@ -2406,7 +2406,7 @@ a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
 ----------------------------------------------- */
 
 #scrollup::before {
-    background: #e40001 none repeat scroll 0 0;
+    background: #e2bfbf none repeat scroll 0 0;
     bottom: 20px;
     color: #fff;
     content: "\f106";
