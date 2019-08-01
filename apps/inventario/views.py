@@ -41,7 +41,7 @@ def consultarcategorias(request, *args, **kwargs):
     context={'categorias':categorias}
     return render(request,'inventario/categoriasconsultar.html', context,{})
 
-def categoria(request, *args, **kwargs):
+def categoria(request):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
     return render(request, "inventario/categoria.html",context, {})
@@ -159,3 +159,17 @@ def aniadirProveedor(request, *args, **kwargs):
         aux.save()
     messages.success(request, 'Proveedor agregado con exito')
     return render(request, "inventario/proveedorCrear.html",context ,{})
+
+
+def productosCategoriasVista(request, nombre, categoria):
+    categorias = Categoria.objects.all()
+    subCategorias=SubCategoria.objects.filter(fkCategoria=categoria)
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'categoria':categoria, 'nombre':nombre}
+    return render(request, 'inventario/productoCategoriaVista.html', context, {})
+
+def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
+    categorias = Categoria.objects.all()
+    subCategorias= SubCategoria.objects.filter(fkCategoria=categoria)
+    productos=Producto.objects.filter(fkSubCategoria=subCategoria)
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
+    return render(request, 'inventario/productoCategoriaVista.html', context, {})
