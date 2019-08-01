@@ -18,12 +18,11 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
 
-
 urlpatterns = [
     path('usuarios/', include('usuarios.urls', namespace='usuarios')),
     path('inventario/', include('inventario.urls', namespace='inventario')),
     path('ventas/', include('ventas.urls', namespace='ventas')),
     path('admin/', admin.site.urls),
 ]
-
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
