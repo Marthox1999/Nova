@@ -24,9 +24,12 @@
             <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
               <option value="-1"  name='vacio'>Categoria</option>
               {% for categoria in categorias %}
-                <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
-                {% empty %}
-                {% endfor %}
+                {% if idCategoria == categoria.pkCategoria   %}
+                  <option selected value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+                {% else %}
+                  <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+                {% endif %}
+              {% endfor %}
             </select>
             <div class="hidden">
               <input type="text" name="idCat" id="idCat" value="{{idCategoria}}"></input>

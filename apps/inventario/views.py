@@ -158,14 +158,15 @@ def aniadirReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
 
     modificar = request.POST  
-    print("#################")
-    print(request.FILES)
-    print("#################")
+    #print("#################")
+    #print(request.FILES)
+    #print("#################")
     idCategoria = modificar.get('categoria')
     submitReq = modificar.get('productos-submit')
 
     subCategorias = {}
     if(idCategoria=='-1' or idCategoria==None):
+        idCategoria = -1
         subCategorias = {}
     else:
         categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
@@ -197,20 +198,20 @@ def aniadirReferencias(request, *args, **kwargs):
         try:
             aux.full_clean()
         except ValidationError as e:
-            context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+            context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/referenciasCrear.html", context, {})
         #aux.rutaImagen.save()
         aux.save()
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
         messages.success(request, 'Referencia creada con exito')
         return render(request, "inventario/referenciasCrear.html", context, {})
     elif(submitReq=="Crear Producto"):
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
         messages.info(request, 'Alguno(s) campo(s) no son validos')
         return render(request, "inventario/referenciasCrear.html", context, {})
 
-    context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+    context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
     return render(request, "inventario/referenciasCrear.html", context, {})
 
 def aniadirProductos(request, *args, **kwargs):
