@@ -7,8 +7,9 @@ app_name = 'inventario'
 urlpatterns = [
     path('bodegainicio', bodegaInicio, name='bodegainicio'),
     path('bodegaregistro', bodegaRegistro, name='bodegaregistro'),
+    path('eliminarcategorias/<int:idCategoria>', eliminarCategorias, name='eliminarCategorias'),
     path('consultarcategorias', consultarcategorias, name='consultarcategorias'),
-    path('modificarCategoria/',modificar_categoria,name='modificar_categoria'),
+    path('modificarCategoria',modificar_categoria,name='modificar_categoria'),
     path('categoria', categoria, name='categoria'),
     path('categoriaCrear', aniadirCategoria, name='aniadirCategoria'),
     path('categoriaModificar', modificar_categoria, name='modificar_categoria'),
@@ -18,4 +19,4 @@ urlpatterns = [
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
     path('productosCategorias/<str:nombre>/<str:categoria>/', productosCategoriasVista, name='productosCategorias'),
     path('productosCategorias/<str:nombre>/<str:categoria>/<str:subCategoria>/', productosSubCategoriasVista, name='productosSubCategorias'),
-] 
+]
