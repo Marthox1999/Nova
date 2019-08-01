@@ -33,8 +33,6 @@ def bodegaRegistro(request, *args, **kwargs):
         bodega.save()
         messages.success(request, 'La bodega ha sido creada correctamente')
         return redirect(to='inventario:bodegaregistro')
-        categorias = Categoria.objects.all()
-        context={'categorias':categorias}
     return render(request, 'inventario/bodegaregistro.html', context,{'form':crearBodega})
 
 def bodegaconsulta(request, *args, **kwargs):
@@ -61,6 +59,24 @@ def consultarcategorias(request, *args, **kwargs):
     context={'categorias':categorias}
     return render(request,'inventario/categoriasconsultar.html', context,{})
 
+def eliminarCategorias(request, idCategoria):
+    if(idCategoria != 0):
+        try:
+            Categoria.objects.get(pkCategoria=idCategoria).delete()
+            categorias = Categoria.objects.all()
+            context={'categorias':categorias}
+            messages.success(request, 'Categoria eliminada exitosamente')
+            return render(request,'inventario/categoriasEliminar.html', context,{})
+        except:
+            categorias = Categoria.objects.all()
+            context={'categorias':categorias}
+            messages.warning(request, 'Esta categoria ya ha sido eliminada')
+            return render(request,'inventario/categoriasEliminar.html', context,{})
+    else:
+        categorias = Categoria.objects.all()
+        context={'categorias':categorias}
+        return render(request,'inventario/categoriasEliminar.html', context,{})
+
 def categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
@@ -68,7 +84,7 @@ def categoria(request, *args, **kwargs):
 
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    modificar = request.POST  
+    modificar = request.POST
     idCategoria = modificar.get('categoria')
 
     idCategoriaSubCat = modificar.get('idCat')
@@ -91,13 +107,13 @@ def modificar_categoria(request, *args, **kwargs):
         messages.success(request, 'Categoria modificada exitosamente')
         return render(request, "inventario/modificar_categoria.html", context, {})
 
-        
+
 
     if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
         aux = SubCategoria(
             fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
             nombreSubCategoria=nombreSubCat
-        )        
+        )
         try:
             aux.full_clean()
         except ValidationError as e:
@@ -116,12 +132,12 @@ def modificar_categoria(request, *args, **kwargs):
         idCategoria = ""
         subCategorias = {}
     else:
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)
         nombreCategoria = categoriaObject.nombreCategoria
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
-    return render(request, "inventario/modificar_categoria.html", context, {}) 
+    return render(request, "inventario/modificar_categoria.html", context, {})
 
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
@@ -141,7 +157,7 @@ def aniadirCategoria(request, *args, **kwargs):
 
         aux.save()
         messages.success(request, 'Categoria agregada con exito')
-        
+
     return render(request, "inventario/categoriaCrear.html",context, {})
 
 def productos(request, *args, **kwargs):
@@ -469,3 +485,16 @@ def aniadirProveedor(request, *args, **kwargs):
         aux.save()
         messages.success(request, 'Proveedor agregado con exito')
     return render(request, "inventario/proveedorCrear.html",context ,{})
+
+def productosCategoriasVista(request, nombre, categoria):
+    categorias = Categoria.objects.all()
+    subCategorias=SubCategoria.objects.filter(fkCategoria=categoria)
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'categoria':categoria, 'nombre':nombre}
+    return render(request, 'inventario/productoCategoriaVista.html', context, {})
+
+def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
+    categorias = Categoria.objects.all()
+    subCategorias= SubCategoria.objects.filter(fkCategoria=categoria)
+    productos=Producto.objects.filter(fkSubCategoria=subCategoria)
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
+    return render(request, 'inventario/productoCategoriaVista.html', context, {})

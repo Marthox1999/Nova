@@ -4,14 +4,22 @@
 
 <ul>
   <li>
-    <a href="/usuarios/clienteinicio" style="padding: 1px; background-color: white;">
+    <a href="{% url 'usuarios:inicioCliente' nombre=nombre %}" style="padding: 1px; background-color: white;">
       <img style="padding: 7px; height:45px; width: 120px" src="{% static 'images/nova.jpg' %}"/>
     </a>
   </li>
   {% for categoria in categorias %}
-      <li><a href="/usuarios/clienteinicio/{{categoria.nombreCategoria}}">{{categoria.nombreCategoria}}</a></li>
+      <li><a href="{% url 'inventario:productosCategorias' nombre=nombre categoria=categoria.pkCategoria %}">{{categoria.nombreCategoria}}</a></li>
       {% empty %}
-      <p>Vacio</p>
   {% endfor %}
-  <li style="float:right"><a class="active" href="#LogOut">Cerrar Sesion</a></li>
+  <li style="float:right"><a class="active" href="">Cerrar Sesion</a></li>
+  {% if nombre == 'noRegistrado' %}  
+  <li style="float:right"><a class="active" href="{% url 'usuarios:ingreso' %}">Iniciar Sesion</a></li>
+  {% endif%}
+
+  {% if nombre != 'noRegistrado' %}  
+  <li style="float:right"><a class="active" href="{% url 'usuarios:clientePerfil' nombre %}"> Perfil </a></li>
+  {% endif%}
+
+  
 </ul>
