@@ -175,60 +175,60 @@ def productosCrearPrincipal(request, *args, **kwargs):
 
 def aniadirReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-
-    modificar = request.POST  
-    #print("#################")
-    #print(request.FILES)
-    #print("#################")
-    idCategoria = modificar.get('categoria')
-    submitReq = modificar.get('productos-submit')
-
+    idCategoria = 0
     subCategorias = {}
-    if(idCategoria=='-1' or idCategoria==None):
-        idCategoria = -1
-        subCategorias = {}
-    else:
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    #CREAR REFERENCIAS ------------------------------------
-    idSubCat = modificar.get('subCategoria')
-    nombre = modificar.get('inputNombre')
-    descripcion = modificar.get('DescrProducto')
-    precio = 0
-    iva = 0
-    
-    if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
-        precio = int(modificar.get('inputPrecio'))    
-    if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
-        iva = int(modificar.get('inputIva'))*precio/100
-    if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
-        #print(imagen)
-        imagen = request.FILES['buscadorImagen']#####
-        aux = Producto(
-            fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
-            nombre = nombre,
-            descripcion = descripcion,
-            iva = iva,
-            precio = precio,
-            rutaImagen = imagen
-        )
-        aux.rutaImagen.save(imagen.name,File(imagen),'r')
-        try:
-            aux.full_clean()
-        except ValidationError as e:
+    if(request.method == 'POST'):
+        modificar = request.POST
+        idCategoria = modificar.get('categoria')
+        submitReq = modificar.get('productos-submit')
+
+        subCategorias = {}
+        if(idCategoria=='-1' or idCategoria==None):
+            idCategoria = -1
+            subCategorias = {}
+        else:
+            categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+            subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+
+        #CREAR REFERENCIAS ------------------------------------
+        idSubCat = modificar.get('subCategoria')
+        nombre = modificar.get('inputNombre')
+        descripcion = modificar.get('DescrProducto')
+        precio = 0
+        iva = 0
+        
+        if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
+            precio = int(modificar.get('inputPrecio'))    
+        if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
+            iva = int(modificar.get('inputIva'))*precio/100
+        if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
+            #print(imagen)
+            imagen = request.FILES['buscadorImagen']#####
+            aux = Producto(
+                fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
+                nombre = nombre,
+                descripcion = descripcion,
+                iva = iva,
+                precio = precio,
+                rutaImagen = imagen
+            )
+            aux.rutaImagen.save(imagen.name,File(imagen),'r')
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "inventario/referenciasCrear.html", context, {})
+            #aux.rutaImagen.save()
+            aux.save()
+            context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
+            messages.success(request, 'Referencia creada con exito')
+            return render(request, "inventario/referenciasCrear.html", context, {})
+        elif(submitReq=="Crear Producto"):
             context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/referenciasCrear.html", context, {})
-        #aux.rutaImagen.save()
-        aux.save()
-        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
-        messages.success(request, 'Referencia creada con exito')
-        return render(request, "inventario/referenciasCrear.html", context, {})
-    elif(submitReq=="Crear Producto"):
-        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
-        messages.info(request, 'Alguno(s) campo(s) no son validos')
-        return render(request, "inventario/referenciasCrear.html", context, {})
 
     context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
     return render(request, "inventario/referenciasCrear.html", context, {})
@@ -238,53 +238,55 @@ def aniadirProductos(request, *args, **kwargs):
     productos = Producto.objects.all()
     proveedores = Proveedor.objects.all()
     bodegas = Bodega.objects.all()
+    idCategoria = 0
 
-    modificar = request.POST  
-    idCategoria = modificar.get('categoria')
-    submitReq = modificar.get('productos-submit')
+    if(request.method == 'POST'):
+        modificar = request.POST  
+        idCategoria = modificar.get('categoria')
+        submitReq = modificar.get('productos-submit')
 
-    subCategorias = {}
-    if(idCategoria=='-1' or idCategoria==None):
         subCategorias = {}
-    else:
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+        if(idCategoria=='-1' or idCategoria==None):
+            subCategorias = {}
+        else:
+            categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+            subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    #AGREGAR PRODUCTOS ----------------------------------------------
-    idProducto = modificar.get('producto')
-    idProveedor = modificar.get('proveedor')
-    idBodega = modificar.get('bodega')
-    talla = modificar.get('talla')
-    if(modificar.get('inputCant')=="" or modificar.get('inputCant')==None):
-        cantidad = 0
-    else:
-        cantidad = int(modificar.get('inputCant'))
-    color = modificar.get('inputColor')
+        #AGREGAR PRODUCTOS ----------------------------------------------
+        idProducto = modificar.get('producto')
+        idProveedor = modificar.get('proveedor')
+        idBodega = modificar.get('bodega')
+        talla = modificar.get('talla')
+        if(modificar.get('inputCant')=="" or modificar.get('inputCant')==None):
+            cantidad = 0
+        else:
+            cantidad = int(modificar.get('inputCant'))
+        color = modificar.get('inputColor')
 
-    if(submitReq=="Agregar Productos" and not(idProducto=="-1") and not(idProveedor=="-1") and not(idBodega=="-1") and not(talla=="") and not(color=="") and not(cantidad<=0)):
-        aux = DetallesProducto(
-            fkProducto = Producto.objects.get(pkProducto=idProducto),
-            talla = talla,
-            nit = Proveedor.objects.get(pknit=idProveedor),
-            color = color,
-            fkBodega = Bodega.objects.get(pkBodega=idBodega),
-            cantidad = cantidad,
-        )        
-        try:
-            aux.full_clean()
-        except ValidationError as e:
+        if(submitReq=="Agregar Productos" and not(idProducto=="-1") and not(idProveedor=="-1") and not(idBodega=="-1") and not(talla=="") and not(color=="") and not(cantidad<=0)):
+            aux = DetallesProducto(
+                fkProducto = Producto.objects.get(pkProducto=idProducto),
+                talla = talla,
+                nit = Proveedor.objects.get(pknit=idProveedor),
+                color = color,
+                fkBodega = Bodega.objects.get(pkBodega=idBodega),
+                cantidad = cantidad,
+            )        
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "inventario/productosCrear.html", context, {})
+
+            aux.save()
+            context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+            messages.success(request, 'Productos agregados con exito')
+            return render(request, "inventario/productosCrear.html", context, {})
+        elif(submitReq=="Agregar Productos"):
             context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/productosCrear.html", context, {})
-
-        aux.save()
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
-        messages.success(request, 'Productos agregados con exito')
-        return render(request, "inventario/productosCrear.html", context, {})
-    elif(submitReq=="Agregar Productos"):
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
-        messages.info(request, 'Alguno(s) campo(s) no son validos')
-        return render(request, "inventario/productosCrear.html", context, {})
 
     context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
     return render(request, "inventario/productosCrear.html", context, {})

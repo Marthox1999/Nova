@@ -20,9 +20,20 @@
         <form id="formulario-producto" action="#" method="post">
           {% csrf_token %}
           <div class="form-group">
-            <label for="producto">Producto</label>
+            <label for="producto">Referencia</label>
             <select class="form-control" id="producto" name="producto">
-              <option value="-1"  name='vacio'>Producto</option>
+              <option value="-1"  name='vacio'>Referencia</option>
+              {% for producto in productos %}
+                <option value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
+                {% empty %}
+                {% endfor %}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="producto">Referencia</label>
+            <select class="form-control" id="producto" name="producto">
+              <option value="-1"  name='vacio'>Referencia</option>
               {% for producto in productos %}
                 <option value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
                 {% empty %}
@@ -32,67 +43,27 @@
 
           <div class="form-group">
             <label for="proveedor">Proveedor</label>
-            <input readonly id="proveedor" name="proveedor" type="text" class="form-control">
-            <select class="form-control" id="proveedor" name="proveedor">
-              <option value="-1"  name='vacio'>Proveedor</option>
-              {% for proveedor in proveedores %}
-                <option value={{proveedor.pknit}} name={{proveedor.pknit}}>{{proveedor.pknit}}</option>
-                {% empty %}
-                {% endfor %}
-            </select>
+            <input readonly placeholder="Proveedor" id="proveedor" name="proveedor" type="text" class="form-control">
           </div>
 
           <div class="form-group">
             <label for="bodega">Bodega</label>
-            <select class="form-control" id="bodega" name="bodega">
-              <option value="-1"  name='vacio'>Bodega</option>
-              {% for bodega in bodegas %}
-                <option value={{bodega.pkBodega}} name={{bodega.pkBodega}}>{{bodega.pkBodega}} - {{bodega.ciudad}}</option>
-                {% empty %}
-                {% endfor %}
-            </select>
-            </div>
-
-          <div class="form-group">
-            <label for="talla">Talla</label>
-            <select readonly class="form-control" id="talla" name="talla">{
-                  ('XS','xs'),
-                  ('S','s'),
-                  ('M','m'),                  
-                  ('L','l'),
-                  ('XL','xl'),
-              }
-                <option value="XS">xs</option>
-                <option value="S">s</option>
-                <option value="M">m</option>                
-                <option value="L">l</option>
-                <option value="XL">xl</option>
-            </select>
-          </div>          
-
-          <div class="form-group">
-            <label for="inputColor">Color</label>
-            <select readonly class="form-control" id="inputColor" name="inputColor">
-              <option value=""> Color </option>
-              <option value="negro">Negro</option>
-              <option value="blanco">Blanco</option>
-              <option value="amarillo">Amarillo</option>
-              <option value="azul">Azul</option>
-              <option value="rojo">Rojo</option>
-              <option value="verde">Verde</option>
-              <option value="morado">Morado</option>
-              <option value="naranja">Naranja</option>
-              <option value="rosado">Rosado</option>
-              <option value="gris">Gris</option>
-              <option value="marron">Marrón</option>
-              <option value="beige">Beige</option>
-              <option value="otros">Otro</option>
-            </select>
+            <input readonly placeholder="Bodega" id="bodega" name="bodega" type="text" class="form-control">
           </div>
 
           <div class="form-group">
+            <label for="talla">Talla</label>
+            <input readonly placeholder="Talla" id="talla" name="talla" type="text" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="color">Color</label>
+            <input readonly placeholder="Color" id="inputColor" name="inputColor" type="text" class="form-control">
+          </div>          
+
+          <div class="form-group">
             <label for="inputCant">Cantidad</label>
-            <input required id="inputCant" name="inputCant" type="number" class="form-control">
+            <input required placeholder="Cantidad" id="inputCant" name="inputCant" type="number" class="form-control">
           </div>
 
           <div class="form-group">
