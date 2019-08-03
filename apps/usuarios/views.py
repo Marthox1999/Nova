@@ -159,13 +159,8 @@ def duenioAdminModificar(request, *args, **kwargs):
     
     nombreAdmin = modificar.get('nombreEmpleado')
     claveAdmin = modificar.get('claveAdmin')
-    #modificarAdminSubmit = modificar.get('modificarAdmin-submit')
 
-    #Search the admin with that pk
-    #claveAdmin.strip() Para quitar espacios
-    
-    
-    if (claveAdmin != None):
+    if(request.method == 'POST'):
         try:
             print ('Llega a antes de modificar')
             objects = AdministradorDuenio.objects.filter(nombreUsuario = nombreAdmin)
@@ -178,8 +173,6 @@ def duenioAdminModificar(request, *args, **kwargs):
             messages.success(request, 'Administrador modificado exitosamente')
         except ValidationError as e:
             messages.info(request, 'El usuario administrador no pudo ser modificado')
-
-        
-
+            
     return render(request, "usuarios/duenioAdminModificar.html", context, {})
     
