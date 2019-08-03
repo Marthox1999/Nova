@@ -151,10 +151,35 @@ def duenioAdminIngreso(request, *args, **kwargs):
 
 
 def duenioAdminModificar(request, *args, **kwargs):
-    
     categorias = Categoria.objects.all()
     usuarios = AdministradorDuenio.objects.filter(tipo='ADMIN')
+    context={'categorias':categorias, 'usuarios':usuarios}
+
     modificar = request.POST
-    if(modificar='POST'):
+    
+    nombreAdmin = modificar.get('nombreEmpleado')
+    claveAdmin = modificar.get('claveAdmin')
+    #modificarAdminSubmit = modificar.get('modificarAdmin-submit')
+
+    #Search the admin with that pk
+    #claveAdmin.strip() Para quitar espacios
+    
+    
+    if (claveAdmin != None):
+        try:
+            print ('Llega a antes de modificar')
+            objects = AdministradorDuenio.objects.filter(nombreUsuario = nombreAdmin)
+            #Hice la modificación de la clave como atributo para usar save
+            #y asi usar el encriptado dentro de la función, en lugar de usar update
+            for obj in objects:
+                obj.clave = claveAdmin
+                obj.save()
+            
+            messages.success(request, 'Administrador modificado exitosamente')
+        except ValidationError as e:
+            messages.info(request, 'El usuario administrador no es válido')
+
         
-    return render(request, 'usuarios/duenioAdminModificar.html',context,{})
+
+    return render(request, "usuarios/duenioAdminModificar.html", context, {})
+    
