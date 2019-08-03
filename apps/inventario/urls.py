@@ -15,4 +15,5 @@ urlpatterns = [
     path('proveedor', proveedor, name='proveedor'),
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
 
+    path('proveedorModificar', modificarProveedor, name='modificarProveedor'),
 ]

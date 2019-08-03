@@ -177,7 +177,7 @@ def duenioAdminModificar(request, *args, **kwargs):
             
             messages.success(request, 'Administrador modificado exitosamente')
         except ValidationError as e:
-            messages.info(request, 'El usuario administrador no es válido')
+            messages.info(request, 'El usuario administrador no pudo ser modificado')
 
         
 

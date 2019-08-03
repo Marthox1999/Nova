@@ -159,3 +159,12 @@ def aniadirProveedor(request, *args, **kwargs):
         aux.save()
     messages.success(request, 'Proveedor agregado con exito')
     return render(request, "inventario/proveedorCrear.html",context ,{})
+
+
+
+
+def modificarProveedor(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    proveedores = Proveedor.objects.all()
+    context={'categorias': categorias, 'proveedores': proveedores}
+    return render(request, "inventario/proveedorModificar.html", context, {})
