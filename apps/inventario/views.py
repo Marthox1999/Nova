@@ -300,8 +300,6 @@ def modificarReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
 
     modificar = request.POST
-    print("HOLAAAAAAAAAAAAAAAa")
-    print(modificar)
     idcategoria = modificar.get('categoria')
     subcategorias = {}
     idsubcategoria = modificar.get('subcategoria')
@@ -462,7 +460,9 @@ def modificarReferencias(request, *args, **kwargs):
 
 def modificarProductos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    context={'categorias':categorias}
+    productos = Producto.objects.all()
+    detalles = DetallesProducto.objects.all()
+    context={'categorias':categorias, 'productos':productos}
     return render(request, "inventario/productosModificar.html",context, {})
 
 def proveedor(request, *args, **kwargs):

@@ -21,23 +21,29 @@
           {% csrf_token %}
           <div class="form-group">
             <label for="producto">Referencia</label>
-            <select class="form-control" id="producto" name="producto">
+            <select class="form-control" id="producto" name="producto" onChange="form.submit();">
               <option value="-1"  name='vacio'>Referencia</option>
               {% for producto in productos %}
+                {% if idCategoria == categoria.pkCategoria   %}
+                <option selected value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
+                {% else %}
                 <option value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
-                {% empty %}
-                {% endfor %}
+                {% endif %} 
+              {% endfor %}
             </select>
           </div>
 
           <div class="form-group">
-            <label for="producto">Referencia</label>
-            <select class="form-control" id="producto" name="producto">
-              <option value="-1"  name='vacio'>Referencia</option>
-              {% for producto in productos %}
-                <option value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
-                {% empty %}
-                {% endfor %}
+            <label for="producto">Producto</label>
+            <select class="form-control" id="detalle" name="detalle">
+              <option value="-1"  name='vacio'>Producto</option>
+              {% for detalle in detalles %}
+                {% if idCategoria == categoria.pkCategoria   %}
+                  <option selected value={{detalle.fkProducto}} name={{detalle.pkProducto}}>{{detalle.talla}} - {{detalle.color}}</option>
+                {% else %}
+                  <option value={{detalle.fkProducto}} name={{detalle.pkProducto}}>{{detalle.talla}} - {{detalle.color}}</option>
+                {% endif %}  
+              {% endfor %}
             </select>
           </div>
 
