@@ -13,7 +13,7 @@
                 <div class="panel-body" style="background-color:#FEF0F0;">
                   <div class="row">
                     <div class="col-lg-12">
-                        {% if clientes %}
+                        
                         <form method="post" id="form" name="consultarCliente">
                           {% csrf_token %} 
                           <div class="form-group">
@@ -42,21 +42,14 @@
                                   <td>{{cliente.numeroDocumento}}</td>
                                 </tr>
                                 {% empty %}
-                                <p>No hay clientes</p>
+                                <p>No hay clientes registrados o la busqueda no arrojó resultados</p>
                               {% endfor %}
                             </tbody>
                           </table>
                         </div>
                         
-                        {% else %}
                         
-                            <p>
-                                <div class="alert alert-info" role="alert">
-                                    No hay clientes registrados
-                                </div>
-                            </p>
-                        
-                        {% endif %}
+
                     </div>
                   </div>
                 </div>

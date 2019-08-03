@@ -177,11 +177,15 @@ def duenioAdminModificar(request, *args, **kwargs):
     return render(request, "usuarios/duenioAdminModificar.html", context, {})
     
 def duenioClienteConsultar(request, *args, **kwargs):
+    from django.db.models import Q
     categorias = Categoria.objects.all()
-    clientes = Cliente.objects.all()
-    context={'categorias':categorias, 'clientes': clientes}
+    clientes = {}
     consultar = request.POST
-    buscador=consultar.get('buscador')
-    print (buscador)
-
+    buscador = consultar.get('buscador')
+    if (buscador):
+        clientes = Cliente.objects.filter(Q(nombre__icontains=buscador) | Q(direccion__icontains=buscador) | Q(telefono__icontains=buscador) | Q(numeroDocumento__icontains=buscador))
+    else:
+        clientes = Cliente.objects.all()
+    context={'categorias':categorias, 'clientes': clientes}
+        
     return render(request, "usuarios/duenioClienteConsultar.html", context, {})
