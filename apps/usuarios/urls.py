@@ -17,4 +17,5 @@ urlpatterns = [
     path('clienteinicio', clienteInicio, name='inicioCliente'),
 
     path('duenioAdminModificar', duenioAdminModificar, name='duenioModificarAdmin'),
+    path('duenioClienteConsultar', duenioClienteConsultar, name='duenioClienteConsultar'),
 ]

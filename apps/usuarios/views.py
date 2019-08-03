@@ -176,3 +176,12 @@ def duenioAdminModificar(request, *args, **kwargs):
             
     return render(request, "usuarios/duenioAdminModificar.html", context, {})
     
+def duenioClienteConsultar(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    clientes = Cliente.objects.all()
+    context={'categorias':categorias, 'clientes': clientes}
+    consultar = request.POST
+    buscador=consultar.get('buscador')
+    print (buscador)
+
+    return render(request, "usuarios/duenioClienteConsultar.html", context, {})
