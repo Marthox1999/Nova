@@ -7,6 +7,9 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 import math
+from django.core.files import File
+import os 
+
 
 def bodegaInicio(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -174,14 +177,15 @@ def aniadirReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
 
     modificar = request.POST  
-    print("#################")
-    print(request.FILES)
-    print("#################")
+    #print("#################")
+    #print(request.FILES)
+    #print("#################")
     idCategoria = modificar.get('categoria')
     submitReq = modificar.get('productos-submit')
 
     subCategorias = {}
     if(idCategoria=='-1' or idCategoria==None):
+        idCategoria = -1
         subCategorias = {}
     else:
         categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
@@ -193,15 +197,14 @@ def aniadirReferencias(request, *args, **kwargs):
     descripcion = modificar.get('DescrProducto')
     precio = 0
     iva = 0
+    
     if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
         precio = int(modificar.get('inputPrecio'))    
     if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
         iva = int(modificar.get('inputIva'))*precio/100
-    #imagen = request.FILES['buscadorImagen']
-    #imagen = request.FILES['buscadorImagen']
-    imagen = " "
-    if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0) and not(imagen=="")):
-        print(imagen)
+    if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
+        #print(imagen)
+        imagen = request.FILES['buscadorImagen']#####
         aux = Producto(
             fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
             nombre = nombre,
@@ -210,23 +213,24 @@ def aniadirReferencias(request, *args, **kwargs):
             precio = precio,
             rutaImagen = imagen
         )
+        aux.rutaImagen.save(imagen.name,File(imagen),'r')
         try:
             aux.full_clean()
         except ValidationError as e:
-            context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+            context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/referenciasCrear.html", context, {})
         #aux.rutaImagen.save()
         aux.save()
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
         messages.success(request, 'Referencia creada con exito')
         return render(request, "inventario/referenciasCrear.html", context, {})
     elif(submitReq=="Crear Producto"):
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
         messages.info(request, 'Alguno(s) campo(s) no son validos')
         return render(request, "inventario/referenciasCrear.html", context, {})
 
-    context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias}
+    context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
     return render(request, "inventario/referenciasCrear.html", context, {})
 
 def aniadirProductos(request, *args, **kwargs):
@@ -322,8 +326,7 @@ def modificarReferencias(request, *args, **kwargs):
         #print(idsubcategoria)
     else:
         idsubcategoria = -1
-
-    print(modificar.get('producto'), " holaaas")
+    
     if((modificar.get('producto') != "") and (modificar.get('producto') != None) and (modificar.get('producto') != "-1")):                
         idproducto = modificar.get('producto')
         producSeleccionado = True
@@ -372,8 +375,7 @@ def modificarReferencias(request, *args, **kwargs):
             try:
                 aux.full_clean()
             except ValidationError as e:
-                messages.info(request, 'Alguno(s) campo(s) no son validos')
-                print("DIEEEEEEEEEEEEEEEEEEEEe")
+                messages.info(request, 'Alguno(s) campo(s) no son validos')                
                 context={
                     'categorias':categorias,
                     'subcategorias':subcategorias, 
@@ -413,8 +415,6 @@ def modificarReferencias(request, *args, **kwargs):
             return render(request, "inventario/referenciasModificar.html", context, {})
 
         else:
-            print("SOOOOOOOOOOOOOOOOOOo")
-            print(producSeleccionado)
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             context={
                 'categorias':categorias,
@@ -439,6 +439,7 @@ def modificarReferencias(request, *args, **kwargs):
         ivaOPorcent = producObject.iva
         ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
         rutaImagenO = producObject.rutaImagen
+        print(rutaImagenO.photo.url)
 
         context={
             'categorias':categorias,
