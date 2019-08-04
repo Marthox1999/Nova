@@ -24,7 +24,7 @@
             <select class="form-control" id="producto" name="producto" onChange="form.submit();">
               <option value="-1"  name='vacio'>Referencia</option>
               {% for producto in productos %}
-                {% if idCategoria == categoria.pkCategoria   %}
+                {% if idProducto == producto.pkProducto   %}
                 <option selected value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
                 {% else %}
                 <option value={{producto.pkProducto}} name={{producto.pkProducto}}>{{producto.pkProducto}} - {{producto.nombre}}</option>
@@ -35,13 +35,13 @@
 
           <div class="form-group">
             <label for="producto">Producto</label>
-            <select class="form-control" id="detalle" name="detalle">
+            <select class="form-control" id="detalle" name="detalle" onChange="form.submit();">
               <option value="-1"  name='vacio'>Producto</option>
               {% for detalle in detalles %}
-                {% if idCategoria == categoria.pkCategoria   %}
-                  <option selected value={{detalle.fkProducto}} name={{detalle.pkProducto}}>{{detalle.talla}} - {{detalle.color}}</option>
+                {% if idDetalle == detalle.fkProducto.pkProducto   %}
+                  <option selected value={{detalle.fkProducto.pkProducto}} name={{detalle.fkProducto.pkProducto}}>{{detalle.talla}} - {{detalle.color}}</option>
                 {% else %}
-                  <option value={{detalle.fkProducto}} name={{detalle.pkProducto}}>{{detalle.talla}} - {{detalle.color}}</option>
+                  <option value={{detalle.fkProducto.pkProducto}} name={{detalle.fkProducto.pkProducto}}>{{detalle.talla}} - {{detalle.color}}</option>
                 {% endif %}  
               {% endfor %}
             </select>
@@ -49,33 +49,33 @@
 
           <div class="form-group">
             <label for="proveedor">Proveedor</label>
-            <input readonly placeholder="Proveedor" id="proveedor" name="proveedor" type="text" class="form-control">
+            <input readonly placeholder="Proveedor" id="proveedor" name="proveedor" type="text" class="form-control" value="{{nit}}">
           </div>
 
           <div class="form-group">
             <label for="bodega">Bodega</label>
-            <input readonly placeholder="Bodega" id="bodega" name="bodega" type="text" class="form-control">
+            <input readonly placeholder="Bodega" id="bodega" name="bodega" type="text" class="form-control" value="{{bodega}}">
           </div>
 
           <div class="form-group">
             <label for="talla">Talla</label>
-            <input readonly placeholder="Talla" id="talla" name="talla" type="text" class="form-control">
+            <input readonly placeholder="Talla" id="talla" name="talla" type="text" class="form-control" value="{{talla}}">
           </div>
 
           <div class="form-group">
             <label for="color">Color</label>
-            <input readonly placeholder="Color" id="inputColor" name="inputColor" type="text" class="form-control">
+            <input readonly placeholder="Color" id="inputColor" name="inputColor" type="text" class="form-control" value="{{color}}">
           </div>          
 
           <div class="form-group">
             <label for="inputCant">Cantidad</label>
-            <input required placeholder="Cantidad" id="inputCant" name="inputCant" type="number" class="form-control">
+            <input required placeholder="Cantidad" id="inputCant" name="inputCant" type="number" class="form-control" value="{{cantidad}}">
           </div>
 
           <div class="form-group">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <input type="submit" name="productos-submit" id="productos-submit" tabindex="4" class="form-control btn" value="Agregar Productos">
+                <input type="submit" name="productos-submit" id="productos-submit" tabindex="4" class="form-control btn" value="Modificar Producto">
               </div>
             </div>
           </div>

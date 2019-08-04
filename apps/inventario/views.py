@@ -239,27 +239,19 @@ def aniadirProductos(request, *args, **kwargs):
     proveedores = Proveedor.objects.all()
     bodegas = Bodega.objects.all()
     idCategoria = 0
+    subCategorias = {}
 
     if(request.method == 'POST'):
         modificar = request.POST  
-        idCategoria = modificar.get('categoria')
         submitReq = modificar.get('productos-submit')
-
-        subCategorias = {}
-        if(idCategoria=='-1' or idCategoria==None):
-            subCategorias = {}
-        else:
-            categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-            subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
         #AGREGAR PRODUCTOS ----------------------------------------------
         idProducto = modificar.get('producto')
         idProveedor = modificar.get('proveedor')
         idBodega = modificar.get('bodega')
         talla = modificar.get('talla')
-        if(modificar.get('inputCant')=="" or modificar.get('inputCant')==None):
-            cantidad = 0
-        else:
+        cantidad = 0
+        if(modificar.get('inputCant')!="" and modificar.get('inputCant')!=None):
             cantidad = int(modificar.get('inputCant'))
         color = modificar.get('inputColor')
 
@@ -461,8 +453,71 @@ def modificarReferencias(request, *args, **kwargs):
 def modificarProductos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     productos = Producto.objects.all()
-    detalles = DetallesProducto.objects.all()
-    context={'categorias':categorias, 'productos':productos}
+    idProducto = 0
+    detalles = {}
+    idDetalle = 0
+
+    #Variables de carga de campos
+    tallaO = ""
+    nitO = ""
+    colorO = ""
+    fkBodegaO = ""
+    cantidadO = 0
+
+    if(request.method == 'POST'):
+        modificar = request.POST
+        if((modificar.get('producto') != None) and (modificar.get('producto') != "") and (modificar.get('producto') != "-1")):
+            idProducto = int(modificar.get('producto'))
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto)
+
+            #MODIFICAR EL PRODUCTO
+            if((modificar.get('productos-submit')=="Modificar Producto") and (modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+                idDetalle = int(modificar.get('detalle'))
+
+                talla = modificar.get('talla')
+                nit = modificar.get('proveedor')
+                color = modificar.get('inputColor')
+                idBodega = modificar.get('bodega')
+                cantidad = int(modificar.get('inputCant'))
+
+                aux = DetallesProducto(
+                    fkProducto =  Producto.objects.get(pkProducto=idDetalle),
+                    talla = talla,
+                    nit = Proveedor.objects.get(pknit=nit),
+                    color = color,
+                    fkBodega = Bodega.objects.get(pkBodega=idBodega),
+                    cantidad = cantidad
+                )
+                try:
+                    aux.full_clean()
+                except ValidationError as e:                    
+                    messages.info(request, 'Cantidad validos')
+                    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'detalles':detalles, 'idDetalle':idDetalle, 'talla':talla, 'nit':nit, 'color':color, 'bodega':idBodega, 'cantidad':cantidad}
+                    return render(request, "inventario/productosModificar.html",context, {})
+
+                DetallesProducto.objects.filter(fkProducto = aux.fkProducto,
+                                             talla = aux.talla,
+                                             nit = aux.nit,
+                                             color = aux.color,
+                                             fkBodega = aux.fkBodega).update(cantidad = aux.cantidad)
+
+                messages.success(request, 'Producto modificado exitosamente')
+                context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'detalles':detalles, 'idDetalle':idDetalle, 'talla':aux.talla, 'nit':nit, 'color':aux.color, 'bodega':idBodega, 'cantidad':aux.cantidad}
+                return render(request, "inventario/productosModificar.html",context, {})
+
+            #OBTENER LOS CAMPOS ANTIGUOS
+            elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+                idDetalle = int(modificar.get('detalle'))
+                print(idDetalle)
+                detalleObject = DetallesProducto.objects.get(fkProducto=idDetalle)
+                
+                tallaO = detalleObject.talla
+                nitO = detalleObject.nit.pknit
+                colorO = detalleObject.color
+                fkBodegaO = detalleObject.fkBodega.pkBodega
+                cantidadO = detalleObject.cantidad
+
+    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'detalles':detalles, 'idDetalle':idDetalle, 'talla':tallaO, 'nit':nitO, 'color':colorO, 'bodega':fkBodegaO, 'cantidad':cantidadO}    
     return render(request, "inventario/productosModificar.html",context, {})
 
 def proveedor(request, *args, **kwargs):
