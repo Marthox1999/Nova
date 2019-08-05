@@ -149,7 +149,9 @@ def duenioAdminIngreso(request, *args, **kwargs):
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/duenioAdminIngreso.html',context,{'form':ingresar})
 
-
+ 
 def clientePerfil(request, nombre):
-    context = {'nombre':nombre}
+    cliente = Cliente.objects.filter(nombre=nombre)
+    context = {'nombre':nombre, 'cliente':cliente}
     return render(request,"usuarios/clientePerfil.html", context, {})
+

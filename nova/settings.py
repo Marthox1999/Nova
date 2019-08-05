@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'inventario',
     'ventas',
     'reportes',
+    'django_extensions',
 
 ]
 
