@@ -18,7 +18,7 @@ class SubCategoria(models.Model):
 class Producto(models.Model):
     pkProducto = models.AutoField(primary_key=True)
     fkSubCategoria = models.ForeignKey(SubCategoria, on_delete=models.CASCADE)
-    nombre = models.models.CharField(max_length=300, default="null")
+    nombre = models.CharField(max_length=300, default="null")
     descripcion = models.CharField(max_length=1024)
     iva = models.FloatField()
     precio = models.IntegerField()
