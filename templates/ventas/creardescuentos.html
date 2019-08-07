@@ -55,7 +55,7 @@
                     <label for="ciudad">Producto</label>
                     <select class="form-control" id="producto" name="producto" onclick="javascript:location.href = this.value;">
                         {% for prod in productos %}
-                          {% if prod.pkProducto %}
+                          {% if producto == prod.pkProducto %}
                             <option selected value="{{prod.pkProducto}}">{{prod.pkProducto}}</option>
                           {% else %}
                             <option value="{{prod.pkProducto}}">{{prod.pkProducto}}</option>
