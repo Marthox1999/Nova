@@ -56,9 +56,9 @@
                     <select class="form-control" id="producto" name="producto" onclick="javascript:location.href = this.value;">
                         {% for prod in productos %}
                           {% if producto == prod.pkProducto %}
-                            <option selected value="{{prod.pkProducto}}">{{prod.pkProducto}}</option>
+                            <option selected value="{% url 'ventas:descuentoCrearProducto' idCategoria=categoria idSubCategoria=subcategoria idProducto=prod.pkProducto %}">{{prod.nombre}}</option>
                           {% else %}
-                            <option value="{{prod.pkProducto}}">{{prod.pkProducto}}</option>
+                            <option value="{% url 'ventas:descuentoCrearProducto' idCategoria=categoria idSubCategoria=subcategoria idProducto=prod.pkProducto %}">{{prod.nombre}}</option>
                           {% endif %}
                         {% endfor %}
                     </select>
