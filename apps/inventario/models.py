@@ -67,6 +67,7 @@ class DetallesProducto(models.Model):
         ('Beige','Beige'),
         ('Otros','Otro'),
     }
+    pkDetallesP = models.AutoField(primary_key=True)
     fkProducto =  models.ForeignKey(Producto, on_delete=models.CASCADE)
     talla = models.CharField(max_length=32)
     nit = models.ForeignKey(Proveedor, on_delete=models.CASCADE)

@@ -454,10 +454,17 @@ def modificarProductos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     productos = Producto.objects.all()
     idProducto = 0
+    proveedores = Proveedor.objects.all()
+    idProveedor = 0
+    bodegas = Bodega.objects.all()
+    idBodega = 0
+
     detalles = {}
     idDetalle = 0
 
     #Variables de carga de campos
+    referenciaO = ""
+    idrefO= 0
     tallaO = ""
     nitO = ""
     colorO = ""
@@ -466,58 +473,83 @@ def modificarProductos(request, *args, **kwargs):
 
     if(request.method == 'POST'):
         modificar = request.POST
-        if((modificar.get('producto') != None) and (modificar.get('producto') != "") and (modificar.get('producto') != "-1")):
-            idProducto = int(modificar.get('producto'))
-            detalles = DetallesProducto.objects.filter(fkProducto=idProducto)
+        #if((modificar.get('producto') != None) and (modificar.get('producto') != "") and (modificar.get('producto') != "-1")):
+        idProducto = int(modificar.get('producto'))
+        idProveedor = modificar.get('proveedor')
+        idBodega = int(modificar.get('bodega'))
 
-            #MODIFICAR EL PRODUCTO
-            if((modificar.get('productos-submit')=="Modificar Producto") and (modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
-                idDetalle = int(modificar.get('detalle'))
+        #BUSCAR DETALLES
+        if((idProducto!=-1) and (idProveedor!="-1") and (idBodega!=-1)): #LOS TRES CAMPOS SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor,
+                                                        fkBodega=idBodega)
+        elif((idProducto!=-1) and (idProveedor!="-1")):  #PRODUCTO Y PROVEEDOR SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor)
+        elif((idProducto!=-1) and (idBodega!=-1)):     #PRODUCTO Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        fkBodega=idBodega)
+        elif((idProveedor!="-1") and (idBodega!=-1)):    #PROVEEDOR Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(nit=idProveedor,
+                                                        fkBodega=idBodega)
+        else: #SOLO UN CAMPO SELECC
+            if(idProducto!=-1):    #PRODUCTO SELECCIONADO
+                detalles = DetallesProducto.objects.filter(fkProducto=idProducto)
+            elif(idProveedor!="-1"): #PROVEEDOR SELECCIONADO
+                detalles = DetallesProducto.objects.filter(nit=idProveedor)
+            elif(idBodega!=-1):    #BODEGA SELECCIONADA
+                detalles = DetallesProducto.objects.filter(fkBodega=idBodega)
 
-                talla = modificar.get('talla')
-                nit = modificar.get('proveedor')
-                color = modificar.get('inputColor')
-                idBodega = modificar.get('bodega')
-                cantidad = int(modificar.get('inputCant'))
 
-                aux = DetallesProducto(
-                    fkProducto =  Producto.objects.get(pkProducto=idDetalle),
-                    talla = talla,
-                    nit = Proveedor.objects.get(pknit=nit),
-                    color = color,
-                    fkBodega = Bodega.objects.get(pkBodega=idBodega),
-                    cantidad = cantidad
-                )
-                try:
-                    aux.full_clean()
-                except ValidationError as e:                    
-                    messages.info(request, 'Cantidad validos')
-                    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'detalles':detalles, 'idDetalle':idDetalle, 'talla':talla, 'nit':nit, 'color':color, 'bodega':idBodega, 'cantidad':cantidad}
-                    return render(request, "inventario/productosModificar.html",context, {})
+        #MODIFICAR EL PRODUCTO
+        if((modificar.get('productos-submit')=="Modificar Producto") and (modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
 
-                DetallesProducto.objects.filter(fkProducto = aux.fkProducto,
-                                             talla = aux.talla,
-                                             nit = aux.nit,
-                                             color = aux.color,
-                                             fkBodega = aux.fkBodega).update(cantidad = aux.cantidad)
+            referencia = int(modificar.get('idref'))
+            talla = modificar.get('inputTalla')
+            nit = modificar.get('inputProveedor')
+            color = modificar.get('inputColor')
+            PkBodega = int(modificar.get('inputBodega'))
+            cantidad = int(modificar.get('inputCant'))
 
-                messages.success(request, 'Producto modificado exitosamente')
-                context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'detalles':detalles, 'idDetalle':idDetalle, 'talla':aux.talla, 'nit':nit, 'color':aux.color, 'bodega':idBodega, 'cantidad':aux.cantidad}
+            aux = DetallesProducto(
+                fkProducto = Producto.objects.get(pkProducto=referencia),
+                talla = talla,
+                nit = Proveedor.objects.get(pknit=nit),
+                color = color,
+                fkBodega = Bodega.objects.get(pkBodega=PkBodega),
+                cantidad = cantidad
+            )
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                print(e)
+                messages.info(request, 'Cantidad invalida')
+                context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':aux.fkProducto.nombre, 'idref':aux.fkProducto.pkProducto, 'talla':talla, 'nit':nit, 'color':color, 'pkBodega':PkBodega, 'cantidad':cantidad}
                 return render(request, "inventario/productosModificar.html",context, {})
 
-            #OBTENER LOS CAMPOS ANTIGUOS
-            elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
-                idDetalle = int(modificar.get('detalle'))
-                print(idDetalle)
-                detalleObject = DetallesProducto.objects.get(fkProducto=idDetalle)
-                
-                tallaO = detalleObject.talla
-                nitO = detalleObject.nit.pknit
-                colorO = detalleObject.color
-                fkBodegaO = detalleObject.fkBodega.pkBodega
-                cantidadO = detalleObject.cantidad
+            DetallesProducto.objects.filter(pkDetallesP = idDetalle).update(cantidad = aux.cantidad)
 
-    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'detalles':detalles, 'idDetalle':idDetalle, 'talla':tallaO, 'nit':nitO, 'color':colorO, 'bodega':fkBodegaO, 'cantidad':cantidadO}    
+            messages.success(request, 'Producto modificado exitosamente')
+            context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':aux.fkProducto.nombre, 'idref':aux.fkProducto.pkProducto, 'talla':aux.talla, 'nit':nit, 'color':aux.color, 'pkBodega':PkBodega, 'cantidad':aux.cantidad}
+            return render(request, "inventario/productosModificar.html",context, {})
+
+        #OBTENER LOS CAMPOS ANTIGUOS
+        elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
+            print(idDetalle)
+            detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
+            
+            referenciaO = detalleObject.fkProducto.nombre
+            idrefO = detalleObject.fkProducto.pkProducto
+            tallaO = detalleObject.talla
+            nitO = detalleObject.nit.pknit
+            colorO = detalleObject.color
+            fkBodegaO = detalleObject.fkBodega.pkBodega
+            cantidadO = detalleObject.cantidad
+
+    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':referenciaO, 'idref':idrefO, 'talla':tallaO, 'nit':nitO, 'color':colorO, 'pkBodega':fkBodegaO, 'cantidad':cantidadO}
+    #print(context)
     return render(request, "inventario/productosModificar.html",context, {})
 
 def proveedor(request, *args, **kwargs):
