@@ -121,6 +121,12 @@ def adminMenu(request, *args, **kwargs):
     return render(request,"usuarios/adminMenu.html",context, {})
 
 
+def clienteMenu(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,"usuarios/clienteMenu.html",context, {})
+
+
 def duenioAdminIngreso(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
