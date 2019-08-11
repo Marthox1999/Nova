@@ -44,24 +44,24 @@
                         {% for atributo in cliente %}
                         <form id="form" name='perfilCliente' method="post" style="padding: 10px; margin-left: 27%">
                             <div class="form-group">
-                                <label>Nombre de Usuario</label>
-                                <input type="text" name="nombreCliente" tabindex="1" readonly value="{{atributo.nombre}}" >
+                                <label for="inputNombre">Nombre de Usuario</label>
+                                <input id="inputNombre" type="text" name="nombreCliente" tabindex="1" readonly value="{{atributo.nombre}}" >
                             </div>
                             <div class="form-group">
-                                <label>Fecha de Nacimiento</label>
-                                <input type="text" name="fechaNacimiento" tabindex="2" readonly value="{{atributo.fechaNacimiento}}">
+                                <label for="inputFecha">Fecha de Nacimiento</label>
+                                <input id="inputFecha" type="text" name="fechaNacimiento" tabindex="2" readonly value="{{atributo.fechaNacimiento}}">
                             </div>
                             <div class="form-group">
-                                    <label>Direccion</label>
-                                    <input type="text" name="direccion"  tabindex="2" readonly value="{{atributo.direccion}}">
+                                    <label for="inputDireccion">Direccion</label>
+                                    <input id="inputDireccion" type="text" name="direccion"  tabindex="2" readonly value="{{atributo.direccion}}">
                             </div>
                             <div class="form-group">
-                                    <label>Telefono</label>
-                                    <input type="text" name="telefono"  tabindex="2" readonly value="{{atributo.telefono}}">
+                                    <label for="inputTelefono">Telefono</label>
+                                    <input id="inputTelefono" type="text" name="telefono"  tabindex="2" readonly value="{{atributo.telefono}}">
                             </div>
                             <div class="form-group">
-                                    <label for ="claveAdmin">Numero de Documento</label>
-                                    <input type="text" name="numeroDocumento"  tabindex="2" readonly value="{{atributo.numeroDocumento}}">
+                                    <label for ="inputDocumento">Numero de Documento</label>
+                                    <input id="inputDocumento" type="text" name="numeroDocumento"  tabindex="2" readonly value="{{atributo.numeroDocumento}}">
                             </div>
                         </form>
                         {% endfor %}
