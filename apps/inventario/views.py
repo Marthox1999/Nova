@@ -302,28 +302,20 @@ def modificarReferencias(request, *args, **kwargs):
     producSeleccionado = False
     
     if((modificar.get('categoria') != "") and (modificar.get('categoria') != None) and (modificar.get('categoria') != "-1")):
-        #idcategoria = modificar.get('categoria')
         subcategorias = SubCategoria.objects.filter(fkCategoria=idcategoria)
         catSeleccionada = True
-        #print("HELP")
-        #print(idcategoria)
     else:
         idcategoria = -1
 
     if((modificar.get('subcategoria') != "") and (modificar.get('subcategoria') != None) and (modificar.get('subcategoria') != "-1")):
-        #idsubcategoria = modificar.get('subcategoria')
         productos = Producto.objects.filter(fkSubCategoria=idsubcategoria)
         subCatSeleccionada = True
-        #print("SOCORROR")
-        #print(idsubcategoria)
     else:
         idsubcategoria = -1
     
     if((modificar.get('producto') != "") and (modificar.get('producto') != None) and (modificar.get('producto') != "-1")):                
         idproducto = modificar.get('producto')
         producSeleccionado = True
-        #print("COSSSS")
-        #print(modificar.get('producto') != -1)
     else:
         idproducto = -1
 
@@ -335,13 +327,13 @@ def modificarReferencias(request, *args, **kwargs):
         'idsubcategoria':int(idsubcategoria),
         'idproducto':int(idproducto),
         'nombreO': "",
+        'idO': "",
         'descripcionO': "",
         'ivaO': "",
         'precioO': "",
         'rutaImagenO': "",
     }
-    
-    #print(context)
+
 
     if (modificar.get('productos-submit')=="Modificar Referencia"): #SE MODIFICA LA REFERENCIA
         nombre = modificar.get('inputNombre')
@@ -352,11 +344,19 @@ def modificarReferencias(request, *args, **kwargs):
             precio = int(modificar.get('inputPrecio'))
         if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
             iva = int(modificar.get('inputIva'))*precio/100
-        imagen = modificar.get("buscadorImagen")
+        
+        imagenModif = False
+        idP = modificar.get('inputId')
+        producObject = Producto.objects.get(pkProducto=idP)
+        imagen = producObject.rutaImagen
+        
+        if((modificar.get('buscadorImagen')!= '')):
+            imagen = request.FILES['buscadorImagen']
+            imagenModif = True
 
         if(producSeleccionado and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0) and not(imagen=="")): #catSeleccionada and subCatSeleccionada and 
             nombreCategoria = modificar.get('nombreCategoria')
-            aux = Producto(
+            aux = Producto(                
                 fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idsubcategoria),
                 nombre = nombre,
                 descripcion = descripcion,
@@ -364,10 +364,12 @@ def modificarReferencias(request, *args, **kwargs):
                 precio = precio,
                 rutaImagen = imagen
             )
+            #if(imagenModif):
+                #save(imagen.name,File(imagen),'r')
             try:
                 aux.full_clean()
             except ValidationError as e:
-                messages.info(request, 'Alguno(s) campo(s) no son validos')                
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
                 context={
                     'categorias':categorias,
                     'subcategorias':subcategorias, 
@@ -376,10 +378,11 @@ def modificarReferencias(request, *args, **kwargs):
                     'idsubcategoria':int(idsubcategoria),
                     'idproducto':int(idproducto),
                     'nombreO': aux.nombre,
+                    'idO': int(modificar.get('inputId')),
                     'descripcionO': aux.descripcion,
                     'ivaO': modificar.get('inputIva'),
                     'precioO': aux.precio,
-                    'rutaImagenO': aux.rutaImagen,
+                    'rutaImagenO': "../"+imagen.name,
                 }
                 return render(request, "inventario/referenciasModificar.html", context, {})
 
@@ -390,6 +393,9 @@ def modificarReferencias(request, *args, **kwargs):
                                                                 precio = aux.precio,
                                                                 rutaImagen = aux.rutaImagen
                                                             )
+            if(imagenModif):
+                product = Producto.objects.get(pkProducto = idproducto)
+                product.rutaImagen.save(imagen.name,File(imagen),'r')                
             messages.success(request, 'Referencia modificada exitosamente')
             context={
                 'categorias':categorias,
@@ -399,10 +405,11 @@ def modificarReferencias(request, *args, **kwargs):
                 'idsubcategoria':int(idsubcategoria),
                 'idproducto':int(idproducto),
                 'nombreO': aux.nombre,
+                'idO': int(modificar.get('inputId')),
                 'descripcionO': aux.descripcion,
                 'ivaO': modificar.get('inputIva'),
                 'precioO': aux.precio,
-                'rutaImagenO': aux.rutaImagen,
+                'rutaImagenO': "../"+imagen.name,
             }
             return render(request, "inventario/referenciasModificar.html", context, {})
 
@@ -416,10 +423,11 @@ def modificarReferencias(request, *args, **kwargs):
                 'idsubcategoria':int(idsubcategoria),
                 'idproducto':int(idproducto),
                 'nombreO': nombre,
+                'idO': int(modificar.get('inputId')),
                 'descripcionO': descripcion,
                 'ivaO': modificar.get('inputIva'),
                 'precioO': precio,
-                'rutaImagenO': imagen,
+                'rutaImagenO': "../"+imagen.name,
             }
             return render(request, "inventario/referenciasModificar.html", context, {})
 
@@ -431,7 +439,6 @@ def modificarReferencias(request, *args, **kwargs):
         ivaOPorcent = producObject.iva
         ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
         rutaImagenO = producObject.rutaImagen
-        print(rutaImagenO.photo.url)
 
         context={
             'categorias':categorias,
@@ -441,13 +448,13 @@ def modificarReferencias(request, *args, **kwargs):
             'idsubcategoria':int(idsubcategoria),
             'idproducto':int(idproducto),
             'nombreO': nombreO,
+            'idO': int(idproducto),
             'descripcionO': descripcionO,
             'ivaO': ivaO,
             'precioO': precioO,
-            'rutaImagenO': rutaImagenO,
+            'rutaImagenO': "../"+rutaImagenO.name,
         }
 
-    #print(context)
     return render(request, "inventario/referenciasModificar.html", context, {})
 
 def modificarProductos(request, *args, **kwargs):
