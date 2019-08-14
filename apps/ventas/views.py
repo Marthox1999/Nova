@@ -58,7 +58,7 @@ def crearDescuentoCategoria(request, idCategoria):
         auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
         difFechas = (auxfechafin-auxfechainicio).days
         fechaActual = (auxfechainicio-datetime.today()).days
-        if(difFechas <= 0 or fechaActual <= 0):
+        if(difFechas < 0 or fechaActual < -1):
             messages.info(request, 'La fecha de inicio no puede ser mayor que la fecha final')
             return render(request, "ventas/creardescuentos.html", context,{})
         try:
@@ -102,7 +102,7 @@ def crearDescuentoSubCategoria(request, idCategoria, idSubCategoria):
         auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
         difFechas = (auxfechafin-auxfechainicio).days
         fechaActual = (auxfechainicio-datetime.today()).days
-        if(difFechas <= 0 or fechaActual <= 0):
+        if(difFechas < 0 or fechaActual < -1):
             messages.info(request, 'La fecha de inicio no puede ser mayor que la fecha final')
             return render(request, "ventas/creardescuentos.html", context,{})
         try:
@@ -149,7 +149,7 @@ def crearDescuentoProducto(request, idCategoria, idSubCategoria, idProducto):
         auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
         difFechas = (auxfechafin-auxfechainicio).days
         fechaActual = (auxfechainicio-datetime.today()).days
-        if(difFechas <= 0 or fechaActual <= 0):
+        if(difFechas < 0 or fechaActual < -1):
             messages.info(request, 'La fecha de inicio no puede ser mayor que la fecha final')
             return render(request, "ventas/creardescuentos.html", context,{})
         try:
