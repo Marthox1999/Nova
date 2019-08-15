@@ -28,6 +28,7 @@
                   <div class="form-group">
                     <label for="categoria">Categoria</label>
                     <select class="form-control" id="categoria" name="categoria" onclick="javascript:location.href = this.value;">
+                        <option selected value="{% url 'ventas:descuentoCrear'%}" >Seleccione una Categoria</option>
                         {% for cat in categorias %}
                           {% if categoria == cat.pkCategoria  %}
                             <option selected value="{% url 'ventas:descuentoCrearCategoria' idCategoria=cat.pkCategoria %}" >{{cat.nombreCategoria}}</option>
@@ -41,6 +42,7 @@
                   <div class="form-group">
                     <label for="subcategoria">SubCategoria</label>
                     <select class="form-control" id="subcategoria" name="subcategoria" onclick="javascript:location.href = this.value;">
+                        <option selected value="{% url 'ventas:descuentoCrearCategoria' idCategoria=categoria%}">Seleccione una subcatergoria</option>
                         {% for subcat in subcategorias %}
                           {% if subcategoria == subcat.pkSubCategoria %}
                             <option selected value="{% url 'ventas:descuentoCrearSubCategoria' idCategoria=categoria idSubCategoria=subcat.pkSubCategoria %}">{{subcat.nombreSubCategoria}}</option>
@@ -54,6 +56,7 @@
                   <div class="form-group">
                     <label for="ciudad">Producto</label>
                     <select class="form-control" id="producto" name="producto" onclick="javascript:location.href = this.value;">
+                        <option selected value="{% url 'ventas:descuentoCrearSubCategoria' idCategoria=categoria idSubCategoria=subcategoria %}">Seleccione un producto</option>
                         {% for prod in productos %}
                           {% if producto == prod.pkProducto %}
                             <option selected value="{% url 'ventas:descuentoCrearProducto' idCategoria=categoria idSubCategoria=subcategoria idProducto=prod.pkProducto %}">{{prod.nombre}}</option>
