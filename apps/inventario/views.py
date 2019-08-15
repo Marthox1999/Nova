@@ -175,60 +175,60 @@ def productosCrearPrincipal(request, *args, **kwargs):
 
 def aniadirReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-
-    modificar = request.POST  
-    #print("#################")
-    #print(request.FILES)
-    #print("#################")
-    idCategoria = modificar.get('categoria')
-    submitReq = modificar.get('productos-submit')
-
+    idCategoria = 0
     subCategorias = {}
-    if(idCategoria=='-1' or idCategoria==None):
-        idCategoria = -1
-        subCategorias = {}
-    else:
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    #CREAR REFERENCIAS ------------------------------------
-    idSubCat = modificar.get('subCategoria')
-    nombre = modificar.get('inputNombre')
-    descripcion = modificar.get('DescrProducto')
-    precio = 0
-    iva = 0
-    
-    if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
-        precio = int(modificar.get('inputPrecio'))    
-    if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
-        iva = int(modificar.get('inputIva'))*precio/100
-    if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
-        #print(imagen)
-        imagen = request.FILES['buscadorImagen']#####
-        aux = Producto(
-            fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
-            nombre = nombre,
-            descripcion = descripcion,
-            iva = iva,
-            precio = precio,
-            rutaImagen = imagen
-        )
-        aux.rutaImagen.save(imagen.name,File(imagen),'r')
-        try:
-            aux.full_clean()
-        except ValidationError as e:
+    if(request.method == 'POST'):
+        modificar = request.POST
+        idCategoria = modificar.get('categoria')
+        submitReq = modificar.get('productos-submit')
+
+        subCategorias = {}
+        if(idCategoria=='-1' or idCategoria==None):
+            idCategoria = -1
+            subCategorias = {}
+        else:
+            categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+            subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+
+        #CREAR REFERENCIAS ------------------------------------
+        idSubCat = modificar.get('subCategoria')
+        nombre = modificar.get('inputNombre')
+        descripcion = modificar.get('DescrProducto')
+        precio = 0
+        iva = 0
+        
+        if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
+            precio = int(modificar.get('inputPrecio'))    
+        if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
+            iva = int(modificar.get('inputIva'))*precio/100
+        if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
+            #print(imagen)
+            imagen = request.FILES['buscadorImagen']#####
+            aux = Producto(
+                fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idSubCat),
+                nombre = nombre,
+                descripcion = descripcion,
+                iva = iva,
+                precio = precio,
+                rutaImagen = imagen
+            )
+            aux.rutaImagen.save(imagen.name,File(imagen),'r')
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "inventario/referenciasCrear.html", context, {})
+            #aux.rutaImagen.save()
+            aux.save()
+            context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
+            messages.success(request, 'Referencia creada con exito')
+            return render(request, "inventario/referenciasCrear.html", context, {})
+        elif(submitReq=="Crear Producto"):
             context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/referenciasCrear.html", context, {})
-        #aux.rutaImagen.save()
-        aux.save()
-        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
-        messages.success(request, 'Referencia creada con exito')
-        return render(request, "inventario/referenciasCrear.html", context, {})
-    elif(submitReq=="Crear Producto"):
-        context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
-        messages.info(request, 'Alguno(s) campo(s) no son validos')
-        return render(request, "inventario/referenciasCrear.html", context, {})
 
     context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
     return render(request, "inventario/referenciasCrear.html", context, {})
@@ -238,53 +238,47 @@ def aniadirProductos(request, *args, **kwargs):
     productos = Producto.objects.all()
     proveedores = Proveedor.objects.all()
     bodegas = Bodega.objects.all()
-
-    modificar = request.POST  
-    idCategoria = modificar.get('categoria')
-    submitReq = modificar.get('productos-submit')
-
+    idCategoria = 0
     subCategorias = {}
-    if(idCategoria=='-1' or idCategoria==None):
-        subCategorias = {}
-    else:
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    #AGREGAR PRODUCTOS ----------------------------------------------
-    idProducto = modificar.get('producto')
-    idProveedor = modificar.get('proveedor')
-    idBodega = modificar.get('bodega')
-    talla = modificar.get('talla')
-    if(modificar.get('inputCant')=="" or modificar.get('inputCant')==None):
+    if(request.method == 'POST'):
+        modificar = request.POST  
+        submitReq = modificar.get('productos-submit')
+
+        #AGREGAR PRODUCTOS ----------------------------------------------
+        idProducto = modificar.get('producto')
+        idProveedor = modificar.get('proveedor')
+        idBodega = modificar.get('bodega')
+        talla = modificar.get('talla')
         cantidad = 0
-    else:
-        cantidad = int(modificar.get('inputCant'))
-    color = modificar.get('inputColor')
+        if(modificar.get('inputCant')!="" and modificar.get('inputCant')!=None):
+            cantidad = int(modificar.get('inputCant'))
+        color = modificar.get('inputColor')
 
-    if(submitReq=="Agregar Productos" and not(idProducto=="-1") and not(idProveedor=="-1") and not(idBodega=="-1") and not(talla=="") and not(color=="") and not(cantidad<=0)):
-        aux = DetallesProducto(
-            fkProducto = Producto.objects.get(pkProducto=idProducto),
-            talla = talla,
-            nit = Proveedor.objects.get(pknit=idProveedor),
-            color = color,
-            fkBodega = Bodega.objects.get(pkBodega=idBodega),
-            cantidad = cantidad,
-        )        
-        try:
-            aux.full_clean()
-        except ValidationError as e:
+        if(submitReq=="Agregar Productos" and not(idProducto=="-1") and not(idProveedor=="-1") and not(idBodega=="-1") and not(talla=="") and not(color=="") and not(cantidad<=0)):
+            aux = DetallesProducto(
+                fkProducto = Producto.objects.get(pkProducto=idProducto),
+                talla = talla,
+                nit = Proveedor.objects.get(pknit=idProveedor),
+                color = color,
+                fkBodega = Bodega.objects.get(pkBodega=idBodega),
+                cantidad = cantidad,
+            )        
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "inventario/productosCrear.html", context, {})
+
+            aux.save()
+            context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
+            messages.success(request, 'Productos agregados con exito')
+            return render(request, "inventario/productosCrear.html", context, {})
+        elif(submitReq=="Agregar Productos"):
             context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/productosCrear.html", context, {})
-
-        aux.save()
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
-        messages.success(request, 'Productos agregados con exito')
-        return render(request, "inventario/productosCrear.html", context, {})
-    elif(submitReq=="Agregar Productos"):
-        context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
-        messages.info(request, 'Alguno(s) campo(s) no son validos')
-        return render(request, "inventario/productosCrear.html", context, {})
 
     context={'categorias':categorias, 'idCategoria':idCategoria, 'subCategorias':subCategorias, 'productos':productos, 'proveedores':proveedores, 'bodegas':bodegas}
     return render(request, "inventario/productosCrear.html", context, {})
@@ -298,8 +292,6 @@ def modificarReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
 
     modificar = request.POST
-    print("HOLAAAAAAAAAAAAAAAa")
-    print(modificar)
     idcategoria = modificar.get('categoria')
     subcategorias = {}
     idsubcategoria = modificar.get('subcategoria')
@@ -310,28 +302,20 @@ def modificarReferencias(request, *args, **kwargs):
     producSeleccionado = False
     
     if((modificar.get('categoria') != "") and (modificar.get('categoria') != None) and (modificar.get('categoria') != "-1")):
-        #idcategoria = modificar.get('categoria')
         subcategorias = SubCategoria.objects.filter(fkCategoria=idcategoria)
         catSeleccionada = True
-        #print("HELP")
-        #print(idcategoria)
     else:
         idcategoria = -1
 
     if((modificar.get('subcategoria') != "") and (modificar.get('subcategoria') != None) and (modificar.get('subcategoria') != "-1")):
-        #idsubcategoria = modificar.get('subcategoria')
         productos = Producto.objects.filter(fkSubCategoria=idsubcategoria)
         subCatSeleccionada = True
-        #print("SOCORROR")
-        #print(idsubcategoria)
     else:
         idsubcategoria = -1
     
     if((modificar.get('producto') != "") and (modificar.get('producto') != None) and (modificar.get('producto') != "-1")):                
         idproducto = modificar.get('producto')
         producSeleccionado = True
-        #print("COSSSS")
-        #print(modificar.get('producto') != -1)
     else:
         idproducto = -1
 
@@ -343,13 +327,13 @@ def modificarReferencias(request, *args, **kwargs):
         'idsubcategoria':int(idsubcategoria),
         'idproducto':int(idproducto),
         'nombreO': "",
+        'idO': "",
         'descripcionO': "",
         'ivaO': "",
         'precioO': "",
         'rutaImagenO': "",
     }
-    
-    #print(context)
+
 
     if (modificar.get('productos-submit')=="Modificar Referencia"): #SE MODIFICA LA REFERENCIA
         nombre = modificar.get('inputNombre')
@@ -360,11 +344,19 @@ def modificarReferencias(request, *args, **kwargs):
             precio = int(modificar.get('inputPrecio'))
         if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
             iva = int(modificar.get('inputIva'))*precio/100
-        imagen = modificar.get("buscadorImagen")
+        
+        imagenModif = False
+        idP = modificar.get('inputId')
+        producObject = Producto.objects.get(pkProducto=idP)
+        imagen = producObject.rutaImagen
+        
+        if((modificar.get('buscadorImagen')!= '')):
+            imagen = request.FILES['buscadorImagen']
+            imagenModif = True
 
         if(producSeleccionado and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0) and not(imagen=="")): #catSeleccionada and subCatSeleccionada and 
             nombreCategoria = modificar.get('nombreCategoria')
-            aux = Producto(
+            aux = Producto(                
                 fkSubCategoria = SubCategoria.objects.get(pkSubCategoria=idsubcategoria),
                 nombre = nombre,
                 descripcion = descripcion,
@@ -372,10 +364,12 @@ def modificarReferencias(request, *args, **kwargs):
                 precio = precio,
                 rutaImagen = imagen
             )
+            #if(imagenModif):
+                #save(imagen.name,File(imagen),'r')
             try:
                 aux.full_clean()
             except ValidationError as e:
-                messages.info(request, 'Alguno(s) campo(s) no son validos')                
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
                 context={
                     'categorias':categorias,
                     'subcategorias':subcategorias, 
@@ -384,10 +378,11 @@ def modificarReferencias(request, *args, **kwargs):
                     'idsubcategoria':int(idsubcategoria),
                     'idproducto':int(idproducto),
                     'nombreO': aux.nombre,
+                    'idO': int(modificar.get('inputId')),
                     'descripcionO': aux.descripcion,
                     'ivaO': modificar.get('inputIva'),
                     'precioO': aux.precio,
-                    'rutaImagenO': aux.rutaImagen,
+                    'rutaImagenO': "../"+imagen.name,
                 }
                 return render(request, "inventario/referenciasModificar.html", context, {})
 
@@ -398,6 +393,9 @@ def modificarReferencias(request, *args, **kwargs):
                                                                 precio = aux.precio,
                                                                 rutaImagen = aux.rutaImagen
                                                             )
+            if(imagenModif):
+                product = Producto.objects.get(pkProducto = idproducto)
+                product.rutaImagen.save(imagen.name,File(imagen),'r')                
             messages.success(request, 'Referencia modificada exitosamente')
             context={
                 'categorias':categorias,
@@ -407,10 +405,11 @@ def modificarReferencias(request, *args, **kwargs):
                 'idsubcategoria':int(idsubcategoria),
                 'idproducto':int(idproducto),
                 'nombreO': aux.nombre,
+                'idO': int(modificar.get('inputId')),
                 'descripcionO': aux.descripcion,
                 'ivaO': modificar.get('inputIva'),
                 'precioO': aux.precio,
-                'rutaImagenO': aux.rutaImagen,
+                'rutaImagenO': "../"+imagen.name,
             }
             return render(request, "inventario/referenciasModificar.html", context, {})
 
@@ -424,10 +423,11 @@ def modificarReferencias(request, *args, **kwargs):
                 'idsubcategoria':int(idsubcategoria),
                 'idproducto':int(idproducto),
                 'nombreO': nombre,
+                'idO': int(modificar.get('inputId')),
                 'descripcionO': descripcion,
                 'ivaO': modificar.get('inputIva'),
                 'precioO': precio,
-                'rutaImagenO': imagen,
+                'rutaImagenO': "../"+imagen.name,
             }
             return render(request, "inventario/referenciasModificar.html", context, {})
 
@@ -439,7 +439,6 @@ def modificarReferencias(request, *args, **kwargs):
         ivaOPorcent = producObject.iva
         ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
         rutaImagenO = producObject.rutaImagen
-        print(rutaImagenO.photo.url)
 
         context={
             'categorias':categorias,
@@ -449,18 +448,115 @@ def modificarReferencias(request, *args, **kwargs):
             'idsubcategoria':int(idsubcategoria),
             'idproducto':int(idproducto),
             'nombreO': nombreO,
+            'idO': int(idproducto),
             'descripcionO': descripcionO,
             'ivaO': ivaO,
             'precioO': precioO,
-            'rutaImagenO': rutaImagenO,
+            'rutaImagenO': "../"+rutaImagenO.name,
         }
 
-    #print(context)
     return render(request, "inventario/referenciasModificar.html", context, {})
 
 def modificarProductos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    context={'categorias':categorias}
+    productos = Producto.objects.all()
+    idProducto = 0
+    proveedores = Proveedor.objects.all()
+    idProveedor = 0
+    bodegas = Bodega.objects.all()
+    idBodega = 0
+
+    detalles = {}
+    idDetalle = 0
+
+    #Variables de carga de campos
+    referenciaO = ""
+    idrefO= 0
+    tallaO = ""
+    nitO = ""
+    colorO = ""
+    fkBodegaO = ""
+    cantidadO = 0
+
+    if(request.method == 'POST'):
+        modificar = request.POST
+        #if((modificar.get('producto') != None) and (modificar.get('producto') != "") and (modificar.get('producto') != "-1")):
+        idProducto = int(modificar.get('producto'))
+        idProveedor = modificar.get('proveedor')
+        idBodega = int(modificar.get('bodega'))
+
+        #BUSCAR DETALLES
+        if((idProducto!=-1) and (idProveedor!="-1") and (idBodega!=-1)): #LOS TRES CAMPOS SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor,
+                                                        fkBodega=idBodega)
+        elif((idProducto!=-1) and (idProveedor!="-1")):  #PRODUCTO Y PROVEEDOR SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor)
+        elif((idProducto!=-1) and (idBodega!=-1)):     #PRODUCTO Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        fkBodega=idBodega)
+        elif((idProveedor!="-1") and (idBodega!=-1)):    #PROVEEDOR Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(nit=idProveedor,
+                                                        fkBodega=idBodega)
+        else: #SOLO UN CAMPO SELECC
+            if(idProducto!=-1):    #PRODUCTO SELECCIONADO
+                detalles = DetallesProducto.objects.filter(fkProducto=idProducto)
+            elif(idProveedor!="-1"): #PROVEEDOR SELECCIONADO
+                detalles = DetallesProducto.objects.filter(nit=idProveedor)
+            elif(idBodega!=-1):    #BODEGA SELECCIONADA
+                detalles = DetallesProducto.objects.filter(fkBodega=idBodega)
+
+
+        #MODIFICAR EL PRODUCTO
+        if((modificar.get('productos-submit')=="Modificar Producto") and (modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
+
+            referencia = int(modificar.get('idref'))
+            talla = modificar.get('inputTalla')
+            nit = modificar.get('inputProveedor')
+            color = modificar.get('inputColor')
+            PkBodega = int(modificar.get('inputBodega'))
+            cantidad = int(modificar.get('inputCant'))
+
+            aux = DetallesProducto(
+                fkProducto = Producto.objects.get(pkProducto=referencia),
+                talla = talla,
+                nit = Proveedor.objects.get(pknit=nit),
+                color = color,
+                fkBodega = Bodega.objects.get(pkBodega=PkBodega),
+                cantidad = cantidad
+            )
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                print(e)
+                messages.info(request, 'Cantidad invalida')
+                context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':aux.fkProducto.nombre, 'idref':aux.fkProducto.pkProducto, 'talla':talla, 'nit':nit, 'color':color, 'pkBodega':PkBodega, 'cantidad':cantidad}
+                return render(request, "inventario/productosModificar.html",context, {})
+
+            DetallesProducto.objects.filter(pkDetallesP = idDetalle).update(cantidad = aux.cantidad)
+
+            messages.success(request, 'Producto modificado exitosamente')
+            context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':aux.fkProducto.nombre, 'idref':aux.fkProducto.pkProducto, 'talla':aux.talla, 'nit':nit, 'color':aux.color, 'pkBodega':PkBodega, 'cantidad':aux.cantidad}
+            return render(request, "inventario/productosModificar.html",context, {})
+
+        #OBTENER LOS CAMPOS ANTIGUOS
+        elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
+            print(idDetalle)
+            detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
+            
+            referenciaO = detalleObject.fkProducto.nombre
+            idrefO = detalleObject.fkProducto.pkProducto
+            tallaO = detalleObject.talla
+            nitO = detalleObject.nit.pknit
+            colorO = detalleObject.color
+            fkBodegaO = detalleObject.fkBodega.pkBodega
+            cantidadO = detalleObject.cantidad
+
+    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':referenciaO, 'idref':idrefO, 'talla':tallaO, 'nit':nitO, 'color':colorO, 'pkBodega':fkBodegaO, 'cantidad':cantidadO}
+    #print(context)
     return render(request, "inventario/productosModificar.html",context, {})
 
 def proveedor(request, *args, **kwargs):
