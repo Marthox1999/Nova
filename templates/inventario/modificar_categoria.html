@@ -70,15 +70,14 @@
 
   <div class="panel-body">
     <div class="row">
-
+        <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+        {% csrf_token %}
         <div class="form-group">
           <label for="categoria">Categoria</label>
           <input type="text" readonly value="{{nombreCategoria}}"></input>
           <label for="idCategoria">Id</label>
           <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>
         </div>
-        <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
-        {% csrf_token %}
         <div class="form-group">
           <label for="subCategoria">SubCategoria</label>                 
           <select class="form-control" id="subCategoria" name="subCategoria" onChange="form.submit();">
@@ -89,9 +88,6 @@
               {% endfor %}
           </select>
         </div>
-        </form>
-        <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
-        {% csrf_token %}
         <div class="form-group">
           <label for="subCategoria">Nombre</label>
           <input type="text" name="nombreSubCategoria" id="nombreSubCategoria" placeholder="Nombre" value="{{nombreSubCategoria}}"></input>

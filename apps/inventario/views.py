@@ -49,8 +49,8 @@ def categoria(request, *args, **kwargs):
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
+    print(modificar)
     idCategoria = modificar.get('categoria')#actualiza combobox
-
     idCategoriaSubCat = modificar.get('idCat')
     nombreSubCat = modificar.get('nombreSubCategoria')
     accionSubCatSubmit = modificar.get('SubCat-submit')
@@ -78,6 +78,7 @@ def modificar_categoria(request, *args, **kwargs):
         
     #agregar subcategoria
     if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
+        print("solicitudcorrecta")
         aux = SubCategoria(
             fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
             nombreSubCategoria=nombreSubCat
@@ -88,23 +89,18 @@ def modificar_categoria(request, *args, **kwargs):
             context={'categorias':categorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/modificar_categoria.html", context, {})
-
-        subCategoria.objects.filter(pkSubCategoria = idCategoriaSubCat).update(nombreSubCategoria = aux.nombreSubCategoria)
+        aux.save()
         context={'categorias':categorias}
-        messages.success(request, 'SubCategoria modificada con exito')
+        messages.success(request, 'SubCategoria agregada con exito')
         return render(request, "inventario/modificar_categoria.html", context, {})
     #########################
 
     #modificar subcategoria
     if(accionSubCatSubmit=="Modificar" and not(idSubCategoria==-1 or idSubCategoria==None)):
         try:
-            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria)
-            print(idCat.values('fkCategoria','nombreSubCategoria'))
-            print(idCat[0].fkCategoria.pkCategoria)
-            #auxCategoria = Categoria.objects.get(pkCategoria = )
-            #print(auxCategoria)
+            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).first()
             aux = SubCategoria(
-                fkCategoria= idCat[0].fkCategoria,
+                fkCategoria= idCat.fkCategoria,
                 nombreSubCategoria=nombreSubCat
             ) 
             aux.full_clean()
@@ -112,7 +108,6 @@ def modificar_categoria(request, *args, **kwargs):
             context={'categorias':categorias}
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/modificar_categoria.html", context, {})
-
         SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).update(nombreSubCategoria = aux.nombreSubCategoria)
         context={'categorias':categorias}
         messages.success(request, 'SubCategoria modificada con exito')
