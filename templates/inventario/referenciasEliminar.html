@@ -9,7 +9,7 @@
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
-        <h1> Modificar Referencias </h1>
+        <h1> Eliminar Referencias </h1>
       </center>
     </div>
   </div>
@@ -63,7 +63,7 @@
 
           <div class="form-group">
               <label for="inputNombre">Nombre</label>
-              <input required id="inputNombre" name="inputNombre" type="text" class="form-control" value="{{nombreO}}">
+              <input readonly id="inputNombre" name="inputNombre" type="text" class="form-control" value="{{nombreO}}">
               <div hidden>
                 <input id="inputId" name="inputId" type="text" class="form-control" value="{{idO}}" hidden>
               </div>              
@@ -71,35 +71,36 @@
                   
           <div class="form-group">
             <label for="DescrProducto">Descripción del producto</label>
-            <textarea required class="form-control" id="DescrProducto" name="DescrProducto" rows="3" >{{descripcionO}}</textarea>
+            <textarea readonly class="form-control" id="DescrProducto" name="DescrProducto" rows="3" >{{descripcionO}}</textarea>
           </div>
 
           <div class="form-group">
             <label for="inputIva">Iva (%)</label>
-            <input required id="inputIva" name="inputIva" type="number" class="form-control" value="{{ivaO}}">          
+            <input readonly id="inputIva" name="inputIva" type="number" class="form-control" value="{{ivaO}}">          
           </div>
 
           <div class="form-group">
             <label for="inputPrecio">Precio</label>
-            <input required id="inputPrecio" name="inputPrecio" type="text" class="form-control" value="{{precioO}}">
+            <input readonly id="inputPrecio" name="inputPrecio" type="text" class="form-control" value="{{precioO}}">
           </div>
           
           <div class="form-group">
             <div class="custom-file">
               <label for="buscadorImagen">Imagen</label>
               <img name="actualImg" id="actualImg" src="{{rutaImagenO}}">
-              <div>
-                <input type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" accept="image/*">
-                <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
-              </div>
             </div>
           </div>
 
           <div class="form-group">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <input type="submit" name="productos-submit" id="productos-submit" tabindex="4" class="form-control btn" value="Modificar Referencia">
+                <input type="submit" name="productos-submit" id="productos-submit" tabindex="4" class="form-control btn" value="Eliminar Referencia">                
               </div>
+              <center>
+                {% if hayProductos %}
+                  <label for="advertencia" style="color: crimson">Esta referencia tiene productos asociados ¿Está seguro que desea eliminarla?</label>
+                {% endif %}
+              </center>
             </div>
           </div>                  
         </form>

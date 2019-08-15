@@ -559,6 +559,379 @@ def modificarProductos(request, *args, **kwargs):
     #print(context)
     return render(request, "inventario/productosModificar.html",context, {})
 
+def productosConsultarPrincipal(request, *args, **kwargs):
+    #categorias = Categoria.objects.all()
+    #context={'categorias':categorias}
+    return render(request, "inventario/productosConsultarPrincipal.html", {})
+
+def consultarReferencias(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+
+    modificar = request.POST
+    idcategoria = modificar.get('categoria')
+    subcategorias = {}
+    idsubcategoria = modificar.get('subcategoria')
+    productos = {}
+    idproducto = modificar.get('producto')
+    catSeleccionada = False
+    subCatSeleccionada = False
+    producSeleccionado = False
+    
+    if((modificar.get('categoria') != "") and (modificar.get('categoria') != None) and (modificar.get('categoria') != "-1")):
+        subcategorias = SubCategoria.objects.filter(fkCategoria=idcategoria)
+        catSeleccionada = True
+    else:
+        idcategoria = -1
+
+    if((modificar.get('subcategoria') != "") and (modificar.get('subcategoria') != None) and (modificar.get('subcategoria') != "-1")):
+        productos = Producto.objects.filter(fkSubCategoria=idsubcategoria)
+        subCatSeleccionada = True
+    else:
+        idsubcategoria = -1
+    
+    if((modificar.get('producto') != "") and (modificar.get('producto') != None) and (modificar.get('producto') != "-1")):                
+        idproducto = modificar.get('producto')
+        producSeleccionado = True
+    else:
+        idproducto = -1
+
+    context={
+        'categorias':categorias,
+        'subcategorias':subcategorias, 
+        'productos':productos,
+        'idcategoria':int(idcategoria),
+        'idsubcategoria':int(idsubcategoria),
+        'idproducto':int(idproducto),
+        'nombreO': "",
+        'idO': "",
+        'descripcionO': "",
+        'ivaO': "",
+        'precioO': "",
+        'rutaImagenO': "",
+    }
+
+    if((idproducto != "") and (idproducto != None) and (idproducto != "-1") and (idproducto != -1)): #SE CARGAN LOS VALORES DE LA REFERENCIA
+        producObject = Producto.objects.get(pkProducto=idproducto)
+        nombreO = producObject.nombre
+        descripcionO = producObject.descripcion        
+        precioO = producObject.precio
+        ivaOPorcent = producObject.iva
+        ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
+        rutaImagenO = producObject.rutaImagen
+
+        context={
+            'categorias':categorias,
+            'subcategorias':subcategorias, 
+            'productos':productos,
+            'idcategoria':int(idcategoria),
+            'idsubcategoria':int(idsubcategoria),
+            'idproducto':int(idproducto),
+            'nombreO': nombreO,
+            'idO': int(idproducto),
+            'descripcionO': descripcionO,
+            'ivaO': ivaO,
+            'precioO': precioO,
+            'rutaImagenO': "../"+rutaImagenO.name,
+        }
+
+    return render(request, "inventario/referenciasConsultar.html", context, {})
+
+def consultarProductos(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    productos = Producto.objects.all()
+    idProducto = 0
+    proveedores = Proveedor.objects.all()
+    idProveedor = 0
+    bodegas = Bodega.objects.all()
+    idBodega = 0
+
+    detalles = {}
+    idDetalle = 0
+
+    #Variables de carga de campos
+    referenciaO = ""
+    idrefO= 0
+    tallaO = ""
+    nitO = ""
+    colorO = ""
+    fkBodegaO = ""
+    cantidadO = 0
+
+    if(request.method == 'POST'):
+        modificar = request.POST
+        idProducto = int(modificar.get('producto'))
+        idProveedor = modificar.get('proveedor')
+        idBodega = int(modificar.get('bodega'))
+
+        #BUSCAR DETALLES
+        if((idProducto!=-1) and (idProveedor!="-1") and (idBodega!=-1)): #LOS TRES CAMPOS SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor,
+                                                        fkBodega=idBodega)
+        elif((idProducto!=-1) and (idProveedor!="-1")):  #PRODUCTO Y PROVEEDOR SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor)
+        elif((idProducto!=-1) and (idBodega!=-1)):     #PRODUCTO Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        fkBodega=idBodega)
+        elif((idProveedor!="-1") and (idBodega!=-1)):    #PROVEEDOR Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(nit=idProveedor,
+                                                        fkBodega=idBodega)
+        else: #SOLO UN CAMPO SELECC
+            if(idProducto!=-1):    #PRODUCTO SELECCIONADO
+                detalles = DetallesProducto.objects.filter(fkProducto=idProducto)
+            elif(idProveedor!="-1"): #PROVEEDOR SELECCIONADO
+                detalles = DetallesProducto.objects.filter(nit=idProveedor)
+            elif(idBodega!=-1):    #BODEGA SELECCIONADA
+                detalles = DetallesProducto.objects.filter(fkBodega=idBodega)
+
+
+        #OBTENER LOS CAMPOS ANTIGUOS
+        if((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
+            print(idDetalle)
+            detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
+            
+            referenciaO = detalleObject.fkProducto.nombre
+            idrefO = detalleObject.fkProducto.pkProducto
+            tallaO = detalleObject.talla
+            nitO = detalleObject.nit.pknit
+            colorO = detalleObject.color
+            fkBodegaO = detalleObject.fkBodega.pkBodega
+            cantidadO = detalleObject.cantidad
+
+    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':referenciaO, 'idref':idrefO, 'talla':tallaO, 'nit':nitO, 'color':colorO, 'pkBodega':fkBodegaO, 'cantidad':cantidadO}
+    return render(request, "inventario/productosConsultar.html",context, {})
+
+def productosEliminarPrincipal(request, *args, **kwargs):
+    return render(request, "inventario/productosEliminarPrincipal.html", {})
+
+def eliminarReferencias(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+
+    modificar = request.POST
+    idcategoria = modificar.get('categoria')
+    subcategorias = {}
+    idsubcategoria = modificar.get('subcategoria')
+    productos = {}
+    idproducto = modificar.get('producto')
+    catSeleccionada = False
+    subCatSeleccionada = False
+    producSeleccionado = False
+    hayProductos = False
+    
+    if((modificar.get('categoria') != "") and (modificar.get('categoria') != None) and (modificar.get('categoria') != "-1")):
+        subcategorias = SubCategoria.objects.filter(fkCategoria=idcategoria)
+        catSeleccionada = True
+    else:
+        idcategoria = -1
+
+    if((modificar.get('subcategoria') != "") and (modificar.get('subcategoria') != None) and (modificar.get('subcategoria') != "-1")):
+        productos = Producto.objects.filter(fkSubCategoria=idsubcategoria)
+        subCatSeleccionada = True
+    else:
+        idsubcategoria = -1
+    
+    if((modificar.get('producto') != "") and (modificar.get('producto') != None) and (modificar.get('producto') != "-1")):                
+        idproducto = modificar.get('producto')
+        producSeleccionado = True
+    else:
+        idproducto = -1
+
+    context={
+        'categorias':categorias,
+        'subcategorias':subcategorias, 
+        'productos':productos,
+        'idcategoria':int(idcategoria),
+        'idsubcategoria':int(idsubcategoria),
+        'idproducto':int(idproducto),
+        'nombreO': "",
+        'idO': "",
+        'descripcionO': "",
+        'ivaO': "",
+        'precioO': "",
+        'rutaImagenO': "",
+        'hayProductos': hayProductos
+    }
+
+
+    if (modificar.get('productos-submit')=="Eliminar Referencia"): #SE Elimina LA REFERENCIA
+        if(producSeleccionado):
+            try:
+                Producto.objects.filter(pkProducto = idproducto).delete()
+            except ValidationError as e:
+                messages.info(request, 'Referencia no registrada en el sistema')
+                context={
+                    'categorias':categorias,
+                    'subcategorias':subcategorias, 
+                    'productos':productos,
+                    'idcategoria':int(idcategoria),
+                    'idsubcategoria':int(idsubcategoria),
+                    'idproducto':-1,
+                    'nombreO': "",
+                    'idO': 0,
+                    'descripcionO': "",
+                    'ivaO': "",
+                    'precioO': 0,
+                    'rutaImagenO': "",
+                    'hayProductos': False
+                }
+                return render(request, "inventario/referenciasModificar.html", context, {})
+                 
+            messages.success(request, 'Referencia eliminada exitosamente')
+            context={
+                'categorias':categorias,
+                'subcategorias':subcategorias, 
+                'productos':productos,
+                'idcategoria':int(idcategoria),
+                'idsubcategoria':int(idsubcategoria),
+                'idproducto':-1,
+                'nombreO': "",
+                'idO': 0,
+                'descripcionO': "",
+                'ivaO': "",
+                'precioO': 0,
+                'rutaImagenO': "",
+                'hayProductos': False
+            }
+            return render(request, "inventario/referenciasEliminar.html", context, {})
+
+        else:
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            context={
+                'categorias':categorias,
+                'subcategorias':subcategorias, 
+                'productos':productos,
+                'idcategoria':int(idcategoria),
+                'idsubcategoria':int(idsubcategoria),
+                'idproducto':int(idproducto),
+                'nombreO': nombre,
+                'idO': int(modificar.get('inputId')),
+                'descripcionO': descripcion,
+                'ivaO': modificar.get('inputIva'),
+                'precioO': precio,
+                'rutaImagenO': "../"+imagen.name,
+                'hayProductos': hayProductos
+            }
+            return render(request, "inventario/referenciasEliminar.html", context, {})
+
+    #SE CARGAN LOS VALORES DE LA REFERENCIA
+    elif((idproducto != "") and (idproducto != None) and (idproducto != "-1") and (idproducto != -1)):
+        producObject = Producto.objects.get(pkProducto=idproducto)
+        nombreO = producObject.nombre
+        descripcionO = producObject.descripcion        
+        precioO = producObject.precio
+        ivaOPorcent = producObject.iva
+        ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
+        rutaImagenO = producObject.rutaImagen
+        detallesP = DetallesProducto.objects.filter(fkProducto=idproducto)
+
+        if((len(detallesP) > 0) and (detallesP != None)):
+            #hayProductos = True
+            messages.info(request, 'Esta referencia tiene productos asociados ¿Está seguro que desea eliminarla?')
+
+        context={
+            'categorias':categorias,
+            'subcategorias':subcategorias, 
+            'productos':productos,
+            'idcategoria':int(idcategoria),
+            'idsubcategoria':int(idsubcategoria),
+            'idproducto':int(idproducto),
+            'nombreO': nombreO,
+            'idO': int(idproducto),
+            'descripcionO': descripcionO,
+            'ivaO': ivaO,
+            'precioO': precioO,
+            'rutaImagenO': "../"+rutaImagenO.name,
+            'hayProductos': hayProductos
+        }
+
+    return render(request, "inventario/referenciasEliminar.html", context, {})
+
+def eliminarProductos(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    productos = Producto.objects.all()
+    idProducto = 0
+    proveedores = Proveedor.objects.all()
+    idProveedor = 0
+    bodegas = Bodega.objects.all()
+    idBodega = 0
+
+    detalles = {}
+    idDetalle = 0
+
+    #Variables de carga de campos
+    referenciaO = ""
+    idrefO= 0
+    tallaO = ""
+    nitO = ""
+    colorO = ""
+    fkBodegaO = ""
+    cantidadO = 0
+
+    if(request.method == 'POST'):
+        modificar = request.POST
+        idProducto = int(modificar.get('producto'))
+        idProveedor = modificar.get('proveedor')
+        idBodega = int(modificar.get('bodega'))
+
+        #BUSCAR DETALLES
+        if((idProducto!=-1) and (idProveedor!="-1") and (idBodega!=-1)): #LOS TRES CAMPOS SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor,
+                                                        fkBodega=idBodega)
+        elif((idProducto!=-1) and (idProveedor!="-1")):  #PRODUCTO Y PROVEEDOR SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        nit=idProveedor)
+        elif((idProducto!=-1) and (idBodega!=-1)):     #PRODUCTO Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(fkProducto=idProducto,
+                                                        fkBodega=idBodega)
+        elif((idProveedor!="-1") and (idBodega!=-1)):    #PROVEEDOR Y BODEGA SELECCIONADOS
+            detalles = DetallesProducto.objects.filter(nit=idProveedor,
+                                                        fkBodega=idBodega)
+        else: #SOLO UN CAMPO SELECC
+            if(idProducto!=-1):    #PRODUCTO SELECCIONADO
+                detalles = DetallesProducto.objects.filter(fkProducto=idProducto)
+            elif(idProveedor!="-1"): #PROVEEDOR SELECCIONADO
+                detalles = DetallesProducto.objects.filter(nit=idProveedor)
+            elif(idBodega!=-1):    #BODEGA SELECCIONADA
+                detalles = DetallesProducto.objects.filter(fkBodega=idBodega)
+
+
+        #ELIMINAR EL PRODUCTO
+        if((modificar.get('productos-submit')=="Eliminar Producto") and (modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
+            try:
+                DetallesProducto.objects.filter(pkDetallesP = idDetalle).delete()
+            except ValidationError as e:
+                messages.info(request, 'Producto no registrado en el sistema')
+                context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':-1, 'referencia':"", 'idref':0, 'talla':"", 'nit':"", 'color':"", 'pkBodega':"", 'cantidad':0}
+                return render(request, "inventario/productosEliminar.html",context, {})
+
+            messages.success(request, 'Producto eliminado exitosamente')
+            context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':-1, 'referencia':"", 'idref':0, 'talla':"", 'nit':"", 'color':"", 'pkBodega':"", 'cantidad':0}
+            return render(request, "inventario/productosEliminar.html",context, {})
+
+        #OBTENER LOS CAMPOS ANTIGUOS
+        elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
+            idDetalle = int(modificar.get('detalle'))
+            print(idDetalle)
+            detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
+            
+            referenciaO = detalleObject.fkProducto.nombre
+            idrefO = detalleObject.fkProducto.pkProducto
+            tallaO = detalleObject.talla
+            nitO = detalleObject.nit.pknit
+            colorO = detalleObject.color
+            fkBodegaO = detalleObject.fkBodega.pkBodega
+            cantidadO = detalleObject.cantidad
+
+            if(cantidadO >0):
+                messages.info(request, 'Este producto tiene unidades registradas ¿Está seguro que desea eliminarlo?')
+
+    context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':referenciaO, 'idref':idrefO, 'talla':tallaO, 'nit':nitO, 'color':colorO, 'pkBodega':fkBodegaO, 'cantidad':cantidadO}
+    return render(request, "inventario/productosEliminar.html",context, {})
+
 def proveedor(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
