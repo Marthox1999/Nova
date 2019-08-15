@@ -9,7 +9,7 @@ class Cliente(models.Model):
         ('TI','Tarjeta de Identidad'),
     }
 
-    nombre = models.CharField(max_length=32, unique=True, primary_key=True)
+    nombre = models.CharField(max_length=128, unique=True, primary_key=True)
     clave = models.CharField(max_length=128, editable=True)
     fechaNacimiento = models.DateField()
     direccion = models.CharField(max_length=32) 
@@ -28,6 +28,10 @@ class Cliente(models.Model):
                                     clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest()).exists()
         return auth
 
+    def buscarCliente(self, *args, **kwargs):
+        aux = Cliente.objects.filter(nombre=self.nombre,
+                                    clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest())
+        return aux
 
 class AdministradorDuenio (models.Model):
     TIPO = {
@@ -35,7 +39,7 @@ class AdministradorDuenio (models.Model):
         ('CEO','Duenio'),
     }
     pkAdministradorDuenio = models.AutoField(primary_key=True)
-    nombreUsuario = models.CharField(max_length=8)
+    nombreUsuario = models.CharField(max_length=128)
     clave = models.CharField(max_length=128, editable=True)
     tipo = models.CharField(max_length=5, choices=TIPO) 
 
