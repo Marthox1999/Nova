@@ -5,10 +5,10 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from usuarios.models import AdministradorDuenio
+
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from usuarios.models import Cliente
+from usuarios.models import *
 from inventario.models import Categoria
 
 
@@ -200,4 +200,12 @@ def clientePerfil(request, nombre):
     cliente = Cliente.objects.filter(nombre=nombre)
     context = {'nombre':nombre, 'cliente':cliente}
     return render(request,"usuarios/clientePerfil.html", context, {})
+
+
+def clienteCarrito(request, nombre):
+    productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
+
+    context = {'nombre': nombre, 'productosCarrito': productosCarrito}
+    return render(request, "usuarios/clienteCarrito.html", context, {})
+
 

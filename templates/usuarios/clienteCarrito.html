@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+	
+<div class="col-md-8 col-md-offset-2">
+  <br>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> Mi Carrito </h1>
+      </center>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-lg-12">
+        {% csrf_token %}               
+        
+        <div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Categoría</th>
+                <th scope="col">Subcategoría</th>
+                <th scope="col">Nombre del producto</th>
+                <th scope="col">Talla</th>
+                <th scope="col">Color</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio unidad</th>
+                <th scope="col">Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for carrito in productosCarrito %}
+                <tr>
+                  <td>{{carrito.fkDetalleProducto.fkProducto.fkSubCategoria.nombreSubCategoria}}</td>
+                  <td>{{carrito.fkDetalleProducto.fkProducto.fkSubCategoria.fkCategoria.nombreCategoria}}</td>
+                  <td>{{carrito.fkDetalleProducto.fkProducto.nombre}}</td>
+                  <td>{{carrito.fkDetalleProducto.talla}}</td>
+                  <td>{{carrito.fkDetalleProducto.color}}</td>
+                  <td>{{carrito.cantidad}}</td>
+                  <td>{{carrito.fkDetalleProducto.fkProducto.precio}}</td>
+                </tr>
+                {% empty %}
+                <p>No hay productos agregados al carrito</p>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+                        
+                        
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
