@@ -17,7 +17,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-lg-12">
-        <form id="formulario-producto" action="#" method="post">
+        <form id="formulario-producto" action="#" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="form-group">
             <label for="categoria">Categoria</label>
@@ -64,6 +64,9 @@
           <div class="form-group">
               <label for="inputNombre">Nombre</label>
               <input required id="inputNombre" name="inputNombre" type="text" class="form-control" value="{{nombreO}}">
+              <div hidden>
+                <input id="inputId" name="inputId" type="text" class="form-control" value="{{idO}}" hidden>
+              </div>              
           </div>
                   
           <div class="form-group">
@@ -84,8 +87,9 @@
           <div class="form-group">
             <div class="custom-file">
               <label for="buscadorImagen">Imagen</label>
+              <img name="actualImg" id="actualImg" src="{{rutaImagenO}}">
               <div>
-                <input required type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" value="{{rutaImagenO}}">
+                <input type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" accept="image/*">
                 <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
               </div>
             </div>
