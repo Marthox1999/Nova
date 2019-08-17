@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-	
+
+{% load static %}
 <div class="col-md-8 col-md-offset-2">
   <br>
   <div class="panel-login panel">
@@ -14,39 +15,55 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-lg-12">
+        {% if productosCarrito %}
         {% csrf_token %}               
         
         <div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Categoría</th>
-                <th scope="col">Subcategoría</th>
-                <th scope="col">Nombre del producto</th>
-                <th scope="col">Talla</th>
-                <th scope="col">Color</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Precio unidad</th>
-                <th scope="col">Eliminar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for carrito in productosCarrito %}
+          <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+            <table class="table">
+              <thead>
                 <tr>
-                  <td>{{carrito.fkDetalleProducto.fkProducto.fkSubCategoria.nombreSubCategoria}}</td>
-                  <td>{{carrito.fkDetalleProducto.fkProducto.fkSubCategoria.fkCategoria.nombreCategoria}}</td>
-                  <td>{{carrito.fkDetalleProducto.fkProducto.nombre}}</td>
-                  <td>{{carrito.fkDetalleProducto.talla}}</td>
-                  <td>{{carrito.fkDetalleProducto.color}}</td>
-                  <td>{{carrito.cantidad}}</td>
-                  <td>{{carrito.fkDetalleProducto.fkProducto.precio}}</td>
+                  <th scope="col"><center>Categoría</center></th>
+                  <th scope="col"><center>Subcategoría</center></th>
+                  <th scope="col"><center>Nombre del producto</center></th>
+                  <th scope="col"><center>Talla</center></th>
+                  <th scope="col"><center>Color</center></th>
+                  <th scope="col"><center>Cantidad</center></th>
+                  <th scope="col"><center>Precio unidad</center></th>
+                  <th scope="col"><center>Eliminar</center></th>
                 </tr>
-                {% empty %}
-                <p>No hay productos agregados al carrito</p>
-              {% endfor %}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {% for carrito in productosCarrito %}
+                  <tr>
+                    <td><center>{{carrito.fkDetalleProducto.fkProducto.fkSubCategoria.nombreSubCategoria}}</center></td>
+                    <td><center>{{carrito.fkDetalleProducto.fkProducto.fkSubCategoria.fkCategoria.nombreCategoria}}</center></td>
+                    <td><center>{{carrito.fkDetalleProducto.fkProducto.nombre}}</center></td>
+                    <td><center>{{carrito.fkDetalleProducto.talla}}</center></td>
+                    <td><center>{{carrito.fkDetalleProducto.color}}</center></td>
+                    <td><center>{{carrito.cantidad}}</center></td>
+                    <td><center>{{carrito.fkDetalleProducto.fkProducto.precio}}</center></td>
+                    <td>
+                      <center>
+                        <a type="submit" name="eliminar" id="eliminar" value="{{carrito.pkCarrito}}"><img src="{% static 'images/Iconos/delete.png' %}"></a>
+                      </center>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <p>No hay productos agregados al carrito</p>
+                {% endfor %}
+              </tbody>
+            </table>
+          </form>
         </div>
+
+        {% else %}
+          <p>
+            <div class="alert alert-info" role="alert">
+              No hay ningún artículo en el carrito
+              </div>
+          </p>
+        {% endif %}
                         
                         
 

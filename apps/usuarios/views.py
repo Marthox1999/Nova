@@ -203,6 +203,10 @@ def clientePerfil(request, nombre):
 
 
 def clienteCarrito(request, nombre):
+    eliminarArticulo = request.POST
+    eliminar = eliminar.get('eliminar')
+    
+
     productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
 
     context = {'nombre': nombre, 'productosCarrito': productosCarrito}
