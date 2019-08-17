@@ -203,10 +203,15 @@ def clientePerfil(request, nombre):
 
 
 def clienteCarrito(request, nombre):
-    eliminarArticulo = request.POST
-    eliminar = eliminar.get('eliminar')
-    
 
+    
+    eliminar = request.POST
+    idEliminar = eliminar.get('eliminar')
+    if(idEliminar):
+        try:
+            Carrito.objects.filter(pkCarrito=idEliminar).delete()
+        except ValidationError as e:
+            messages.info(request, 'El artículo no pudo ser eliminado del carrito')
     productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
 
     context = {'nombre': nombre, 'productosCarrito': productosCarrito}
