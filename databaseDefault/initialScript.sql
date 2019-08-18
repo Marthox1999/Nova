@@ -74,7 +74,41 @@ insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/
 insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/ZapatosMujer3.jpg', 14,'ZapatosMujer3', 0.19);
 insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/ZapatosMujer4.jpg', 14,'ZapatosMujer4', 0.19);
 
-insert into ventas_descuentoproducto values (DEFAULT, DATE '2019/08/17',DATE '2019/08/18',0.1,15);
-insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/08/17',DATE '2019/08/18',0.15,2);
-insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/07/18',0.15,3);
-insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/07/18',0.15,2);
+insert into ventas_descuentoproducto values (DEFAULT, DATE '2019/08/17',DATE '2019/08/20',0.3,15);
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.2,5);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.15,2);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.1,6);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.15,2);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.2,4);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.15,2);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.3,2);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.2,1);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.15,3);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/08/20',0.2,13);
+
+insert into ventas_descuentoproducto values (DEFAULT, DATE '2019/08/17',DATE '2019/08/20',0.3,30);
+
+
+insert into ventas_descuentoproducto values (DEFAULT, DATE '2016/08/17',DATE '2017/08/19',0.99,15);
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,5);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,2);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,6);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/08/20',0.99,2);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,4);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/08/20',0.99,2);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,2);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,1);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/08/20',0.99,3);
+
+insert into ventas_descuentosubcategoria values (DEFAULT, DATE '2016/07/17',DATE '2017/07/18',0.99,13);
+
+insert into ventas_descuentoproducto values (DEFAULT, DATE '2016/08/17',DATE '2017/08/19',0.99,30);

@@ -24,31 +24,38 @@ class Producto(models.Model):
     iva = models.FloatField( default=0, validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],)
     precio = models.IntegerField()
     rutaImagen = models.ImageField(upload_to = '../media/productosImagenes')###############
+
     #toma todos los productos dados
     #retorna lista de productos con el precio cambiado, si tiene al menos un descuento activo
     #si tienen mas de uno toma el mayor
     #sino retorna el mismo objeto con solamente el iva aplicado
     def productosConDescuento(self,subCategoria,hoy,*args, **kwargs):
         from ventas.models import DescuentoProducto, DescuentoCategoria, DescuentoSubCategoria
-        #variables para guardar mayor
-        maxdp = 0.0
-        maxdc = 0.0
-        maxdsc = 0.0
         #descuento activos para la fecha presente
         descuentosProductos = DescuentoProducto.objects.filter(fechaFin__gte=hoy).filter(fechaInicio__lte=hoy)
         descuentosCategorias = DescuentoCategoria.objects.filter(fechaFin__gte=hoy).filter(fechaInicio__lte=hoy)
         descuentosSubCategorias = DescuentoSubCategoria.objects.filter(fechaFin__gte=hoy).filter(fechaInicio__lte=hoy)
+        #inicializando las variables
+        productosConDp = []
+        productosConDsc = []
+        productosConDc = []
         #productos con descuento de producto
         for dp in descuentosProductos:
-            productosConDp = Producto.objects.filter(fkSubCategoria=subCategoria).filter(pkProducto = dp.fkProducto.pkProducto)
+            #si el descuento es de mi subcategoria
+            auxproducto = Producto.objects.get(pkProducto = dp.fkProducto.pkProducto)
+            auxsubcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria)
+            if (auxproducto.fkSubCategoria != auxsubcategoria):
+                continue
+            else:
+                productosConDp = Producto.objects.filter(pkProducto = dp.fkProducto.pkProducto)
         #productos con descuento de subcategoria
         for dsc in descuentosSubCategorias:
             #si el descuento en que estoy es de mi subcategoria
-            if (dsc.fkSubCategoria.pkSubCategoria != subCategoria):
+            if (dsc.fkSubCategoria.pkSubCategoria != int(subCategoria)):
                 continue
             else:
                 #obtengo los productos de mi subcategoria
-                productosConDc = Producto.objects.filter(fkSubCategoria=subCategoria)
+                productosConDsc = Producto.objects.filter(fkSubCategoria=subCategoria)
         #productos con descuento de categoria
         for dc in descuentosCategorias:
             #si el descuento en que estoy es de mi categoria
@@ -57,22 +64,84 @@ class Producto(models.Model):
             else:
                 #obtengo los productos de mi categoria
                 productosConDc = Producto.objects.filter(fkSubCategoria=subCategoria)
-                
-
-            
+        #vemos si los productos existentes tienen alguno de los descuentos recolectados        
         productos = Producto.objects.filter(fkSubCategoria=subCategoria)
-        result = []
-        #iva
-        for p in productos:
-            p.precio = p.precio - (p.precio * p.iva)
-            result.append(p)
-        return result
-            
+        resultado = []
+        ##¿el operador in en python cuesta O(n) en el peor caso deberiamos hacer hash? o no se si se puede la verdad
+        for producto in productos:
+            if ((producto not in productosConDp) and (producto not in productosConDsc) and (producto not in productosConDc)):
+                #se adiciona iva, no tienen ningun descuento
+                producto.precio = producto.precio - (producto.precio * producto.iva)
+                resultado.append(producto)
+                continue
+            elif ((producto in productosConDp) and (producto in productosConDsc) and (producto in productosConDc)):
+                #encontrar el mayor descuento y aplicarlo
+                #descuento por producto
+                d1 = descuentosProductos.filter(fkProducto = producto).order_by("porcentajeDescuento").first()
+                #descuento por categoria
+                auxcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria).fkCategoria
+                d2 = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
+                #descuento por subcategoria
+                auxsubcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria)
+                d3 = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
+                #cual es el mayor de los 3
+                maxDescuento = max(d1.porcentajeDescuento, d2.porcentajeDescuento, d3.porcentajeDescuento)
+                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                resultado.append(producto)
+            elif ((producto in productosConDp) and (producto in productosConDsc)):
+                #encontrar el mayor descuento y aplicarlo
+                d1 = descuentosProductos.filter(fkProducto = producto).order_by("porcentajeDescuento").first()
+                #descuento por subcategoria
+                auxsubcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria)
+                d3 = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
+                #maximo
+                maxDescuento = max(d1.porcentajeDescuento, d3.porcentajeDescuento)
+                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                resultado.append(producto)
+            elif ((producto in productosConDp) and (producto in productosConDc)):
+                #encontrar el mayor descuento y aplicarlo
+                d1 = descuentosProductos.filter(fkProducto = producto).order_by("porcentajeDescuento").first()
+                #descuento por categoria
+                auxcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria).fkCategoria
+                d2 = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
+                #maximo
+                maxDescuento = max(d1.porcentajeDescuento, d2.porcentajeDescuento)
+                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                resultado.append(producto) 
+            elif ((producto in productosConDsc) and (producto in productosConDc)):
+                #encontrar el mayor descuento y aplicarlo
+                #descuento por subcategoria
+                auxsubcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria)
+                d3 = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
+                #descuento por categoria
+                auxcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria).fkCategoria
+                d2 = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
+                #maximo
+                maxDescuento = max(d2.porcentajeDescuento, d3.porcentajeDescuento)
+                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                resultado.append(producto) 
+            elif(producto in productosConDp):
+                #solo tiene descuento por producto se aplica junto al iva
+                p = descuentosProductos.get(fkProducto = producto)
+                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) - (producto.precio * producto.iva)
+                resultado.append(producto)
+                continue
+            elif(producto in productosConDsc):
+                #solo tiene descuento por subcategoria se aplica junto al iva
+                auxsubcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria)
+                p = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
+                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) - (producto.precio * producto.iva)
+                resultado.append(producto)
+                continue
+            elif(producto in productosConDc):
+                #solo tiene descuento por categoria se aplica junto al iva
+                auxcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria).fkCategoria
+                p = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
+                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) - (producto.precio * producto.iva)
+                resultado.append(producto)
+                continue
 
-                
-                
-
-
+        return resultado
 
 
 
@@ -125,3 +194,4 @@ class DetallesProducto(models.Model):
     color = models.CharField(max_length=64, choices=COLOR)
     fkBodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
+

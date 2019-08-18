@@ -525,20 +525,10 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     import datetime
     categorias = Categoria.objects.all()
     subCategorias= SubCategoria.objects.filter(fkCategoria=categoria)
-    productos=Producto.objects.filter(fkSubCategoria=subCategoria)
     #########si existen descuentos aplicarlos
     #prueba con un descuento
     hoy = datetime.date.today()
-    productos = productos[0].productosConDescuento(subCategoria, hoy)
-
-    '''
-    descuentosProductos = DescuentoProducto.objects.all()
-    hoy = datetime.date.today()
-    for descuentoProducto in descuentosProductos:
-        if (descuentoProducto.isActivoDescuentoProducto(hoy)):
-            aux = productos.get(pkProducto = descuentoProducto.fkProducto.pkProducto)
-            aux.precio = aux.precio - (aux.iva * aux.precio) - (descuentoProducto.porcentajeDescuento * aux.precio)
-            productos.filter(pkProducto = descuentoProducto.fkProducto.pkProducto).update(precio = aux.precio)
-    '''
+    aux = Producto(subCategorias[0].pkSubCategoria, "","", 0.0,0.0)
+    productos = aux.productosConDescuento(subCategoria, hoy)
     context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
