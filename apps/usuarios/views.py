@@ -223,8 +223,11 @@ def clienteCarrito(request, nombre):
             cuantasDebito = range(1, int(numeroDebito)+1)
             cuantasCredito = range(1, int(numeroCredito)+1)
         except ValidationError as e:
-            messages.info(request, 'El artículo no pudo ser eliminado del carrito')
-            #print ("Un error extraño")
+            messages.info(request, 'Error para identificar la cantidad de tarjetas')
+        except ValueError as e:
+            pass
+            #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
+            
 
 
     context = {'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
