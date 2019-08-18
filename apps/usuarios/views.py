@@ -203,10 +203,9 @@ def clientePerfil(request, nombre):
 
 
 def clienteCarrito(request, nombre):
-
     
-    eliminar = request.POST
-    idEliminar = eliminar.get('eliminar')
+    accion = request.POST
+    idEliminar = accion.get('eliminar')
     if(idEliminar):
         try:
             Carrito.objects.filter(pkCarrito=idEliminar).delete()
@@ -214,7 +213,21 @@ def clienteCarrito(request, nombre):
             messages.info(request, 'El artículo no pudo ser eliminado del carrito')
     productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
 
-    context = {'nombre': nombre, 'productosCarrito': productosCarrito}
+    numeroDebito = accion.get('cuantasDebito')
+    cuantasDebito = {}
+    numeroCredito = accion.get('cuantasCredito')
+    cuantasCredito = {}
+
+    if(numeroDebito or numeroCredito):
+        try:
+            cuantasDebito = range(1, int(numeroDebito)+1)
+            cuantasCredito = range(1, int(numeroCredito)+1)
+        except ValidationError as e:
+            messages.info(request, 'El artículo no pudo ser eliminado del carrito')
+            #print ("Un error extraño")
+
+
+    context = {'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {})
 
 
