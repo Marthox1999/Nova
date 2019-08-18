@@ -30,12 +30,14 @@
     <div class="product-layout  product-grid  col-md-4 col-sm-6 col-xs-12">
         <div class="item">
         <div class="product-thumb clearfix mb_30">
-            <div class="image product-imageblock"> <img data-name="product_image" src="{{producto.rutaImagen.url}}"  title="Producto" class="img-responsive" /> 
+            <a href="{% url 'inventario:productoDetalles' nombre=nombre categoria=categoria idproducto=producto.pkProducto precio=producto.precio%}">
+            <div class="image product-imageblock"><img data-name="product_image" src="{{producto.rutaImagen.url}}"  title="Producto" class="img-responsive" />
             </div>
             <div class="caption product-detail text-center">
-            <h6 data-name="product_name" class="product-name mt_20"><a href="#" title="{{producto.descripcion}}">{{producto.nombre}} - {{producto.pkProducto}}</a></h6>
+            <h6 data-name="product_name" class="product-name mt_20"><a href="#" title="{{producto.nombre}}">{{producto.nombre}} - {{producto.pkProducto}}</a></h6>
             <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{producto.precio}}</span></span>
             </div>
+        </a>
         </div>
         </div>
     </div>

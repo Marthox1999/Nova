@@ -326,9 +326,7 @@ def productosModificarPrincipal(request, *args, **kwargs):
 
 def modificarReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-
     modificar = request.POST
-    print("HOLAAAAAAAAAAAAAAAa")
     print(modificar)
     idcategoria = modificar.get('categoria')
     subcategorias = {}
@@ -532,3 +530,10 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     productos = aux.productosConDescuento(subCategoria, hoy)
     context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
+
+def productoDetalles(request, nombre,categoria, idproducto, precio):
+    categorias = Categoria.objects.all()
+    auxcategoria = Categoria.objects.get(pkCategoria = categoria)
+    subCategorias= SubCategoria.objects.filter(fkCategoria=auxcategoria)
+    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'idproducto': idproducto,'precio':precio, 'nombre':nombre}
+    return render(request, 'inventario/productoDetalles.html', context, {})

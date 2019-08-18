@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% load static %}
+
+{% endblock %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
+<div style="padding: 5px">
+        <div id="column-left" class="col-sm-4 col-lg-3 " >
+            <div id="category-menu" class="navbar collapse in mb_40" aria-expanded="true" role="button">
+            <div class="nav-responsive">
+                <div class="heading-part">
+                <h2 class="main_title" >SUBCATEGORIAS</h2>
+                </div>
+                {% for sub in subCategorias %}
+                    <ul class="nav  main-navigation collapse in">
+                        <li><a href="{% url 'inventario:productosSubCategorias' nombre=nombre categoria=categoria subCategoria=sub.pkSubCategoria %}" style="padding: 2px; background-color: white;">{{sub.nombreSubCategoria}}</a></li>
+                    </ul>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+    <div class="column">
+        <div class="col-md-6 col-md-offset-1">
+            <div  style="padding: 5px">
+                <div class="panel-login panel">
+                    <div class="panel-heading">
+                        <center>
+                        <h2> Detalles </h2>
+                        </center>
+                    </div>
+                </div>
+                <div class="panel-body" style="background-color:#FEF0F0;">
+                    <div class="col-lg-12">
+                        <p>{{idproducto}}</p>
+                        <p>{{precio}}</p>
+                    </div>
+                </div>
+            </div>               
+        </div>
+    </div>
+</div>
+
+{% endblock %}
