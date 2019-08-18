@@ -15,6 +15,14 @@ class DescuentoProducto(models.Model):
     validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],
 )
 
+#descuentos vigentes
+    def isActivoDescuentoProducto(self, date, *args, **kwargs):
+        if date >= self.fechaInicio and date <= self.fechaFin:
+            return True
+        return False
+
+
+
 #DescuentoCategoria
 class DescuentoCategoria(models.Model): 
     pkDescuentoCategoria = models.AutoField(primary_key=True)

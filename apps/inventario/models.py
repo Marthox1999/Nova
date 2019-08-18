@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 #Categoria
@@ -20,7 +21,7 @@ class Producto(models.Model):
     fkSubCategoria = models.ForeignKey(SubCategoria, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=300, default = "null")
     descripcion = models.CharField(max_length=1024)
-    iva = models.FloatField()
+    iva = models.FloatField( default=0, validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],)
     precio = models.IntegerField()
     rutaImagen = models.ImageField(upload_to = '../media/productosImagenes')###############
 

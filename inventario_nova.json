@@ -153,7 +153,7 @@
     "fkSubCategoria": 1,
     "nombre": "Camiseta1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camiseta1.jpg"
   }
@@ -165,7 +165,7 @@
     "fkSubCategoria": 1,
     "nombre": "Camiseta2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camiseta2.jpg"
   }
@@ -177,7 +177,7 @@
     "fkSubCategoria": 1,
     "nombre": "Camiseta3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camiseta3.jpg"
   }
@@ -189,7 +189,7 @@
     "fkSubCategoria": 1,
     "nombre": "Camiseta4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camiseta4.jpg"
   }
@@ -201,7 +201,7 @@
     "fkSubCategoria": 2,
     "nombre": "Camisa1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camisa1.jpg"
   }
@@ -213,7 +213,7 @@
     "fkSubCategoria": 2,
     "nombre": "Camisa2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camisa2.jpg"
   }
@@ -225,7 +225,7 @@
     "fkSubCategoria": 2,
     "nombre": "Camisa3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camisa3.jpg"
   }
@@ -237,7 +237,7 @@
     "fkSubCategoria": 2,
     "nombre": "Camisa4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Camisa4.jpg"
   }
@@ -249,7 +249,7 @@
     "fkSubCategoria": 3,
     "nombre": "Pantalon1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Pantalon1.jpg"
   }
@@ -261,7 +261,7 @@
     "fkSubCategoria": 3,
     "nombre": "Pantalon2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Pantalon2.jpg"
   }
@@ -273,7 +273,7 @@
     "fkSubCategoria": 3,
     "nombre": "Pantalon3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Pantalon3.jpg"
   }
@@ -285,7 +285,7 @@
     "fkSubCategoria": 3,
     "nombre": "Pantalon4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Pantalon4.jpg"
   }
@@ -297,7 +297,7 @@
     "fkSubCategoria": 4,
     "nombre": "Blusa1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Blusa1.jpg"
   }
@@ -309,7 +309,7 @@
     "fkSubCategoria": 4,
     "nombre": "Blusa2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Blusa2.jpg"
   }
@@ -321,7 +321,7 @@
     "fkSubCategoria": 4,
     "nombre": "Blusa3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Blusa3.jpg"
   }
@@ -333,7 +333,7 @@
     "fkSubCategoria": 4,
     "nombre": "Blusa4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Blusa4.jpg"
   }
@@ -345,7 +345,7 @@
     "fkSubCategoria": 5,
     "nombre": "Falda1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Falda1.jpg"
   }
@@ -357,7 +357,7 @@
     "fkSubCategoria": 5,
     "nombre": "Falda2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Falda2.jpg"
   }
@@ -369,7 +369,7 @@
     "fkSubCategoria": 5,
     "nombre": "Falda3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Falda3.jpg"
   }
@@ -381,7 +381,7 @@
     "fkSubCategoria": 5,
     "nombre": "Falda4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Falda4.jpg"
   }
@@ -393,7 +393,7 @@
     "fkSubCategoria": 6,
     "nombre": "Vestido1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Vestido1.jpg"
   }
@@ -405,7 +405,7 @@
     "fkSubCategoria": 6,
     "nombre": "Vestido2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Vestido2.jpg"
   }
@@ -417,7 +417,7 @@
     "fkSubCategoria": 6,
     "nombre": "Vestido3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Vestido3.jpg"
   }
@@ -429,7 +429,7 @@
     "fkSubCategoria": 6,
     "nombre": "Vestido4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/Vestido4.jpg"
   }
@@ -441,7 +441,7 @@
     "fkSubCategoria": 13,
     "nombre": "ZapatosHombre1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosHombre1.jpg"
   }
@@ -453,7 +453,7 @@
     "fkSubCategoria": 13,
     "nombre": "ZapatosHombre2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosHombre2.jpg"
   }
@@ -465,7 +465,7 @@
     "fkSubCategoria": 13,
     "nombre": "ZapatosHombre3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosHombre3.jpg"
   }
@@ -477,7 +477,7 @@
     "fkSubCategoria": 13,
     "nombre": "ZapatosHombre4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosHombre4.jpg"
   }
@@ -489,7 +489,7 @@
     "fkSubCategoria": 14,
     "nombre": "ZapatosMujer1",
     "descripcion": "descripcion1",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosMujer1.jpg"
   }
@@ -501,7 +501,7 @@
     "fkSubCategoria": 14,
     "nombre": "ZapatosMujer2",
     "descripcion": "descripcion2",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosMujer2.jpg"
   }
@@ -513,7 +513,7 @@
     "fkSubCategoria": 14,
     "nombre": "ZapatosMujer3",
     "descripcion": "descripcion3",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosMujer3.jpg"
   }
@@ -525,7 +525,7 @@
     "fkSubCategoria": 14,
     "nombre": "ZapatosMujer4",
     "descripcion": "descripcion4",
-    "iva": 19.0,
+    "iva": 0.19,
     "precio": 23000,
     "rutaImagen": "../media/productosImagenes/ZapatosMujer4.jpg"
   }

@@ -34,43 +34,44 @@ insert into inventario_subcategoria values (DEFAULT, 'ZapatosHombre', 5);
 insert into inventario_subcategoria values (DEFAULT, 'ZapatosMujer', 5);
 
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/Camiseta1.jpg', 1,'Camiseta1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/Camiseta2.jpg', 1,'Camiseta2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/Camiseta3.jpg', 1,'Camiseta3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/Camiseta4.jpg', 1,'Camiseta4');
+insert into inventario_producto values (DEFAULT,'descripcion1', 23000, '../media/productosImagenes/Camiseta1.jpg', 1,'Camiseta1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/Camiseta2.jpg', 1,'Camiseta2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/Camiseta3.jpg', 1,'Camiseta3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4', 23000, '../media/productosImagenes/Camiseta4.jpg', 1,'Camiseta4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/Camisa1.jpg', 2,'Camisa1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/Camisa2.jpg', 2,'Camisa2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/Camisa3.jpg', 2,'Camisa3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/Camisa4.jpg', 2,'Camisa4');
+insert into inventario_producto values (DEFAULT,'descripcion1', 23000, '../media/productosImagenes/Camisa1.jpg', 2,'Camisa1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2', 23000, '../media/productosImagenes/Camisa2.jpg', 2,'Camisa2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3', 23000, '../media/productosImagenes/Camisa3.jpg', 2,'Camisa3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4', 23000, '../media/productosImagenes/Camisa4.jpg', 2,'Camisa4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/Pantalon1.jpg', 3,'Pantalon1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/Pantalon2.jpg', 3,'Pantalon2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/Pantalon3.jpg', 3,'Pantalon3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/Pantalon4.jpg', 3,'Pantalon4');
+insert into inventario_producto values (DEFAULT,'descripcion1',23000, '../media/productosImagenes/Pantalon1.jpg', 3,'Pantalon1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/Pantalon2.jpg', 3,'Pantalon2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/Pantalon3.jpg', 3,'Pantalon3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/Pantalon4.jpg', 3,'Pantalon4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/Blusa1.jpg', 4,'Blusa1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/Blusa2.jpg', 4,'Blusa2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/Blusa3.jpg', 4,'Blusa3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/Blusa4.jpg', 4,'Blusa4');
+insert into inventario_producto values (DEFAULT,'descripcion1',23000, '../media/productosImagenes/Blusa1.jpg', 4,'Blusa1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/Blusa2.jpg', 4,'Blusa2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/Blusa3.jpg', 4,'Blusa3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/Blusa4.jpg', 4,'Blusa4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/Falda1.jpg', 5,'Falda1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/Falda2.jpg', 5,'Falda2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/Falda3.jpg', 5,'Falda3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/Falda4.jpg', 5,'Falda4');
+insert into inventario_producto values (DEFAULT,'descripcion1',23000, '../media/productosImagenes/Falda1.jpg', 5,'Falda1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/Falda2.jpg', 5,'Falda2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/Falda3.jpg', 5,'Falda3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/Falda4.jpg', 5,'Falda4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/Vestido1.jpg', 6,'Vestido1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/Vestido2.jpg', 6,'Vestido2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/Vestido3.jpg', 6,'Vestido3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/Vestido4.jpg', 6,'Vestido4');
+insert into inventario_producto values (DEFAULT,'descripcion1',23000, '../media/productosImagenes/Vestido1.jpg', 6,'Vestido1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/Vestido2.jpg', 6,'Vestido2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/Vestido3.jpg', 6,'Vestido3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/Vestido4.jpg', 6,'Vestido4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/ZapatosHombre1.jpg', 13,'ZapatosHombre1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/ZapatosHombre2.jpg', 13,'ZapatosHombre2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/ZapatosHombre3.jpg', 13,'ZapatosHombre3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/ZapatosHombre4.jpg', 13,'ZapatosHombre4');
+insert into inventario_producto values (DEFAULT,'descripcion1',23000, '../media/productosImagenes/ZapatosHombre1.jpg', 13,'ZapatosHombre1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/ZapatosHombre2.jpg', 13,'ZapatosHombre2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/ZapatosHombre3.jpg', 13,'ZapatosHombre3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/ZapatosHombre4.jpg', 13,'ZapatosHombre4', 0.19);
 
-insert into inventario_producto values (DEFAULT,'descripcion1',19, 23000, '../media/productosImagenes/ZapatosMujer1.jpg', 14,'ZapatosMujer1');
-insert into inventario_producto values (DEFAULT,'descripcion2',19, 23000, '../media/productosImagenes/ZapatosMujer2.jpg', 14,'ZapatosMujer2');
-insert into inventario_producto values (DEFAULT,'descripcion3',19, 23000, '../media/productosImagenes/ZapatosMujer3.jpg', 14,'ZapatosMujer3');
-insert into inventario_producto values (DEFAULT,'descripcion4',19, 23000, '../media/productosImagenes/ZapatosMujer4.jpg', 14,'ZapatosMujer4');
+insert into inventario_producto values (DEFAULT,'descripcion1',23000, '../media/productosImagenes/ZapatosMujer1.jpg', 14,'ZapatosMujer1', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion2',23000, '../media/productosImagenes/ZapatosMujer2.jpg', 14,'ZapatosMujer2', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/productosImagenes/ZapatosMujer3.jpg', 14,'ZapatosMujer3', 0.19);
+insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/ZapatosMujer4.jpg', 14,'ZapatosMujer4', 0.19);
 
+insert into ventas_descuentoproducto values (DEFAULT, DATE '2019/08/17',DATE '2019/08/18',0.1,15);
