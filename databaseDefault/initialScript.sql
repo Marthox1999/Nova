@@ -75,3 +75,6 @@ insert into inventario_producto values (DEFAULT,'descripcion3',23000, '../media/
 insert into inventario_producto values (DEFAULT,'descripcion4',23000, '../media/productosImagenes/ZapatosMujer4.jpg', 14,'ZapatosMujer4', 0.19);
 
 insert into ventas_descuentoproducto values (DEFAULT, DATE '2019/08/17',DATE '2019/08/18',0.1,15);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/08/17',DATE '2019/08/18',0.15,2);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/07/18',0.15,3);
+insert into ventas_descuentocategoria values (DEFAULT, DATE '2019/07/17',DATE '2019/07/18',0.15,2);

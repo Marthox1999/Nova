@@ -528,6 +528,10 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     productos=Producto.objects.filter(fkSubCategoria=subCategoria)
     #########si existen descuentos aplicarlos
     #prueba con un descuento
+    hoy = datetime.date.today()
+    productos = productos[0].productosConDescuento(subCategoria, hoy)
+
+    '''
     descuentosProductos = DescuentoProducto.objects.all()
     hoy = datetime.date.today()
     for descuentoProducto in descuentosProductos:
@@ -535,6 +539,6 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
             aux = productos.get(pkProducto = descuentoProducto.fkProducto.pkProducto)
             aux.precio = aux.precio - (aux.iva * aux.precio) - (descuentoProducto.porcentajeDescuento * aux.precio)
             productos.filter(pkProducto = descuentoProducto.fkProducto.pkProducto).update(precio = aux.precio)
-
+    '''
     context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})

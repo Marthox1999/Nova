@@ -24,6 +24,57 @@ class Producto(models.Model):
     iva = models.FloatField( default=0, validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],)
     precio = models.IntegerField()
     rutaImagen = models.ImageField(upload_to = '../media/productosImagenes')###############
+    #toma todos los productos dados
+    #retorna lista de productos con el precio cambiado, si tiene al menos un descuento activo
+    #si tienen mas de uno toma el mayor
+    #sino retorna el mismo objeto con solamente el iva aplicado
+    def productosConDescuento(self,subCategoria,hoy,*args, **kwargs):
+        from ventas.models import DescuentoProducto, DescuentoCategoria, DescuentoSubCategoria
+        #variables para guardar mayor
+        maxdp = 0.0
+        maxdc = 0.0
+        maxdsc = 0.0
+        #descuento activos para la fecha presente
+        descuentosProductos = DescuentoProducto.objects.filter(fechaFin__gte=hoy).filter(fechaInicio__lte=hoy)
+        descuentosCategorias = DescuentoCategoria.objects.filter(fechaFin__gte=hoy).filter(fechaInicio__lte=hoy)
+        descuentosSubCategorias = DescuentoSubCategoria.objects.filter(fechaFin__gte=hoy).filter(fechaInicio__lte=hoy)
+        #productos con descuento de producto
+        for dp in descuentosProductos:
+            productosConDp = Producto.objects.filter(fkSubCategoria=subCategoria).filter(pkProducto = dp.fkProducto.pkProducto)
+        #productos con descuento de subcategoria
+        for dsc in descuentosSubCategorias:
+            #si el descuento en que estoy es de mi subcategoria
+            if (dsc.fkSubCategoria.pkSubCategoria != subCategoria):
+                continue
+            else:
+                #obtengo los productos de mi subcategoria
+                productosConDc = Producto.objects.filter(fkSubCategoria=subCategoria)
+        #productos con descuento de categoria
+        for dc in descuentosCategorias:
+            #si el descuento en que estoy es de mi categoria
+            if (dc.fkCategoria != SubCategoria.objects.get(pkSubCategoria = subCategoria).fkCategoria):
+                continue
+            else:
+                #obtengo los productos de mi categoria
+                productosConDc = Producto.objects.filter(fkSubCategoria=subCategoria)
+                
+
+            
+        productos = Producto.objects.filter(fkSubCategoria=subCategoria)
+        result = []
+        #iva
+        for p in productos:
+            p.precio = p.precio - (p.precio * p.iva)
+            result.append(p)
+        return result
+            
+
+                
+                
+
+
+
+
 
 #Proveedor
 class Proveedor(models.Model):
