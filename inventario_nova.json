@@ -1,0 +1,565 @@
+[
+{
+  "model": "inventario.categoria",
+  "pk": 1,
+  "fields": {
+    "nombreCategoria": "Hombres"
+  }
+},
+{
+  "model": "inventario.categoria",
+  "pk": 2,
+  "fields": {
+    "nombreCategoria": "Mujeres"
+  }
+},
+{
+  "model": "inventario.categoria",
+  "pk": 3,
+  "fields": {
+    "nombreCategoria": "Ni\u00f1os"
+  }
+},
+{
+  "model": "inventario.categoria",
+  "pk": 4,
+  "fields": {
+    "nombreCategoria": "Accesorios"
+  }
+},
+{
+  "model": "inventario.categoria",
+  "pk": 5,
+  "fields": {
+    "nombreCategoria": "Zapatos"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 1,
+  "fields": {
+    "fkCategoria": 1,
+    "nombreSubCategoria": "CamisetasH"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 2,
+  "fields": {
+    "fkCategoria": 1,
+    "nombreSubCategoria": "CamisasH"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 3,
+  "fields": {
+    "fkCategoria": 1,
+    "nombreSubCategoria": "PantalonesH"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 4,
+  "fields": {
+    "fkCategoria": 2,
+    "nombreSubCategoria": "CamisetasM"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 5,
+  "fields": {
+    "fkCategoria": 2,
+    "nombreSubCategoria": "FaldasM"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 6,
+  "fields": {
+    "fkCategoria": 2,
+    "nombreSubCategoria": "VestidosM"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 7,
+  "fields": {
+    "fkCategoria": 3,
+    "nombreSubCategoria": "Pijamas"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 8,
+  "fields": {
+    "fkCategoria": 3,
+    "nombreSubCategoria": "VestidosNi\u00f1a"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 9,
+  "fields": {
+    "fkCategoria": 3,
+    "nombreSubCategoria": "Chaquetas"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 10,
+  "fields": {
+    "fkCategoria": 4,
+    "nombreSubCategoria": "Bolsos"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 11,
+  "fields": {
+    "fkCategoria": 4,
+    "nombreSubCategoria": "Correas"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 12,
+  "fields": {
+    "fkCategoria": 4,
+    "nombreSubCategoria": "Gorros"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 13,
+  "fields": {
+    "fkCategoria": 5,
+    "nombreSubCategoria": "ZapatosHombre"
+  }
+},
+{
+  "model": "inventario.subcategoria",
+  "pk": 14,
+  "fields": {
+    "fkCategoria": 5,
+    "nombreSubCategoria": "ZapatosMujer"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 1,
+  "fields": {
+    "fkSubCategoria": 1,
+    "nombre": "Camiseta1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camiseta1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 2,
+  "fields": {
+    "fkSubCategoria": 1,
+    "nombre": "Camiseta2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camiseta2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 3,
+  "fields": {
+    "fkSubCategoria": 1,
+    "nombre": "Camiseta3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camiseta3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 4,
+  "fields": {
+    "fkSubCategoria": 1,
+    "nombre": "Camiseta4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camiseta4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 5,
+  "fields": {
+    "fkSubCategoria": 2,
+    "nombre": "Camisa1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camisa1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 6,
+  "fields": {
+    "fkSubCategoria": 2,
+    "nombre": "Camisa2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camisa2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 7,
+  "fields": {
+    "fkSubCategoria": 2,
+    "nombre": "Camisa3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camisa3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 8,
+  "fields": {
+    "fkSubCategoria": 2,
+    "nombre": "Camisa4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Camisa4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 9,
+  "fields": {
+    "fkSubCategoria": 3,
+    "nombre": "Pantalon1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Pantalon1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 10,
+  "fields": {
+    "fkSubCategoria": 3,
+    "nombre": "Pantalon2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Pantalon2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 11,
+  "fields": {
+    "fkSubCategoria": 3,
+    "nombre": "Pantalon3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Pantalon3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 12,
+  "fields": {
+    "fkSubCategoria": 3,
+    "nombre": "Pantalon4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Pantalon4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 13,
+  "fields": {
+    "fkSubCategoria": 4,
+    "nombre": "Blusa1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Blusa1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 14,
+  "fields": {
+    "fkSubCategoria": 4,
+    "nombre": "Blusa2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Blusa2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 15,
+  "fields": {
+    "fkSubCategoria": 4,
+    "nombre": "Blusa3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Blusa3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 16,
+  "fields": {
+    "fkSubCategoria": 4,
+    "nombre": "Blusa4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Blusa4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 17,
+  "fields": {
+    "fkSubCategoria": 5,
+    "nombre": "Falda1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Falda1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 18,
+  "fields": {
+    "fkSubCategoria": 5,
+    "nombre": "Falda2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Falda2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 19,
+  "fields": {
+    "fkSubCategoria": 5,
+    "nombre": "Falda3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Falda3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 20,
+  "fields": {
+    "fkSubCategoria": 5,
+    "nombre": "Falda4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Falda4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 21,
+  "fields": {
+    "fkSubCategoria": 6,
+    "nombre": "Vestido1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Vestido1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 22,
+  "fields": {
+    "fkSubCategoria": 6,
+    "nombre": "Vestido2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Vestido2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 23,
+  "fields": {
+    "fkSubCategoria": 6,
+    "nombre": "Vestido3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Vestido3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 24,
+  "fields": {
+    "fkSubCategoria": 6,
+    "nombre": "Vestido4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/Vestido4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 25,
+  "fields": {
+    "fkSubCategoria": 13,
+    "nombre": "ZapatosHombre1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosHombre1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 26,
+  "fields": {
+    "fkSubCategoria": 13,
+    "nombre": "ZapatosHombre2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosHombre2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 27,
+  "fields": {
+    "fkSubCategoria": 13,
+    "nombre": "ZapatosHombre3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosHombre3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 28,
+  "fields": {
+    "fkSubCategoria": 13,
+    "nombre": "ZapatosHombre4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosHombre4.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 29,
+  "fields": {
+    "fkSubCategoria": 14,
+    "nombre": "ZapatosMujer1",
+    "descripcion": "descripcion1",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosMujer1.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 30,
+  "fields": {
+    "fkSubCategoria": 14,
+    "nombre": "ZapatosMujer2",
+    "descripcion": "descripcion2",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosMujer2.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 31,
+  "fields": {
+    "fkSubCategoria": 14,
+    "nombre": "ZapatosMujer3",
+    "descripcion": "descripcion3",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosMujer3.jpg"
+  }
+},
+{
+  "model": "inventario.producto",
+  "pk": 32,
+  "fields": {
+    "fkSubCategoria": 14,
+    "nombre": "ZapatosMujer4",
+    "descripcion": "descripcion4",
+    "iva": 19.0,
+    "precio": 23000,
+    "rutaImagen": "../media/productosImagenes/ZapatosMujer4.jpg"
+  }
+},
+{
+  "model": "inventario.proveedor",
+  "pk": "0334242915368",
+  "fields": {
+    "direccion": "2022 Sommers Place",
+    "telefono": "4219896872"
+  }
+},
+{
+  "model": "inventario.proveedor",
+  "pk": "8367329046293",
+  "fields": {
+    "direccion": "2371 Golf Circle",
+    "telefono": "7580506150"
+  }
+},
+{
+  "model": "inventario.bodega",
+  "pk": 1,
+  "fields": {
+    "direccion": "2344 Street Charles",
+    "ciudad": "CALI"
+  }
+},
+{
+  "model": "inventario.bodega",
+  "pk": 2,
+  "fields": {
+    "direccion": "4560 Street Valeria",
+    "ciudad": "CALI"
+  }
+}
+]

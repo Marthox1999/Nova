@@ -88,13 +88,8 @@ def categoria(request, *args, **kwargs):
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
-<<<<<<< HEAD
-    print(modificar)
     idCategoria = modificar.get('categoria')#actualiza combobox
-=======
     idCategoria = modificar.get('categoria')
-
->>>>>>> origin/master
     idCategoriaSubCat = modificar.get('idCat')
     nombreSubCat = modificar.get('nombreSubCategoria')
     accionSubCatSubmit = modificar.get('SubCat-submit')
