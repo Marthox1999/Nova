@@ -6,7 +6,7 @@
     "fkProducto": 15,
     "fechaInicio": "2019-08-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.3
+    "porcentajeDescuento": 30.0
   }
 },
 {
@@ -16,7 +16,7 @@
     "fkProducto": 30,
     "fechaInicio": "2019-08-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.3
+    "porcentajeDescuento": 30.0
   }
 },
 {
@@ -26,7 +26,7 @@
     "fkProducto": 15,
     "fechaInicio": "2016-08-17",
     "fechaFin": "2017-08-19",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -36,7 +36,7 @@
     "fkProducto": 30,
     "fechaInicio": "2016-08-17",
     "fechaFin": "2017-08-19",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -46,7 +46,7 @@
     "fkCategoria": 2,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.15
+    "porcentajeDescuento": 15.0
   }
 },
 {
@@ -56,7 +56,7 @@
     "fkCategoria": 2,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.15
+    "porcentajeDescuento": 15.0
   }
 },
 {
@@ -66,7 +66,7 @@
     "fkCategoria": 2,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.15
+    "porcentajeDescuento": 15.0
   }
 },
 {
@@ -76,7 +76,7 @@
     "fkCategoria": 1,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.2
+    "porcentajeDescuento": 20.0
   }
 },
 {
@@ -86,7 +86,7 @@
     "fkCategoria": 2,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -96,7 +96,7 @@
     "fkCategoria": 2,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-08-20",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -106,7 +106,7 @@
     "fkCategoria": 2,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-08-20",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -116,7 +116,7 @@
     "fkCategoria": 1,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -126,7 +126,7 @@
     "fkSubCategoria": 5,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.2
+    "porcentajeDescuento": 20.0
   }
 },
 {
@@ -136,7 +136,7 @@
     "fkSubCategoria": 6,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.1
+    "porcentajeDescuento": 10.0
   }
 },
 {
@@ -146,7 +146,7 @@
     "fkSubCategoria": 4,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.2
+    "porcentajeDescuento": 20.0
   }
 },
 {
@@ -156,7 +156,7 @@
     "fkSubCategoria": 2,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.3
+    "porcentajeDescuento": 30.0
   }
 },
 {
@@ -166,7 +166,7 @@
     "fkSubCategoria": 3,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.15
+    "porcentajeDescuento": 15.0
   }
 },
 {
@@ -176,7 +176,7 @@
     "fkSubCategoria": 13,
     "fechaInicio": "2019-07-17",
     "fechaFin": "2019-08-20",
-    "porcentajeDescuento": 0.2
+    "porcentajeDescuento": 20.0
   }
 },
 {
@@ -186,7 +186,7 @@
     "fkSubCategoria": 5,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -196,7 +196,7 @@
     "fkSubCategoria": 6,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -206,7 +206,7 @@
     "fkSubCategoria": 4,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -216,7 +216,7 @@
     "fkSubCategoria": 2,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -226,7 +226,7 @@
     "fkSubCategoria": 3,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-08-20",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 },
 {
@@ -236,7 +236,7 @@
     "fkSubCategoria": 13,
     "fechaInicio": "2016-07-17",
     "fechaFin": "2017-07-18",
-    "porcentajeDescuento": 0.99
+    "porcentajeDescuento": 99.0
   }
 }
 ]
