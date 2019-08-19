@@ -711,6 +711,6 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
                 return render(request,'inventario/productoDetalles.html',context,{})
 
             carrito.save()
-            messages.info(request, 'Producto agregado al carrito')
+            messages.success(request, 'Producto agregado al carrito')
     context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
     return render(request, 'inventario/productoDetalles.html', context, {})

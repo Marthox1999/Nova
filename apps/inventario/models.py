@@ -71,7 +71,7 @@ class Producto(models.Model):
         for producto in productos:
             if ((producto not in productosConDp) and (producto not in productosConDsc) and (producto not in productosConDc)):
                 #se adiciona iva, no tienen ningun descuento
-                producto.precio = producto.precio - (producto.precio * producto.iva)
+                producto.precio = producto.precio + (producto.precio * producto.iva)
                 resultado.append(producto)
                 continue
             elif ((producto in productosConDp) and (producto in productosConDsc) and (producto in productosConDc)):
@@ -86,7 +86,7 @@ class Producto(models.Model):
                 d3 = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
                 #cual es el mayor de los 3
                 maxDescuento = max(d1.porcentajeDescuento, d2.porcentajeDescuento, d3.porcentajeDescuento)
-                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                producto.precio = producto.precio + (producto.precio * producto.iva) - (producto.precio * maxDescuento)
                 resultado.append(producto)
             elif ((producto in productosConDp) and (producto in productosConDsc)):
                 #encontrar el mayor descuento y aplicarlo
@@ -96,7 +96,7 @@ class Producto(models.Model):
                 d3 = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
                 #maximo
                 maxDescuento = max(d1.porcentajeDescuento, d3.porcentajeDescuento)
-                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                producto.precio = producto.precio + (producto.precio * producto.iva) - (producto.precio * maxDescuento)
                 resultado.append(producto)
             elif ((producto in productosConDp) and (producto in productosConDc)):
                 #encontrar el mayor descuento y aplicarlo
@@ -106,7 +106,7 @@ class Producto(models.Model):
                 d2 = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
                 #maximo
                 maxDescuento = max(d1.porcentajeDescuento, d2.porcentajeDescuento)
-                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                producto.precio = producto.precio + (producto.precio * producto.iva) - (producto.precio * maxDescuento)
                 resultado.append(producto) 
             elif ((producto in productosConDsc) and (producto in productosConDc)):
                 #encontrar el mayor descuento y aplicarlo
@@ -118,26 +118,26 @@ class Producto(models.Model):
                 d2 = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
                 #maximo
                 maxDescuento = max(d2.porcentajeDescuento, d3.porcentajeDescuento)
-                producto.precio = producto.precio - (producto.precio * producto.iva) - (producto.precio * maxDescuento)
+                producto.precio = producto.precio + (producto.precio * producto.iva) - (producto.precio * maxDescuento)
                 resultado.append(producto) 
             elif(producto in productosConDp):
                 #solo tiene descuento por producto se aplica junto al iva
                 p = descuentosProductos.get(fkProducto = producto)
-                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) - (producto.precio * producto.iva)
+                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) + (producto.precio * producto.iva)
                 resultado.append(producto)
                 continue
             elif(producto in productosConDsc):
                 #solo tiene descuento por subcategoria se aplica junto al iva
                 auxsubcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria)
                 p = descuentosSubCategorias.filter(fkSubCategoria = auxsubcategoria).order_by('porcentajeDescuento').first()
-                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) - (producto.precio * producto.iva)
+                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) + (producto.precio * producto.iva)
                 resultado.append(producto)
                 continue
             elif(producto in productosConDc):
                 #solo tiene descuento por categoria se aplica junto al iva
                 auxcategoria = SubCategoria.objects.get(pkSubCategoria = subCategoria).fkCategoria
                 p = descuentosCategorias.filter(fkCategoria = auxcategoria).order_by('porcentajeDescuento').first()
-                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) - (producto.precio * producto.iva)
+                producto.precio = producto.precio - (producto.precio * p.porcentajeDescuento) + (producto.precio * producto.iva)
                 resultado.append(producto)
                 continue
 
