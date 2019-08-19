@@ -483,10 +483,6 @@ def modificarReferencias(request, *args, **kwargs):
             'precioO': precioO,
             'rutaImagenO': "../"+rutaImagenO.name,
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
     return render(request, "inventario/referenciasModificar.html", context, {})
 
 def modificarProductos(request, *args, **kwargs):
@@ -684,12 +680,37 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
 
 def productoDetalles(request, nombre,categoria, idproducto, precio):
+    from usuarios.models import Carrito
+
+    esCliente = (nombre != "noRegistrado")
     categorias = Categoria.objects.all()
     auxcategoria = Categoria.objects.get(pkCategoria = categoria)
     subCategorias= SubCategoria.objects.filter(fkCategoria=auxcategoria)
     # producto
     producto = Producto.objects.get(pkProducto = idproducto)
     detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
-    idDetalleproducto = -1
-    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'nombre':nombre}
+    idDetalleproducto = detallesProducto[0].pkDetallesP
+    sdp = detallesProducto.get(pkDetallesP = idDetalleproducto)
+    # cargar informacion del detalle
+    if request.method == 'POST':
+        seleccionado = request.POST
+        idDetalleproducto = int(seleccionado.get('detalleproducto'))
+        sdp = detallesProducto.get(pkDetallesP = idDetalleproducto)
+        agregarACarrito = seleccionado.get('AgregarCarrito-submit')
+        #agregar a carrito
+        if ((agregarACarrito == 'AgregarCarrito')):
+            cantidadcomprar = seleccionado.get('cantidad')
+            cliente = Cliente.objects.get(nombre = nombre)
+            carrito = Carrito(fkNombreCliente = cliente, fkDetalleProducto = sdp, cantidad = cantidadcomprar)
+            try:
+                carrito.full_clean()
+                print("valido")
+            except ValidationError as e:
+                messages.info(request, 'Cantidad de articulos  invalida')
+                context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                return render(request,'inventario/productoDetalles.html',context,{})
+
+            carrito.save()
+            messages.info(request, 'Producto agregado al carrito')
+    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
     return render(request, 'inventario/productoDetalles.html', context, {})

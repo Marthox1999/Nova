@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="background-color:#FEF0F0;">
-                    <div class="product-layout  product-grid  col-md-6 col-sm-6 col-xs-12">
+                    <div class="product-layout  product-grid  col-md-6 col-sm-4 col-xs-2    ">
                         <div class="item">
                             <div class="product-thumb clearfix mb_30">
                                 <div class="image product-imageblock">
@@ -44,21 +44,54 @@
                             </div>
                         </div>
                     </div>
-                    <div class="product-layout  product-grid  col-md-6 col-sm-6 col-xs-12">
+                    <div class="product-layout  product-grid  col-md-6 col-sm-4 col-xs-12">
                         <div class="item">
                             <div class="product-thumb clearfix mb_30">
                                 <center>
-                                    <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
+                                    <h3>{{producto.nombre}}</h3>
+                                </center>
+                                    <br>
+                                    <span>{{producto.descripcion}}</span>
+                                    <br>
+                                    <form method='post' id='detallesproducto-form' name='detallesproducto_seleccionar' class='login-form'>
+                                    {% csrf_token %}
+                                    <label>Productos disponibles: </label>
+                                    <select class="form-control" id="detalleproducto" name="detalleproducto" onChange="form.submit();">
                                         <option value="-1"  name='vacio'>Producto</option>
-                                        {% for dp in detallesdeproducto %}
-                                            {% if idDetalleproducto == dp.pkDetalleProducto   %}
-                                            <option selected value={{dp.pkDetalleProducto}} name={{dp.pkDetalleProducto}}>{{dp.talla}} - {{dp.color}}</option>
+                                        {% for dp in detallesproducto %}
+                                            {% if idDetalleproducto == dp.pkDetallesP   %}
+                                            <option selected value={{dp.pkDetallesP}} name={{dp.pkDetallesP}}>Talla: {{dp.talla}} - Color: {{dp.color}}</option>
                                             {% else %}
-                                            <option value={{categoria.pkDetalleProducto}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+                                            <option value={{dp.pkDetallesP}} name={{dp.pkDetallesP}}>Talla: {{dp.talla}} - Color: {{dp.color}}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
-                                    <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{precio}}</span></span>
+                                    <br>
+                                    <div class="block">
+                                        <label>Talla: </label>
+                                        <span>{{productoS.talla}}</span>
+                                    </div>
+                                    <div class="block">
+                                        <label>Color: </label>
+                                        <span>{{productoS.color}}</span>
+                                    </div>
+                                    <div class="block">
+                                        <label>Cantidad Disponible: </label>
+                                        <span>{{productoS.cantidad}}</span>
+                                    </div>
+                                    <label for="inputCantidad">Cantidad a comprar:</label>
+                                    <div class="form-group">                                
+                                        <input id="inputCantidad" type="integer" name="cantidad" tabindex="1" placeholder="0">
+                                    </div>
+                                    <center>
+                                    <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{precio}} COP</span></span>
+                                    <br><br>
+                                    {% if esCliente  %}
+                                    <input type="submit" name="AgregarCarrito-submit" id="AgregarCarrito-submit" tabindex="1" class="form-control btn btn-register" value="AgregarCarrito"></input>
+                                    {% else %}
+                                    <label for="advertencia" style="color: crimson">Para poder adicionar al carrito, debe tener su sesion iniciada.</label>
+                                    {% endif %}
+                                </form>
                                 </center>
                             </div>
                         </div>
