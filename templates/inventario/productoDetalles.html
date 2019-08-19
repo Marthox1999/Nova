@@ -35,9 +35,33 @@
                     </div>
                 </div>
                 <div class="panel-body" style="background-color:#FEF0F0;">
-                    <div class="col-lg-12">
-                        <p>{{idproducto}}</p>
-                        <p>{{precio}}</p>
+                    <div class="product-layout  product-grid  col-md-6 col-sm-6 col-xs-12">
+                        <div class="item">
+                            <div class="product-thumb clearfix mb_30">
+                                <div class="image product-imageblock">
+                                    <img src="{{producto.rutaImagen.url}}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-layout  product-grid  col-md-6 col-sm-6 col-xs-12">
+                        <div class="item">
+                            <div class="product-thumb clearfix mb_30">
+                                <center>
+                                    <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
+                                        <option value="-1"  name='vacio'>Producto</option>
+                                        {% for dp in detallesdeproducto %}
+                                            {% if idDetalleproducto == dp.pkDetalleProducto   %}
+                                            <option selected value={{dp.pkDetalleProducto}} name={{dp.pkDetalleProducto}}>{{dp.talla}} - {{dp.color}}</option>
+                                            {% else %}
+                                            <option value={{categoria.pkDetalleProducto}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{precio}}</span></span>
+                                </center>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>               

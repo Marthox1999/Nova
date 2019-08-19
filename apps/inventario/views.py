@@ -535,5 +535,9 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
     categorias = Categoria.objects.all()
     auxcategoria = Categoria.objects.get(pkCategoria = categoria)
     subCategorias= SubCategoria.objects.filter(fkCategoria=auxcategoria)
-    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'idproducto': idproducto,'precio':precio, 'nombre':nombre}
+    # producto
+    producto = Producto.objects.get(pkProducto = idproducto)
+    detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
+    idDetalleproducto = -1
+    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'nombre':nombre}
     return render(request, 'inventario/productoDetalles.html', context, {})
