@@ -29,6 +29,10 @@ urlpatterns = [
     path('referenciasEliminar', eliminarReferencias, name='eliminarReferencias'),
     path('proveedor', proveedor, name='proveedor'),
     path('proveedorCrear', aniadirProveedor, name='aniadirProveedor'),
+
+    path('proveedorModificar', modificarProveedor, name='modificarProveedor'),
+
     path('productosCategorias/<str:nombre>/<str:categoria>/', productosCategoriasVista, name='productosCategorias'),
     path('productosCategorias/<str:nombre>/<str:categoria>/<str:subCategoria>/', productosSubCategoriasVista, name='productosSubCategorias'),
+
 ]

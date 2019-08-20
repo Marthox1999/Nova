@@ -956,6 +956,56 @@ def aniadirProveedor(request, *args, **kwargs):
         messages.success(request, 'Proveedor agregado con exito')
     return render(request, "inventario/proveedorCrear.html",context ,{})
 
+
+
+
+
+def modificarProveedor(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    proveedores = Proveedor.objects.all()
+
+    context={'categorias': categorias, 'proveedores': proveedores, 'nit': '', 'telefono': '', 'direccion': ''}
+    modificar = request.POST
+    nit = modificar.get('nitProveedor')
+    actualNit = modificar.get('nit')
+    acccionModProveedorSubmit = modificar.get('modificarProveedor-submit')
+
+    #Seleccionar el primer proveedor con el nit si existe
+    objectProveedor = Proveedor.objects.filter(pknit = nit).first()
+    
+    if ( acccionModProveedorSubmit == "Modificar"):
+        if (actualNit == ''):
+            messages.info(request, 'Seleccione el NIT del proveedor que desea actualizar')
+            return render(request, "inventario/proveedorModificar.html",context,{})
+        
+        telefonoNuevo = modificar.get('telefonoProveedor')
+        direccionNueva = modificar.get('direccionProveedor')
+        
+        
+        aux = Proveedor( pknit = actualNit, direccion = direccionNueva, telefono = telefonoNuevo)
+        
+        try:
+            #No se puede full_clean debido a que no seria una clave unica en el modelo su nit
+            aux.clean_fields()
+            aux.clean()
+        except ValidationError as e:
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/proveedorModificar.html",context,{})
+        Proveedor.objects.filter(pknit = actualNit).update(direccion=direccionNueva, telefono = telefonoNuevo)
+        messages.success(request, 'El proveedor ha sido actualizado correctamente')
+        return render(request, "inventario/proveedorModificar.html",context,{})
+
+    if (nit != "no elegido" and nit != None):
+        telefono = objectProveedor.telefono
+        direccion = objectProveedor.direccion
+    else:
+        nit = ''
+        telefono = ''
+        direccion = ''
+    context={'categorias': categorias, 'proveedores': proveedores, 'nit': nit, 'telefono': telefono, 'direccion': direccion}
+    
+    return render(request, "inventario/proveedorModificar.html", context, {})
+
 def productosCategoriasVista(request, nombre, categoria):
     categorias = Categoria.objects.all()
     subCategorias=SubCategoria.objects.filter(fkCategoria=categoria)
@@ -968,3 +1018,4 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     productos=Producto.objects.filter(fkSubCategoria=subCategoria)
     context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
+

@@ -121,6 +121,12 @@ def adminMenu(request, *args, **kwargs):
     return render(request,"usuarios/adminMenu.html",context, {})
 
 
+def clienteMenu(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    context={'categorias':categorias}
+    return render(request,"usuarios/clienteMenu.html",context, {})
+
+
 def duenioAdminIngreso(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     context={'categorias':categorias}
@@ -149,7 +155,49 @@ def duenioAdminIngreso(request, *args, **kwargs):
             messages.info(request, 'Cuenta de usuario o contraseña invalida')
     return render(request, 'usuarios/duenioAdminIngreso.html',context,{'form':ingresar})
 
+def duenioAdminModificar(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    usuarios = AdministradorDuenio.objects.filter(tipo='ADMIN')
+    context={'categorias':categorias, 'usuarios':usuarios}
+
+    modificar = request.POST
+    
+    nombreAdmin = modificar.get('nombreEmpleado')
+    claveAdmin = modificar.get('claveAdmin')
+
+    if(request.method == 'POST'):
+        try:
+            print ('Llega a antes de modificar')
+            objects = AdministradorDuenio.objects.filter(nombreUsuario = nombreAdmin)
+            #Hice la modificación de la clave como atributo para usar save
+            #y asi usar el encriptado dentro de la función, en lugar de usar update
+            for obj in objects:
+                obj.clave = claveAdmin
+                obj.save()
+            
+            messages.success(request, 'Administrador modificado exitosamente')
+        except ValidationError as e:
+            messages.info(request, 'El usuario administrador no pudo ser modificado')
+            
+    return render(request, "usuarios/duenioAdminModificar.html", context, {})
+    
+def duenioClienteConsultar(request, *args, **kwargs):
+    from django.db.models import Q
+    categorias = Categoria.objects.all()
+    clientes = {}
+    consultar = request.POST
+    buscador = consultar.get('buscador')
+    if (buscador):
+        clientes = Cliente.objects.filter(Q(nombre__icontains=buscador) | Q(direccion__icontains=buscador) | Q(telefono__icontains=buscador) | Q(numeroDocumento__icontains=buscador))
+    else:
+        clientes = Cliente.objects.all()
+    context={'categorias':categorias, 'clientes': clientes}
+        
+    return render(request, "usuarios/duenioClienteConsultar.html", context, {})
+
 
 def clientePerfil(request, nombre):
-    context = {'nombre':nombre}
+    cliente = Cliente.objects.filter(nombre=nombre)
+    context = {'nombre':nombre, 'cliente':cliente}
     return render(request,"usuarios/clientePerfil.html", context, {})
+
