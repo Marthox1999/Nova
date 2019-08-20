@@ -8,6 +8,8 @@ from django.contrib import messages
 from ventas.models import *
 from inventario.models import *
 
+from datetime import datetime
+
 
 # Create your views here.
 
@@ -45,19 +47,27 @@ def crearDescuentoCategoria(request, idCategoria):
         fechaInicio = data.get('fecha_inicio')
         fechaFin = data.get('fecha_fin')
         descuento = data.get('descuento')
+        categoria = Categoria.objects.get(pkCategoria = idCategoria)
+        newDescuento = DescuentoCategoria(
+            fkCategoria = categoria,
+            fechaInicio = fechaInicio,
+            fechaFin = fechaFin,
+            porcentajeDescuento = descuento
+        )
+        auxfechafin = datetime.strptime(fechaFin,'%Y-%m-%d')
+        auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
+        difFechas = (auxfechafin-auxfechainicio).days
+        fechaActual = (auxfechainicio-datetime.today()).days
+        if(difFechas < 0 or fechaActual < -1):
+            messages.info(request, 'La fecha de inicio no puede ser mayor que la fecha final')
+            return render(request, "ventas/creardescuentos.html", context,{})
         try:
-            categoria = Categoria.objects.get(pkCategoria = idCategoria)
-            newDescuento = DescuentoCategoria(
-                fkCategoria = categoria,
-                fechaInicio = fechaInicio,
-                fechaFin = fechaFin,
-                porcentajeDescuento = descuento
-            )
-            newDescuento.save()
-            messages.success(request, 'EL descuento ha sido creado exitosamente')
+            newDescuento.full_clean()
         except:
-            messages.info(request, 'Alguno(s) campo(s) no es(son) validos')
-            return redirect(to='ventas:descuentoCrear')
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "ventas/creardescuentos.html", context,{})
+        newDescuento.save()
+        messages.success(request, 'EL descuento ha sido creado exitosamente')
         return redirect(to='ventas:descuentoCrear')
 
     return render(request, "ventas/creardescuentos.html", context, {})
@@ -88,6 +98,18 @@ def crearDescuentoSubCategoria(request, idCategoria, idSubCategoria):
             fechaFin = fechaFin,
             porcentajeDescuento = descuento
         )
+        auxfechafin = datetime.strptime(fechaFin,'%Y-%m-%d')
+        auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
+        difFechas = (auxfechafin-auxfechainicio).days
+        fechaActual = (auxfechainicio-datetime.today()).days
+        if(difFechas < 0 or fechaActual < -1):
+            messages.info(request, 'La fecha de inicio no puede ser mayor que la fecha final')
+            return render(request, "ventas/creardescuentos.html", context,{})
+        try:
+            newDescuento.full_clean()
+        except:
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "ventas/creardescuentos.html", context,{})
         newDescuento.save()
         messages.success(request, 'EL descuento ha sido creado exitosamente')
         return redirect(to='ventas:descuentoCrear')
@@ -123,6 +145,18 @@ def crearDescuentoProducto(request, idCategoria, idSubCategoria, idProducto):
             fechaFin = fechaFin,
             porcentajeDescuento = descuento
         )
+        auxfechafin = datetime.strptime(fechaFin,'%Y-%m-%d')
+        auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
+        difFechas = (auxfechafin-auxfechainicio).days
+        fechaActual = (auxfechainicio-datetime.today()).days
+        if(difFechas < 0 or fechaActual < -1):
+            messages.info(request, 'La fecha de inicio no puede ser mayor que la fecha final')
+            return render(request, "ventas/creardescuentos.html", context,{})
+        try:
+            newDescuento.full_clean()
+        except:
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "ventas/creardescuentos.html", context,{})
         newDescuento.save()
         messages.success(request, 'EL descuento ha sido creado exitosamente')
         return redirect(to='ventas:descuentoCrear')

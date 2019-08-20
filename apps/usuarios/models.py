@@ -39,7 +39,7 @@ class AdministradorDuenio (models.Model):
         ('CEO','Duenio'),
     }
     pkAdministradorDuenio = models.AutoField(primary_key=True)
-    nombreUsuario = models.CharField(max_length=128)
+    nombreUsuario = models.CharField(max_length=128, unique=True)
     clave = models.CharField(max_length=128, editable=True)
     tipo = models.CharField(max_length=5, choices=TIPO) 
 
