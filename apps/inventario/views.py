@@ -59,7 +59,26 @@ def bodegaconsulta(request, *args, **kwargs):
 
 def consultarcategorias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    context={'categorias':categorias}
+    nombreO = ""
+    rutaImagenO = ""
+    idcategoria = "-1"
+    context={'categorias':categorias, 'nombreO':nombreO, 'rutaImagenO':rutaImagenO, 'idcategoria':idcategoria}
+
+    datos = request.POST
+
+    if(request.method=="POST"):
+        idcategoria = datos.get('categoria')
+        if(idcategoria!="-1" and idcategoria != None):
+            idcategoria = datos.get('categoria')
+            categoria = Categoria.objects.get(pkCategoria=idcategoria)
+            nombreO = categoria.nombreCategoria
+            rutaImagenO = categoria.rutaImagen
+            
+            context={'categorias':categorias,
+                     'nombreO':nombreO,
+                     'rutaImagenO': "../"+rutaImagenO.name,
+                     'idcategoria':int(idcategoria)}
+    
     return render(request,'inventario/categoriasconsultar.html', context,{})
 
 def eliminarCategorias(request, idCategoria):
