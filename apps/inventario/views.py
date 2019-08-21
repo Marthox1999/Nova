@@ -207,24 +207,25 @@ def modificar_categoria(request, *args, **kwargs):
 
 @csrf_protect
 def aniadirCategoria(request, *args, **kwargs):
-    categorias = Categoria.objects.all()
-    context={'categorias':categorias}
-    if request.method == 'POST':
-        crear = request.POST
-        nombre = crear.get('nombreCategoria')
-        aux = Categoria( nombreCategoria = nombre )
-        try:
-            aux.full_clean()
-        except ValidationError as e:
-            messages.info(request, 'Alguno(s) campo(s) no son validos')
-            context={'categorias':categorias}
-            messages.success(request, 'SubCategoria agregada con exito')
-            return render(request, "inventario/categoriaCrear.html",context, {})
+    context={}
+    if (request.method == 'POST'):
+        datos = request.POST
+        nombre = datos.get('nombreCategoria')
+        imagen = request.FILES['buscadorImagen']
+        if((imagen!= None) and (nombre!="")):
+            aux = Categoria( nombreCategoria = nombre,
+                             rutaImagen = imagen,
+            )
+            aux.rutaImagen.save(imagen.name,File(imagen),'r')
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
 
-        aux.save()
-        messages.success(request, 'Categoria agregada con exito')
+            aux.save()
+            messages.success(request, 'Categoria agregada con exito')
 
-    return render(request, "inventario/categoriaCrear.html",context, {})
+    return render(request, "inventario/categoriaCrear.html", {})
 
 def productos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
