@@ -42,7 +42,7 @@
     <br>
 
     <div class="row">
-      <form method='post' id='modificarCategoria-form' name='modificar_categoria' class='login-form'>
+      <form method='post' id='modificarCategoria-form' enctype="multipart/form-data" name='modificar_categoria' class='login-form'>
         {% csrf_token %}
         <div class="form-group">
           <label for="categoria">Categoria</label>
@@ -50,6 +50,17 @@
           
           <label for="idCategoria">Id</label>
           <input type="text" readonly placeholder="id" name="idCat" id="idCat" value="{{idCategoria}}"></input>          
+        </div>
+
+        <div class="form-group">
+          <div class="custom-file">
+            <label for="buscadorImagen">Imagen</label>
+            <img name="actualImg" id="actualImg" src="{{rutaImagenO}}">
+            <div>
+              <input type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" accept="image/*">
+              <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
+            </div>
+          </div>
         </div>
 
         <div class="form-group">

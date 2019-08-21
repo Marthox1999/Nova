@@ -153,6 +153,8 @@ def modificar_categoria(request, *args, **kwargs):
     modificar = request.POST
     idCategoria = modificar.get('categoria')
 
+    rutaImagenO = ""
+
     idCategoriaSubCat = modificar.get('idCat')
     nombreSubCat = modificar.get('nombreSubCategoria')
     accionSubCatSubmit = modificar.get('SubCat-submit')
@@ -160,6 +162,15 @@ def modificar_categoria(request, *args, **kwargs):
 
     if ( acccionModCatSubmit == "Modificar"):
         nombreCategoria = modificar.get('nombreCategoria')
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)
+        imagen = categoriaObject.rutaImagen
+
+        imagenModif = False
+        
+        if((modificar.get('buscadorImagen')!= '')):
+            imagen = request.FILES['buscadorImagen']
+            imagenModif = True
+        
         aux =  Categoria(nombreCategoria = nombreCategoria)
         try:
             aux.full_clean()
@@ -168,7 +179,11 @@ def modificar_categoria(request, *args, **kwargs):
             messages.info(request, 'Nuevo nombre de categoria invalido')
             return render(request, "inventario/modificar_categoria.html", context, {})
 
+
         Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
+        if(imagenModif):
+                product = Producto.objects.get(pkProducto = idproducto)
+                product.rutaImagen.save(imagen.name,File(imagen),'r')
         context={'categorias':categorias}
         messages.success(request, 'Categoria modificada exitosamente')
         return render(request, "inventario/modificar_categoria.html", context, {})
@@ -200,9 +215,10 @@ def modificar_categoria(request, *args, **kwargs):
     else:
         categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)
         nombreCategoria = categoriaObject.nombreCategoria
+        rutaImagenO = "../"+categoriaObject.rutaImagen.name
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
 
-    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria}
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
     return render(request, "inventario/modificar_categoria.html", context, {})
 
 @csrf_protect
