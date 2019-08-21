@@ -65,7 +65,6 @@ def consultarcategorias(request, *args, **kwargs):
     context={'categorias':categorias, 'nombreO':nombreO, 'rutaImagenO':rutaImagenO, 'idcategoria':idcategoria}
 
     datos = request.POST
-
     if(request.method=="POST"):
         idcategoria = datos.get('categoria')
         if(idcategoria!="-1" and idcategoria != None):
@@ -81,23 +80,68 @@ def consultarcategorias(request, *args, **kwargs):
     
     return render(request,'inventario/categoriasconsultar.html', context,{})
 
-def eliminarCategorias(request, idCategoria):
-    if(idCategoria != 0):
-        try:
-            Categoria.objects.get(pkCategoria=idCategoria).delete()
-            categorias = Categoria.objects.all()
-            context={'categorias':categorias}
-            messages.success(request, 'Categoria eliminada exitosamente')
-            return render(request,'inventario/categoriasEliminar.html', context,{})
-        except:
-            categorias = Categoria.objects.all()
-            context={'categorias':categorias}
-            messages.warning(request, 'Esta categoria ya ha sido eliminada')
-            return render(request,'inventario/categoriasEliminar.html', context,{})
-    else:
-        categorias = Categoria.objects.all()
-        context={'categorias':categorias}
-        return render(request,'inventario/categoriasEliminar.html', context,{})
+def eliminarCategorias(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    nombreO = ""
+    rutaImagenO = ""
+    idcategoria = "-1"
+    context={'categorias':categorias, 'nombreO':nombreO, 'rutaImagenO':rutaImagenO, 'idcategoria':idcategoria}
+
+    datos = request.POST
+    if(request.method=="POST"):
+        idcategoria = datos.get('categoria')
+        if(idcategoria!="-1" and idcategoria != None):
+            print("HOLAA ",datos.get('categoria-submit'))
+            if(datos.get('categoria-submit')=="Eliminar Categoria"):
+                try:
+                    print("HOLLO")
+                    Categoria.objects.filter(pkCategoria=idcategoria).delete()
+                    print("DIE")
+                    messages.success(request, 'Categoria eliminada exitosamente')
+                    return render(request,'inventario/categoriasEliminar.html', context,{})
+                except:
+                    messages.warning(request, 'Esta categoria ya ha sido eliminada')
+                    return render(request,'inventario/categoriasEliminar.html', context,{})
+
+            #SE CARGAN LOS CAMPOS
+            else:
+                #idcategoria = datos.get('categoria')
+                categoria = Categoria.objects.get(pkCategoria=idcategoria)
+                nombreO = categoria.nombreCategoria
+                rutaImagenO = categoria.rutaImagen
+
+                subcat = SubCategoria.objects.filter(fkCategoria=idcategoria)
+                if((len(subcat) > 0) and (subcat != None)):
+                    messages.info(request, 'Esta Categoria tiene subCategorias asociadas ¿Está seguro que desea eliminarla?')
+                    hayReferencias = False
+                    referencias = []
+
+                    for subcate in subcat:
+                        refers = Producto.objects.filter(fkSubCategoria=subcate.pkSubCategoria)
+
+                        if((len(refers) > 0) and (refers != None)):
+                            hayReferencias = True
+
+                            for rf in refers:
+                                referencias.append(rf.pkProducto)
+
+                    if(hayReferencias):
+                        messages.info(request, 'Esta Categoria tiene referencias asociadas ¿Está seguro que desea eliminarla?')
+                        #hayDetalles = False
+
+                        for ref in referencias:
+                            detalle = DetallesProducto.objects.filter(fkProducto=ref)
+
+                            if((len(detalle) > 0) and (detalle != None)):
+                                messages.info(request, 'Esta Categoria tiene productos asociadas ¿Está seguro que desea eliminarla?')
+                                break
+                
+                context={'categorias':categorias,
+                        'nombreO':nombreO,
+                        'rutaImagenO': "../"+rutaImagenO.name,
+                        'idcategoria':int(idcategoria)}
+
+    return render(request,'inventario/categoriasEliminar.html', context,{})
 
 def categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
