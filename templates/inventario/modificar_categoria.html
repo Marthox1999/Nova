@@ -30,11 +30,14 @@
         <div class="form-group">
           <label for="categoria">Categoria</label>
           <select class="form-control" id="categoria" name="categoria" onChange="form.submit();">
-            <option value="-1"  name='vacio'>Categoria</option>
+            <option value="-1"  name='-1'>Categoria</option>
             {% for categoria in categorias %}
-              <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
-              {% empty %}
-              {% endfor %}
+              {% if idCategoria == categoria.pkCategoria   %}
+                <option selected value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+              {% else %}
+                <option value={{categoria.pkCategoria}} name={{categoria.nombreCategoria}}>{{categoria.nombreCategoria}}</option>
+              {% endif %}
+            {% endfor %}
           </select>
         </div>
       </form>
@@ -57,6 +60,7 @@
             <label for="buscadorImagen">Imagen</label>
             <img name="actualImg" id="actualImg" src="{{rutaImagenO}}">
             <div>
+              <br>
               <input type="file" class="custom-file-input" id="buscadorImagen" name="buscadorImagen" lang="es-ES" accept="image/*">
               <label class="custom-file-label" for="buscadorImagen">Seleccionar Archivo</label>
             </div>

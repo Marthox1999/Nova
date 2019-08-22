@@ -153,6 +153,9 @@ def modificar_categoria(request, *args, **kwargs):
     modificar = request.POST
     idCategoria = modificar.get('categoria')
 
+    subCategorias = {}
+    nombreCategoria = ""
+
     rutaImagenO = ""
 
     idCategoriaSubCat = modificar.get('idCat')
@@ -162,8 +165,9 @@ def modificar_categoria(request, *args, **kwargs):
 
     if ( acccionModCatSubmit == "Modificar"):
         nombreCategoria = modificar.get('nombreCategoria')
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoriaSubCat)
         imagen = categoriaObject.rutaImagen
+        rutaImagenO = "../"+imagen.name
 
         imagenModif = False
         
@@ -171,19 +175,22 @@ def modificar_categoria(request, *args, **kwargs):
             imagen = request.FILES['buscadorImagen']
             imagenModif = True
         
-        aux =  Categoria(nombreCategoria = nombreCategoria)
+        aux =  Categoria(nombreCategoria = nombreCategoria,
+                         rutaImagen = imagen)
         try:
-            aux.full_clean()
+            aux.clean_fields()
+            aux.clean()
         except ValidationError as e:
-            context={'categorias':categorias}
+            print(e)
+            context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoriaSubCat, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
             messages.info(request, 'Nuevo nombre de categoria invalido')
             return render(request, "inventario/modificar_categoria.html", context, {})
 
 
         Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
         if(imagenModif):
-                product = Producto.objects.get(pkProducto = idproducto)
-                product.rutaImagen.save(imagen.name,File(imagen),'r')
+                categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
+                categ.rutaImagen.save(imagen.name,File(imagen),'r')
         context={'categorias':categorias}
         messages.success(request, 'Categoria modificada exitosamente')
         return render(request, "inventario/modificar_categoria.html", context, {})
@@ -206,13 +213,8 @@ def modificar_categoria(request, *args, **kwargs):
         context={'categorias':categorias}
         messages.success(request, 'SubCategoria agregada con exito')
         return render(request, "inventario/modificar_categoria.html", context, {})
-
-    subCategorias = {}
-    if(idCategoria=='-1' or idCategoria==None):
-        nombreCategoria = ""
-        idCategoria = ""
-        subCategorias = {}
-    else:
+    
+    if(idCategoria!='-1' and idCategoria!=None):
         categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)
         nombreCategoria = categoriaObject.nombreCategoria
         rutaImagenO = "../"+categoriaObject.rutaImagen.name
