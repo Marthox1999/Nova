@@ -283,7 +283,7 @@ def aniadirReferencias(request, *args, **kwargs):
         if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
             precio = int(modificar.get('inputPrecio'))    
         if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
-            iva = int(modificar.get('inputIva'))*precio/100
+            iva = int(modificar.get('inputIva'))
         if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
             #print(imagen)
             imagen = request.FILES['buscadorImagen']#####
@@ -425,7 +425,7 @@ def modificarReferencias(request, *args, **kwargs):
         if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
             precio = int(modificar.get('inputPrecio'))
         if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
-            iva = int(modificar.get('inputIva'))*precio/100
+            iva = int(modificar.get('inputIva'))
         
         imagenModif = False
         idP = modificar.get('inputId')
@@ -518,8 +518,8 @@ def modificarReferencias(request, *args, **kwargs):
         nombreO = producObject.nombre
         descripcionO = producObject.descripcion        
         precioO = producObject.precio
-        ivaOPorcent = producObject.iva
-        ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
+        ivaO = producObject.iva
+        #ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
         rutaImagenO = producObject.rutaImagen
 
         context={
@@ -697,8 +697,8 @@ def consultarReferencias(request, *args, **kwargs):
         nombreO = producObject.nombre
         descripcionO = producObject.descripcion        
         precioO = producObject.precio
-        ivaOPorcent = producObject.iva
-        ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
+        ivaO = producObject.iva
+        #ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
         rutaImagenO = producObject.rutaImagen
 
         context={
@@ -903,8 +903,8 @@ def eliminarReferencias(request, *args, **kwargs):
         nombreO = producObject.nombre
         descripcionO = producObject.descripcion        
         precioO = producObject.precio
-        ivaOPorcent = producObject.iva
-        ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
+        ivaO = producObject.iva
+        #ivaO = int(math.ceil((ivaOPorcent*100)/precioO))
         rutaImagenO = producObject.rutaImagen
         detallesP = DetallesProducto.objects.filter(fkProducto=idproducto)
 
