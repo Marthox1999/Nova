@@ -53,20 +53,21 @@ class Bodega(models.Model):
 #DetallesProducto
 class DetallesProducto(models.Model):            
     COLOR = {
-        ('negro',' Negro'),
-        ('blanco','Blanco'),
-        ('amarillo','Amarillo'),
-        ('azul','Azul'),
-        ('rojo','Rojo'),
-        ('verde','Verde'),
-        ('morado','Morado'),
-        ('naranja','Naranja'),
-        ('rosado','Rosado'),
-        ('gris','Gris'),
-        ('marron','Marrón'),
-        ('beige','Beige'),
-        ('otros','Otro'),
+        ('Negro',' Negro'),
+        ('Blanco','Blanco'),
+        ('Amarillo','Amarillo'),
+        ('Azul','Azul'),
+        ('Rojo','Rojo'),
+        ('Verde','Verde'),
+        ('Morado','Morado'),
+        ('Naranja','Naranja'),
+        ('Rosado','Rosado'),
+        ('Gris','Gris'),
+        ('Marron','Marrón'),
+        ('Beige','Beige'),
+        ('Otros','Otro'),
     }
+    pkDetallesP = models.AutoField(primary_key=True)
     fkProducto =  models.ForeignKey(Producto, on_delete=models.CASCADE)
     talla = models.CharField(max_length=32)
     nit = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
