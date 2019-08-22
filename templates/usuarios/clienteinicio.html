@@ -18,11 +18,11 @@
     </div>
   </div>
   <div class="ps-section--offer">
-        {% for categoria in categorias %}
-        <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productosCategorias' nombre=nombre categoria=categoria.pkCategoria %}"><img src="{% static 'images/paginaPrincipal_duenio/categorias.png' %}" alt=""></a></div>
-        {% empty %}
-                <p>Vacio</p>
-        {% endfor %}
+    {% for categoria in categorias %}
+      <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productosCategorias' nombre=nombre categoria=categoria.pkCategoria %}"><img src="../{{categoria.rutaImagen}}" alt=""></a></div> <!-- <img src="{% static 'images/paginaPrincipal_duenio/categorias.png' %}" alt=""> -->
+    {% empty %}
+      <p>Vacio</p>
+    {% endfor %}
   <br>
 </div>
 
