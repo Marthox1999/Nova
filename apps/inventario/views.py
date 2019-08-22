@@ -298,8 +298,6 @@ def modificarReferencias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
 
     modificar = request.POST
-    print("HOLAAAAAAAAAAAAAAAa")
-    print(modificar)
     idcategoria = modificar.get('categoria')
     subcategorias = {}
     idsubcategoria = modificar.get('subcategoria')
@@ -310,28 +308,20 @@ def modificarReferencias(request, *args, **kwargs):
     producSeleccionado = False
     
     if((modificar.get('categoria') != "") and (modificar.get('categoria') != None) and (modificar.get('categoria') != "-1")):
-        #idcategoria = modificar.get('categoria')
         subcategorias = SubCategoria.objects.filter(fkCategoria=idcategoria)
         catSeleccionada = True
-        #print("HELP")
-        #print(idcategoria)
     else:
         idcategoria = -1
 
     if((modificar.get('subcategoria') != "") and (modificar.get('subcategoria') != None) and (modificar.get('subcategoria') != "-1")):
-        #idsubcategoria = modificar.get('subcategoria')
         productos = Producto.objects.filter(fkSubCategoria=idsubcategoria)
         subCatSeleccionada = True
-        #print("SOCORROR")
-        #print(idsubcategoria)
     else:
         idsubcategoria = -1
     
     if((modificar.get('producto') != "") and (modificar.get('producto') != None) and (modificar.get('producto') != "-1")):                
         idproducto = modificar.get('producto')
         producSeleccionado = True
-        #print("COSSSS")
-        #print(modificar.get('producto') != -1)
     else:
         idproducto = -1
 
@@ -348,8 +338,6 @@ def modificarReferencias(request, *args, **kwargs):
         'precioO': "",
         'rutaImagenO': "",
     }
-    
-    #print(context)
 
     if (modificar.get('productos-submit')=="Modificar Referencia"): #SE MODIFICA LA REFERENCIA
         nombre = modificar.get('inputNombre')
@@ -454,8 +442,6 @@ def modificarReferencias(request, *args, **kwargs):
             'precioO': precioO,
             'rutaImagenO': rutaImagenO,
         }
-
-    #print(context)
     return render(request, "inventario/referenciasModificar.html", context, {})
 
 def modificarProductos(request, *args, **kwargs):
@@ -499,3 +485,40 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     productos=Producto.objects.filter(fkSubCategoria=subCategoria)
     context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
+
+
+def modificarBodega(request):
+    categorias = Categoria.objects.all()
+    bodegas = Bodega.objects.all()
+    modificar = request.POST
+    idBodega = modificar.get('bodega')
+    bodegaSeleccionada = False
+
+    if(idBodega=='-1' or idBodega==None):
+        ciudadBodega = ""
+        dirBodega = ""
+    else:
+        BodegaObject = Bodega.objects.get(pkBodega=idBodega)
+        ciudadBodega = BodegaObject.ciudad
+        dirBodega = BodegaObject.direccion
+        ciudadB = modificar.get('ciudad')
+        dirB = modificar.get('direccion')
+                    
+        aux =  Bodega(direccion =dirB, ciudad = ciudadB)
+        
+        if(modificar.get('modfBod-submit')!= None):
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+                messages.info(request, 'Datos invalidos')
+                return render(request, "inventario/bodegaModificar.html", context, {})
+
+            Bodega.objects.filter(pkBodega=idBodega).update(ciudad= aux.ciudad, direccion=aux.direccion)
+            context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadB, 'dirBodega':dirB} 
+            messages.info(request, 'Bodega modificada correctamente')   
+            return render(request, 'inventario/bodegaModificar.html', context, {})
+
+
+    context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+    return render(request, "inventario/bodegaModificar.html", context, {})
