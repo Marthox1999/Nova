@@ -203,7 +203,7 @@ def clientePerfil(request, nombre):
 
 
 def clienteCarrito(request, nombre):
-    
+    categorias = Categoria.objects.all()
     accion = request.POST
     idEliminar = accion.get('eliminar')
     if(idEliminar):
@@ -230,7 +230,7 @@ def clienteCarrito(request, nombre):
             
 
 
-    context = {'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
+    context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {})
 
 

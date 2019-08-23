@@ -1174,6 +1174,10 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
                 context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
                 return render(request,'inventario/productoDetalles.html',context,{})
             cliente = Cliente.objects.get(nombre = nombre)
+            if (cantidadcomprar <= 0):
+                messages.info(request, 'Seleccione una cantidad de productos mayor a 0')
+                context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                return render(request,'inventario/productoDetalles.html',context,{})
             carrito = Carrito(fkNombreCliente = cliente, fkDetalleProducto = sdp, cantidad = cantidadcomprar)
             try:
                 carrito.full_clean()
