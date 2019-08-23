@@ -532,7 +532,7 @@ def modificarReferencias(request, *args, **kwargs):
             'nombreO': nombreO,
             'idO': int(idproducto),
             'descripcionO': descripcionO,
-            'ivaO': ivaO,
+            'ivaO': int(ivaO),
             'precioO': precioO,
             'rutaImagenO': "../"+rutaImagenO.name,
         }
@@ -711,7 +711,7 @@ def consultarReferencias(request, *args, **kwargs):
             'nombreO': nombreO,
             'idO': int(idproducto),
             'descripcionO': descripcionO,
-            'ivaO': ivaO,
+            'ivaO': int(ivaO),
             'precioO': precioO,
             'rutaImagenO': "../"+rutaImagenO.name,
         }
@@ -922,7 +922,7 @@ def eliminarReferencias(request, *args, **kwargs):
             'nombreO': nombreO,
             'idO': int(idproducto),
             'descripcionO': descripcionO,
-            'ivaO': ivaO,
+            'ivaO': int(ivaO),
             'precioO': precioO,
             'rutaImagenO': "../"+rutaImagenO.name,
             'hayProductos': hayProductos
