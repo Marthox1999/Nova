@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Categoria(models.Model):
     pkCategoria = models.AutoField(primary_key=True)
     nombreCategoria = models.CharField(max_length=256, unique=True)
+    rutaImagen = models.ImageField(upload_to = '../media/categoriasImagenes')###############
 
 #Subcategoria
 class SubCategoria(models.Model):

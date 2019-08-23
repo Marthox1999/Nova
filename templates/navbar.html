@@ -18,6 +18,12 @@
   {% endif%}
 
   {% if nombre != 'noRegistrado' %}  
+  <li style="float:right">
+    <a class="active" href="{% url 'usuarios:clienteCarrito' nombre %}">
+        <img src="{% static 'images/Iconos/ShoppingCart_Small.png' %}" width="20" height="20">
+      Mi Carrito 
+    </a>
+  </li>
   <li style="float:right"><a class="active" href="{% url 'usuarios:clientePerfil' nombre %}"> Perfil </a></li>
   {% endif%}
 

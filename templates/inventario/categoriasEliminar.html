@@ -3,28 +3,52 @@
 {% block content %}
 
 {% load static %}
-<div class="container" style="background-color:#FEF0F0;">
-          <!-- contact  -->
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3" style="padding: 75px">
-      <div class="panel-login panel" style="padding: 5px">
-        <div class="panel-heading" style="background-color:#FEF0F0;">
-            <div class="row mb_20">
-                <h1 style="text-align: center">Tus categorias</h1>
-            </div>
-          <hr>
-        </div>
-        <div class="panel-body" style="background-color:#FEF0F0; text-align: center; font-size: 30px">
-          {% for categoria in categorias %}
-            <div class="row mb_20">
-              {{categoria.nombreCategoria}}   <a style="padding: 25px" href="{% url 'inventario:eliminarCategorias' idCategoria=categoria.pkCategoria %}" class="ps-offer"><img src="{% static 'images/Iconos/delete.png' %}"></a>
-            </div>
-          {% empty %}
-            <a>Todavia no hay categorias</a>
-          {% endfor %}
-        </div>
-      </div>
+<div class="col-md-6 col-md-offset-3">
+  <br>
+  <div class="panel-login panel">
+    <div class="panel-heading">
+      <center>
+        <h1> Eliminar Categorias </h1>
+      </center>
     </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <form id="formulario-producto" action="#" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="categoria">Categoria</label>
+            <select class="form-control" id="categoria" name="categoria" value="{{categoria}}" onChange="form.submit();">
+                <option value="-1" name="-1">Categoria</option>
+              {% for cat in categorias %}
+                {% if idcategoria == cat.pkCategoria   %}
+                  <option selected value={{cat.pkCategoria}} name={{cat.nombreCategoria}}>{{cat.nombreCategoria}}</option>
+                {% else %}
+                  <option value={{cat.pkCategoria}} name={{cat.nombreCategoria}}>{{cat.nombreCategoria}}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>          
+          
+          <div class="form-group">
+            <div class="custom-file">
+              <label for="buscadorImagen">Imagen</label>
+              <img name="actualImg" id="actualImg" src="{{rutaImagenO}}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <input type="submit" name="categoria-submit" id="categoria-submit" tabindex="4" class="form-control btn" value="Eliminar Categoria">
+              </div>
+            </div>
+          </div>                  
+        </form>
+      </div>
+    </div>    
   </div>
 </div>
 
