@@ -448,7 +448,6 @@ def modificarReferencias(request, *args, **kwargs):
         'rutaImagenO': "",
     }
 
-
     if (modificar.get('productos-submit')=="Modificar Referencia"): #SE MODIFICA LA REFERENCIA
         nombre = modificar.get('inputNombre')
         descripcion = modificar.get('DescrProducto')
@@ -1195,3 +1194,40 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
         
     context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
     return render(request, 'inventario/productoDetalles.html', context, {})
+
+def modificarBodega(request):
+    categorias = Categoria.objects.all()
+    bodegas = Bodega.objects.all()
+    modificar = request.POST
+    idBodega = modificar.get('bodega')
+    bodegaSeleccionada = False
+
+    if(idBodega=='-1' or idBodega==None):
+        ciudadBodega = ""
+        dirBodega = ""
+    else:
+        BodegaObject = Bodega.objects.get(pkBodega=idBodega)
+        ciudadBodega = BodegaObject.ciudad
+        dirBodega = BodegaObject.direccion
+        ciudadB = modificar.get('ciudad')
+        dirB = modificar.get('direccion')
+                    
+        aux =  Bodega(direccion =dirB, ciudad = ciudadB)
+        
+        if(modificar.get('modfBod-submit')!= None):
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+                messages.info(request, 'Datos invalidos')
+                return render(request, "inventario/bodegaModificar.html", context, {})
+
+            Bodega.objects.filter(pkBodega=idBodega).update(ciudad= aux.ciudad, direccion=aux.direccion)
+            context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadB, 'dirBodega':dirB} 
+            messages.info(request, 'Bodega modificada correctamente')   
+            return render(request, 'inventario/bodegaModificar.html', context, {})
+
+
+    context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+    return render(request, "inventario/bodegaModificar.html", context, {})
+
