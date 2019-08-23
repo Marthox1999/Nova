@@ -1168,7 +1168,12 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
         agregarACarrito = seleccionado.get('AgregarCarrito-submit')
         #agregar a carrito
         if (agregarACarrito == 'AgregarCarrito'):
-            cantidadcomprar = int(seleccionado.get('cantidad'))
+            try:
+                cantidadcomprar = int(seleccionado.get('cantidad'))
+            except:
+                messages.info(request, 'Cantidad de productos invalidos')
+                context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                return render(request,'inventario/productoDetalles.html',context,{})
             if (cantidadcomprar > sdp.cantidad):
                 messages.info(request, 'No hay esa cantidad de productos disponibles, intente una menor')
                 context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
