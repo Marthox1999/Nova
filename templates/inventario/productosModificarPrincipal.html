@@ -3,24 +3,22 @@
 
 
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/section.css' %}">
 
-<div class="container" style="background-color:#FEF0F0;">
+<div class="col-md-6 col-md-offset-3">
   <br>
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
-        <h1> Modificar Productos </h1>
+        <h2> Modificar Productos </h2>
       </center>
     </div>
   </div>
 
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-lg-12">                            
-        <a href="{% url 'inventario:modificarReferencias' %}" type="button" class="btn btn-primary btn-lg btn-block">Modificar Referencias</a>
-        <a href="{% url 'inventario:modificarProductos' %}" type="button" class="btn btn-primary btn-lg btn-block">Modificar Productos</a>           
-      </div>
-    </div>
+  <div class="ps-section--offer">
+    <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:modificarReferencias' %}"><img src="{% static 'images/menu_Botones/referencias.png' %}" alt=""></a></div>    
+    <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:modificarProductos' %}"><img src="{% static 'images/menu_Botones/productos.png' %}" alt=""></a></div>
   </div>
 </div>
 
