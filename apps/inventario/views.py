@@ -416,7 +416,6 @@ def modificarReferencias(request, *args, **kwargs):
         'rutaImagenO': "",
     }
 
-
     if (modificar.get('productos-submit')=="Modificar Referencia"): #SE MODIFICA LA REFERENCIA
         nombre = modificar.get('inputNombre')
         descripcion = modificar.get('DescrProducto')
@@ -536,7 +535,6 @@ def modificarReferencias(request, *args, **kwargs):
             'precioO': precioO,
             'rutaImagenO': "../"+rutaImagenO.name,
         }
-
     return render(request, "inventario/referenciasModificar.html", context, {})
 
 def modificarProductos(request, *args, **kwargs):
@@ -1100,4 +1098,41 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     productos=Producto.objects.filter(fkSubCategoria=subCategoria)
     context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
+
+
+def modificarBodega(request):
+    categorias = Categoria.objects.all()
+    bodegas = Bodega.objects.all()
+    modificar = request.POST
+    idBodega = modificar.get('bodega')
+    bodegaSeleccionada = False
+
+    if(idBodega=='-1' or idBodega==None):
+        ciudadBodega = ""
+        dirBodega = ""
+    else:
+        BodegaObject = Bodega.objects.get(pkBodega=idBodega)
+        ciudadBodega = BodegaObject.ciudad
+        dirBodega = BodegaObject.direccion
+        ciudadB = modificar.get('ciudad')
+        dirB = modificar.get('direccion')
+                    
+        aux =  Bodega(direccion =dirB, ciudad = ciudadB)
+        
+        if(modificar.get('modfBod-submit')!= None):
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+                messages.info(request, 'Datos invalidos')
+                return render(request, "inventario/bodegaModificar.html", context, {})
+
+            Bodega.objects.filter(pkBodega=idBodega).update(ciudad= aux.ciudad, direccion=aux.direccion)
+            context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadB, 'dirBodega':dirB} 
+            messages.info(request, 'Bodega modificada correctamente')   
+            return render(request, 'inventario/bodegaModificar.html', context, {})
+
+
+    context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+    return render(request, "inventario/bodegaModificar.html", context, {})
 
