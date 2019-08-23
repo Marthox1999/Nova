@@ -28,10 +28,19 @@
     <div class="row">
     {%for producto in productos %}
     <div class="product-layout  product-grid  col-md-4 col-sm-6 col-xs-12">
+        <span href=>
         <div class="item">
         <div class="product-thumb clearfix mb_30">
             <div class="image product-imageblock">
-                <a href="{% url 'inventario:productoDetalles' nombre=nombre categoria=categoria idproducto=producto.pkProducto precio=producto.precio%}"><img src="{{producto.rutaImagen.url}}"></a>
+                <img src="{{producto.rutaImagen.url}}" title="Producto" class="img-responsive">
+                <a href="{% url 'inventario:productoDetalles' nombre=nombre categoria=categoria idproducto=producto.pkProducto precio=producto.precio%}">
+                    <input type="button" 
+                           id="{{producto.pkProducto}}"
+                           class="form-control btn btn-register"
+                           value="Ver"
+                           style="position:absolute; top:10px; right: 10px; width: 75px; height: 40px;">
+                    </input>
+                </a>
             </div>
             <div class="caption product-detail text-center">
             <h6 data-name="product_name" class="product-name mt_20"><a href="{% url 'inventario:productoDetalles' nombre=nombre categoria=categoria idproducto=producto.pkProducto precio=producto.precio%}" title="{{producto.nombre}}">{{producto.nombre}} - {{producto.pkProducto}}</a></h6>
@@ -39,6 +48,7 @@
             </div>
         </div>
         </div>
+        </span>
     </div>
     {% endfor %}
     </div> 

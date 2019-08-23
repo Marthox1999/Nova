@@ -231,7 +231,7 @@ def aniadirReferencias(request, *args, **kwargs):
         if(modificar.get('inputPrecio')!="" and modificar.get('inputPrecio')!=None):
             precio = int(modificar.get('inputPrecio'))    
         if(modificar.get('inputIva')!="" and modificar.get('inputIva')!=None):
-            iva = int(modificar.get('inputIva'))*precio/100
+            iva = int(modificar.get('inputIva'))
         if(submitReq=="Crear Referencia" and not(idSubCat=="null") and not(nombre=="") and not(descripcion=="") and not(iva<=0) and not(precio<=0)):
             #print(imagen)
             imagen = request.FILES['buscadorImagen']#####
@@ -247,6 +247,7 @@ def aniadirReferencias(request, *args, **kwargs):
             try:
                 aux.full_clean()
             except ValidationError as e:
+                print(e)
                 context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
                 messages.info(request, 'Alguno(s) campo(s) no son validos')
                 return render(request, "inventario/referenciasCrear.html", context, {})
@@ -671,25 +672,36 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     import datetime
     categorias = Categoria.objects.all()
     subCategorias= SubCategoria.objects.filter(fkCategoria=categoria)
-    #########si existen descuentos aplicarlos
-    #prueba con un descuento
+    #
     hoy = datetime.date.today()
     aux = Producto(subCategorias[0].pkSubCategoria, "","", 0.0,0.0)
+    #productos con precio cambiado
     productos = aux.productosConDescuento(subCategoria, hoy)
-    context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': productos, 'categoria':categoria, 'nombre':nombre}
+    finales = []
+    #productos con detallesproducto o no
+    for producto in productos:
+        detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
+        print(producto.nombre, " ", detallesProducto)
+        if detallesProducto:
+            finales.append(producto)
+
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'productos': finales, 'categoria':categoria, 'nombre':nombre}
     return render(request, 'inventario/productoCategoriaVista.html', context, {})
 
 def productoDetalles(request, nombre,categoria, idproducto, precio):
     from usuarios.models import Carrito
-
+    import datetime
     esCliente = (nombre != "noRegistrado")
     categorias = Categoria.objects.all()
     auxcategoria = Categoria.objects.get(pkCategoria = categoria)
     subCategorias= SubCategoria.objects.filter(fkCategoria=auxcategoria)
+    #subtotal
+    subtotal= 1*precio
     # producto
     producto = Producto.objects.get(pkProducto = idproducto)
     detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
-    idDetalleproducto = detallesProducto[0].pkDetallesP
+    print(detallesProducto)
+    idDetalleproducto = detallesProducto.first().pkDetallesP
     sdp = detallesProducto.get(pkDetallesP = idDetalleproducto)
     # cargar informacion del detalle
     if request.method == 'POST':
@@ -698,19 +710,22 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
         sdp = detallesProducto.get(pkDetallesP = idDetalleproducto)
         agregarACarrito = seleccionado.get('AgregarCarrito-submit')
         #agregar a carrito
-        if ((agregarACarrito == 'AgregarCarrito')):
-            cantidadcomprar = seleccionado.get('cantidad')
+        if (agregarACarrito == 'AgregarCarrito'):
+            cantidadcomprar = int(seleccionado.get('cantidad'))
+            if (cantidadcomprar > sdp.cantidad):
+                messages.info(request, 'No hay esa cantidad de productos disponibles, intente una menor')
+                context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                return render(request,'inventario/productoDetalles.html',context,{})
             cliente = Cliente.objects.get(nombre = nombre)
             carrito = Carrito(fkNombreCliente = cliente, fkDetalleProducto = sdp, cantidad = cantidadcomprar)
             try:
                 carrito.full_clean()
-                print("valido")
             except ValidationError as e:
                 messages.info(request, 'Cantidad de articulos  invalida')
-                context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'subtotal':subtotal, 'detallesproducto':detallesProducto, 'idDetalleproducto':idDetalleproducto, 'precio':precio, 'productoS':sdp, 'nombre':nombre, 'esCliente':esCliente}
                 return render(request,'inventario/productoDetalles.html',context,{})
-
             carrito.save()
             messages.success(request, 'Producto agregado al carrito')
-    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+        
+    context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
     return render(request, 'inventario/productoDetalles.html', context, {})
