@@ -29,4 +29,5 @@ urlpatterns = [
     path('productosCategorias/<str:nombre>/<str:categoria>/', productosCategoriasVista, name='productosCategorias'),
     path('productosCategorias/<str:nombre>/<str:categoria>/<str:subCategoria>/', productosSubCategoriasVista, name='productosSubCategorias'),
     path('bodegaModificar', modificarBodega , name='bodegaModificar'),
+]
 
