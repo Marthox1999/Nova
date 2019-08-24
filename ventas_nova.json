@@ -1,0 +1,242 @@
+[
+{
+  "model": "ventas.descuentoproducto",
+  "pk": 1,
+  "fields": {
+    "fkProducto": 15,
+    "fechaInicio": "2019-08-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 30.0
+  }
+},
+{
+  "model": "ventas.descuentoproducto",
+  "pk": 2,
+  "fields": {
+    "fkProducto": 30,
+    "fechaInicio": "2019-08-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 30.0
+  }
+},
+{
+  "model": "ventas.descuentoproducto",
+  "pk": 3,
+  "fields": {
+    "fkProducto": 15,
+    "fechaInicio": "2016-08-17",
+    "fechaFin": "2017-08-19",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentoproducto",
+  "pk": 4,
+  "fields": {
+    "fkProducto": 30,
+    "fechaInicio": "2016-08-17",
+    "fechaFin": "2017-08-19",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 1,
+  "fields": {
+    "fkCategoria": 2,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 15.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 2,
+  "fields": {
+    "fkCategoria": 2,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 15.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 3,
+  "fields": {
+    "fkCategoria": 2,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 15.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 4,
+  "fields": {
+    "fkCategoria": 1,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 20.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 5,
+  "fields": {
+    "fkCategoria": 2,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 6,
+  "fields": {
+    "fkCategoria": 2,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-08-20",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 7,
+  "fields": {
+    "fkCategoria": 2,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-08-20",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentocategoria",
+  "pk": 8,
+  "fields": {
+    "fkCategoria": 1,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 1,
+  "fields": {
+    "fkSubCategoria": 5,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 20.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 2,
+  "fields": {
+    "fkSubCategoria": 6,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 10.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 3,
+  "fields": {
+    "fkSubCategoria": 4,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 20.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 4,
+  "fields": {
+    "fkSubCategoria": 2,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 30.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 5,
+  "fields": {
+    "fkSubCategoria": 3,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 15.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 6,
+  "fields": {
+    "fkSubCategoria": 13,
+    "fechaInicio": "2019-07-17",
+    "fechaFin": "2019-08-20",
+    "porcentajeDescuento": 20.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 7,
+  "fields": {
+    "fkSubCategoria": 5,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 8,
+  "fields": {
+    "fkSubCategoria": 6,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 9,
+  "fields": {
+    "fkSubCategoria": 4,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 10,
+  "fields": {
+    "fkSubCategoria": 2,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 11,
+  "fields": {
+    "fkSubCategoria": 3,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-08-20",
+    "porcentajeDescuento": 99.0
+  }
+},
+{
+  "model": "ventas.descuentosubcategoria",
+  "pk": 12,
+  "fields": {
+    "fkSubCategoria": 13,
+    "fechaInicio": "2016-07-17",
+    "fechaFin": "2017-07-18",
+    "porcentajeDescuento": 99.0
+  }
+}
+]

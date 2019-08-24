@@ -48,9 +48,9 @@
           </div>
 
           <div class="form-group">
-            <label for="producto">Producto</label>                 
+            <label for="producto">Referencia</label>                 
             <select class="form-control" id="producto" name="producto" onChange="form.submit();">
-              <option value="-1" name="-1">Producto</option>
+              <option value="-1" name="-1">Referencia</option>
               {% for produc in productos %}
                 {% if idproducto == produc.pkProducto %}
                   <option selected value={{produc.pkProducto}} name={{produc.nombre}}>{{produc.nombre}}</option>
@@ -81,7 +81,7 @@
 
           <div class="form-group">
             <label for="inputPrecio">Precio</label>
-            <input required id="inputPrecio" name="inputPrecio" type="text" class="form-control" value="{{precioO}}">
+            <input required id="inputPrecio" name="inputPrecio" type="number" class="form-control" value="{{precioO}}">
           </div>
           
           <div class="form-group">

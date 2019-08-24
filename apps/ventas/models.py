@@ -25,6 +25,7 @@ class DescuentoCategoria(models.Model):
     validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],
 )
 
+
 #DescuentoSubCategoria
 class DescuentoSubCategoria(models.Model):
     pkDescuentoSubCategoria = models.AutoField(primary_key=True)
@@ -32,7 +33,7 @@ class DescuentoSubCategoria(models.Model):
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField()
     porcentajeDescuento = models.FloatField(
-    validators=[MinValueValidator(0.1), MaxValueValidator(0.99)],
+    validators=[MinValueValidator(0), MaxValueValidator(99)],
 )
 
 #Factura
@@ -60,7 +61,7 @@ class PagosCredito(models.Model):
     numeroAprobacion = models.CharField(max_length=4) #donde se genera automatico?
     fechaAprobacion = models.DateField()
     entidadAprobacion = models.CharField(max_length=2,choices=ENTIDAD)
-    porcentajePago = models.FloatField([MinValueValidator(0.1), MaxValueValidator(1)],
+    porcentajePago = models.FloatField([MinValueValidator(0), MaxValueValidator(99)],
 )
 #classDebito
 class PagosDebito(models.Model):
@@ -69,5 +70,5 @@ class PagosDebito(models.Model):
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     numeroPago = models.CharField(max_length=4) 
     ahorros = models.BooleanField()
-    porcentajePago = models.FloatField([MinValueValidator(0.1), MaxValueValidator(1)],
+    porcentajePago = models.FloatField([MinValueValidator(0), MaxValueValidator(99)],
 )

@@ -5,10 +5,10 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from usuarios.models import AdministradorDuenio
+
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from usuarios.models import Cliente
+from usuarios.models import *
 from inventario.models import Categoria
 
 
@@ -211,4 +211,37 @@ def clientePerfil(request, nombre):
     cliente = Cliente.objects.filter(nombre=nombre)
     context = {'nombre':nombre, 'cliente':cliente}
     return render(request,"usuarios/clientePerfil.html", context, {})
+
+
+def clienteCarrito(request, nombre):
+    categorias = Categoria.objects.all()
+    accion = request.POST
+    idEliminar = accion.get('eliminar')
+    if(idEliminar):
+        try:
+            Carrito.objects.filter(pkCarrito=idEliminar).delete()
+        except ValidationError as e:
+            messages.info(request, 'El artículo no pudo ser eliminado del carrito')
+    productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
+
+    numeroDebito = accion.get('cuantasDebito')
+    cuantasDebito = {}
+    numeroCredito = accion.get('cuantasCredito')
+    cuantasCredito = {}
+
+    if(numeroDebito or numeroCredito):
+        try:
+            cuantasDebito = range(1, int(numeroDebito)+1)
+            cuantasCredito = range(1, int(numeroCredito)+1)
+        except ValidationError as e:
+            messages.info(request, 'Error para identificar la cantidad de tarjetas')
+        except ValueError as e:
+            pass
+            #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
+            
+
+
+    context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
+    return render(request, "usuarios/clienteCarrito.html", context, {})
+
 
