@@ -34,5 +34,7 @@ urlpatterns = [
 
     path('productosCategorias/<str:nombre>/<str:categoria>/', productosCategoriasVista, name='productosCategorias'),
     path('productosCategorias/<str:nombre>/<str:categoria>/<str:subCategoria>/', productosSubCategoriasVista, name='productosSubCategorias'),
-
+    path('productoDetalles/<str:nombre>/<str:categoria>/<str:idproducto>/<str:precio>',productoDetalles,name='productoDetalles'),
+    path('bodegaModificar', modificarBodega , name='bodegaModificar'),
 ]
+

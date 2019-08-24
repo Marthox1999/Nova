@@ -12,6 +12,26 @@ docker-compose build
 docker-compose up
 ```
 
+Admin default para tablas por localhost:8000/admin
+```
+admin
+123
+```
+
+Tenemos usuarios default ejemplos:
+
+```
+duenio:     'Marthox', '1234'
+
+admins:     'Valeria', '1234'
+            'Emily', '1234'
+
+clientes:   'Felipe', '1234'
+            'Jaime', '1234'
+```
+
+## Si no esta funcionando el entrypoint
+
 y como es la primera vez hay que migrar la prueba de modelo
 
 ```

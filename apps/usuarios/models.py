@@ -1,6 +1,7 @@
 from django.db import models
 import hashlib
 from django.core.validators import RegexValidator
+from inventario.models import DetallesProducto
 
 class Cliente(models.Model):
     TIPO_DOC = {  
@@ -56,3 +57,9 @@ class AdministradorDuenio (models.Model):
         auth = AdministradorDuenio.objects.filter(nombreUsuario=self.nombreUsuario, clave=hashlib.md5(self.clave.encode('utf-8')).hexdigest(), tipo='CEO').exists()
         return auth
 
+#ProductosEnCarrito
+class Carrito(models.Model):
+    pkCarrito = models.AutoField(primary_key=True)
+    fkNombreCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    fkDetalleProducto =  models.ForeignKey(DetallesProducto, on_delete=models.CASCADE)
+    cantidad = models.IntegerField()
