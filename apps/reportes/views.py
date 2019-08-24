@@ -1,7 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from ventas.models import *
 from datetime import timedelta, date, datetime
+
+def inicioReportes(request, *args, **kwargs):
+    context = {}
+    if request.method == 'POST':
+        data = request.POST
+        print(data)
+        reporte = data.get('tipoReporte')
+        if(reporte == '1'):
+            return redirect(to='reportes:reporteVentas')
+    return render (request, "reportes/reportes.html", context, {})
 
 def daterange(start_date, end_date):
     for n in range(int ((end_date - start_date).days)):
@@ -20,7 +30,6 @@ def reporteVentas(request, *args, **kwargs):
             cantidad.append(cant)
             dias.append(dia.strftime('%Y-%m-%d'))
         context={"datax":dias,"datay":cantidad}
-        print(len(dias), len(cantidad))
         return render(request, "reportes/reporteVentas.html", context, {})
     
     return render (request, "reportes/reporteVentas.html", context, {})
