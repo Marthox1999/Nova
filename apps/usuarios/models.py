@@ -59,9 +59,7 @@ class AdministradorDuenio (models.Model):
 
 #ProductosEnCarrito
 class Carrito(models.Model):
-
     pkCarrito = models.AutoField(primary_key=True)
-
     fkNombreCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fkDetalleProducto =  models.ForeignKey(DetallesProducto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
