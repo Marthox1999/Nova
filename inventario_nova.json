@@ -3,35 +3,40 @@
   "model": "inventario.categoria",
   "pk": 1,
   "fields": {
-    "nombreCategoria": "Hombres"
+    "nombreCategoria": "Hombres",
+    "rutaImagen": "../media/categoriasImagenes/categorias.jpg"
   }
 },
 {
   "model": "inventario.categoria",
   "pk": 2,
   "fields": {
-    "nombreCategoria": "Mujeres"
+    "nombreCategoria": "Mujeres",
+    "rutaImagen": "../media/categoriasImagenes/categorias.jpg"
   }
 },
 {
   "model": "inventario.categoria",
   "pk": 3,
   "fields": {
-    "nombreCategoria": "Ni\u00f1os"
+    "nombreCategoria": "Ni\u00f1os",
+    "rutaImagen": "../media/categoriasImagenes/categorias.jpg"
   }
 },
 {
   "model": "inventario.categoria",
   "pk": 4,
   "fields": {
-    "nombreCategoria": "Accesorios"
+    "nombreCategoria": "Accesorios",
+    "rutaImagen": "../media/categoriasImagenes/categorias.jpg"
   }
 },
 {
   "model": "inventario.categoria",
   "pk": 5,
   "fields": {
-    "nombreCategoria": "Zapatos"
+    "nombreCategoria": "Zapatos",
+    "rutaImagen": "../media/categoriasImagenes/categorias.jpg"
   }
 },
 {

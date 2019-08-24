@@ -27,8 +27,6 @@ def bodegaRegistro(request, *args, **kwargs):
             direccion = crearBodega.get('direccion'),
             ciudad = crearBodega.get('ciudad')
         )
-        print(crearBodega.get('direccion'))
-        print(crearBodega.get('ciudad'))
         try:
             bodega.full_clean()
         except ValidationError as e:
@@ -92,12 +90,9 @@ def eliminarCategorias(request, *args, **kwargs):
     if(request.method=="POST"):
         idcategoria = datos.get('categoria')
         if(idcategoria!="-1" and idcategoria != None):
-            print("HOLAA ",datos.get('categoria-submit'))
             if(datos.get('categoria-submit')=="Eliminar Categoria"):
                 try:
-                    print("HOLLO")
                     Categoria.objects.filter(pkCategoria=idcategoria).delete()
-                    print("DIE")
                     messages.success(request, 'Categoria eliminada exitosamente')
                     return render(request,'inventario/categoriasEliminar.html', context,{})
                 except:
@@ -153,7 +148,6 @@ def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
     idCategoria = modificar.get('categoria')#actualiza combobox
-    idCategoria = modificar.get('categoria')
     subCategorias = {}
     nombreCategoria = ""
     rutaImagenO = ""
@@ -184,11 +178,9 @@ def modificar_categoria(request, *args, **kwargs):
             aux.clean_fields()
             aux.clean()
         except ValidationError as e:
-            print(e)
-            context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoriaSubCat, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
+            context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
             messages.info(request, 'Nuevo nombre de categoria invalido')
             return render(request, "inventario/modificar_categoria.html", context, {})
-
 
         Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
         if(imagenModif):
@@ -199,10 +191,10 @@ def modificar_categoria(request, *args, **kwargs):
         return render(request, "inventario/modificar_categoria.html", context, {})
     ########################### 
     #agregar subcategoria
-    if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
-        print("solicitudcorrecta")
+    if(accionSubCatSubmit=="Agregar" and not(idSubCategoria==.1 or idSubCategoria == '' or idSubCategoria == None)):
+        
         aux = SubCategoria(
-            fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
+            fkCategoria=SubCategoria.objects.get(pkSubCategoria=idSubCategoria).fkCategoria,
             nombreSubCategoria=nombreSubCat
         )
         try:
@@ -218,7 +210,7 @@ def modificar_categoria(request, *args, **kwargs):
     #########################
 
     #modificar subcategoria
-    if(accionSubCatSubmit=="Modificar" and not(idSubCategoria==-1 or idSubCategoria==None)):
+    if(accionSubCatSubmit=="Modificar" and not(idSubCategoria==-1 or idSubCategoria=='' or idSubCategoria==None)):
         try:
             idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).first()
             aux = SubCategoria(
@@ -234,7 +226,6 @@ def modificar_categoria(request, *args, **kwargs):
         context={'categorias':categorias}
         messages.success(request, 'SubCategoria modificada con exito')
         return render(request, "inventario/modificar_categoria.html", context, {})        
-
     ##########################3
 
     #actualiza combobox categoria 
@@ -249,7 +240,6 @@ def modificar_categoria(request, *args, **kwargs):
         subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
     if (selectSubCat != '-1' and selectSubCat != None):
         subCat = SubCategoria.objects.filter(pkSubCategoria = selectSubCat)
-        #print(subCat.nombreSubCategoria)
         nombreSubCategoria = subCat[0].nombreSubCategoria
     #actualiza combobox subcategoria
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
@@ -331,7 +321,6 @@ def aniadirReferencias(request, *args, **kwargs):
             try:
                 aux.full_clean()
             except ValidationError as e:
-                print(e)
                 context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
                 messages.info(request, 'Alguno(s) campo(s) no son validos')
                 return render(request, "inventario/referenciasCrear.html", context, {})
@@ -642,7 +631,7 @@ def modificarProductos(request, *args, **kwargs):
             try:
                 aux.full_clean()
             except ValidationError as e:
-                print(e)
+                
                 messages.info(request, 'Cantidad invalida')
                 context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':aux.fkProducto.nombre, 'idref':aux.fkProducto.pkProducto, 'talla':talla, 'nit':nit, 'color':color, 'pkBodega':PkBodega, 'cantidad':cantidad}
                 return render(request, "inventario/productosModificar.html",context, {})
@@ -656,7 +645,7 @@ def modificarProductos(request, *args, **kwargs):
         #OBTENER LOS CAMPOS ANTIGUOS
         elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
             idDetalle = int(modificar.get('detalle'))
-            print(idDetalle)
+            
             detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
             
             referenciaO = detalleObject.fkProducto.nombre
@@ -801,7 +790,7 @@ def consultarProductos(request, *args, **kwargs):
         #OBTENER LOS CAMPOS ANTIGUOS
         if((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
             idDetalle = int(modificar.get('detalle'))
-            print(idDetalle)
+            
             detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
             
             referenciaO = detalleObject.fkProducto.nombre
@@ -1027,7 +1016,7 @@ def eliminarProductos(request, *args, **kwargs):
         #OBTENER LOS CAMPOS ANTIGUOS
         elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
             idDetalle = int(modificar.get('detalle'))
-            print(idDetalle)
+            
             detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
             
             referenciaO = detalleObject.fkProducto.nombre
@@ -1137,7 +1126,7 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     #productos con detallesproducto o no
     for producto in productos:
         detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
-        print(producto.nombre, " ", detallesProducto)
+        
         if detallesProducto:
             finales.append(producto)
 
@@ -1156,7 +1145,7 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
     # producto
     producto = Producto.objects.get(pkProducto = idproducto)
     detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
-    print(detallesProducto)
+    
     idDetalleproducto = detallesProducto.first().pkDetallesP
     sdp = detallesProducto.get(pkDetallesP = idDetalleproducto)
     # cargar informacion del detalle
