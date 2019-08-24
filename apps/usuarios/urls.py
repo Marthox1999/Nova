@@ -24,4 +24,5 @@ urlpatterns = [
     path('clienteinicio/<str:nombre>', clienteInicio, name='inicioCliente'),
     path('clientePerfil/<str:nombre>/', clientePerfil, name='clientePerfil'),
 
+    path('duenioAdminEliminar/', duenioAdminEliminar, name='duenioEliminarAdmin')
 ]
