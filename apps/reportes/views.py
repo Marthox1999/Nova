@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 from ventas.models import *
 from datetime import timedelta, date, datetime
@@ -21,8 +22,12 @@ def reporteVentas(request, *args, **kwargs):
     context = {}
     if request.method == 'POST':
         data = request.POST
-        fechaInicio = datetime.strptime(data.get('fecha_inicio'), '%Y-%m-%d')
-        fechaFin = datetime.strptime(data.get('fecha_fin'), '%Y-%m-%d')
+        try:
+            fechaInicio = datetime.strptime(data.get('fecha_inicio'), '%Y-%m-%d')
+            fechaFin = datetime.strptime(data.get('fecha_fin'), '%Y-%m-%d')
+        except:
+            messages.info(request, 'Por favor ingrese una fecha valida')
+            return render(request, "reportes/reporteVentas.html", context, {})
         dias = []
         cantidad = []
         for dia in daterange(fechaInicio, fechaFin):
