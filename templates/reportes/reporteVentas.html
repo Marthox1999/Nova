@@ -22,6 +22,8 @@
       <center>
         <h1> Reporte de Ventas </h1>
       </center>
+    </div>
+  </div>
       <form id="login-form" name='crearDescuento' method="post">
         {% csrf_token %}
         <div class="form-group">
@@ -39,8 +41,7 @@
               $("#fecha_fin").datepicker({format:'yyyy-mm-dd'},);
             });
           </script>
-        </div>
-
+        <br>
         <div class="form-group">
           <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
@@ -49,12 +50,12 @@
           </div>
         </div>
       </form>
-    </div>
   </div>
 
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
+        <h3>Reporte de desde {{fechaInicio}} hasta {{fechaFin}}</h3>
         <div id="tester" style="width:600px;height:250px;"></div>
       </center>
     </div>

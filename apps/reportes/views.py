@@ -22,6 +22,8 @@ def reporteVentas(request, *args, **kwargs):
     context = {}
     if request.method == 'POST':
         data = request.POST
+        fechaInicio = ""
+        fechaFin = ""
         try:
             fechaInicio = datetime.strptime(data.get('fecha_inicio'), '%Y-%m-%d')
             fechaFin = datetime.strptime(data.get('fecha_fin'), '%Y-%m-%d')
@@ -34,7 +36,7 @@ def reporteVentas(request, *args, **kwargs):
             cant = Factura.objects.filter(fecha=dia).count()
             cantidad.append(cant)
             dias.append(dia.strftime('%Y-%m-%d'))
-        context={"datax":dias,"datay":cantidad}
+        context={"datax":dias,"datay":cantidad, "fechaInicio":fechaInicio.strftime('%Y-%m-%d'), "fechaFin":fechaFin.strftime('%Y-%m-%d')}
         return render(request, "reportes/reporteVentas.html", context, {})
     
     return render (request, "reportes/reporteVentas.html", context, {})

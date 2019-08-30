@@ -189,6 +189,7 @@ def duenioAdminEliminar(request, *args, **kwargv):
         data = request.POST
         idAdmin = data.get('idAdmin')
         AdministradorDuenio.objects.filter(pkAdministradorDuenio=idAdmin).delete()
+        messages.success(request, 'El empleado fue despedido exitosamente')
         return render(request, "usuarios/duenioAdminEliminar.html", context, {})
     return render(request, "usuarios/duenioAdminEliminar.html", context, {})
 
