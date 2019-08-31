@@ -16,7 +16,8 @@ def masVendidos(request, *args, **kwargs):
     ingresar = request.POST
     
     
-    productos = DetallesProducto.objects.annotate(total=Sum('cantidad')).order_by('-cantidad')[:20]
+    productos = DetallesProducto.objects.values('fkProducto__nombre').annotate(total=Sum('cantidad')).order_by('-total')[:10]
+    print (productos)
     
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/masVendidos.html', context, {})

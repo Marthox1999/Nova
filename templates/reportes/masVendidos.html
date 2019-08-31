@@ -33,7 +33,7 @@
               <tbody>
                 {% for producto in productos %}
                   <tr>
-                    <td><center>{{producto.nombre}}</center></td>
+                    <td><center>{{producto.fkProducto__nombre}}</center></td>
                     <td><center>{{producto.total}}</center></td>
                   </tr>
                   {% empty %}
