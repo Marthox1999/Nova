@@ -181,6 +181,18 @@ def duenioAdminModificar(request, *args, **kwargs):
             
     return render(request, "usuarios/duenioAdminModificar.html", context, {})
     
+def duenioAdminEliminar(request, *args, **kwargv):
+    categorias = Categoria.objects.all()
+    usuarios = AdministradorDuenio.objects.filter(tipo='ADMIN')
+    context={'categorias':categorias, 'usuarios':usuarios}
+    if(request.method == 'POST'):
+        data = request.POST
+        idAdmin = data.get('idAdmin')
+        AdministradorDuenio.objects.filter(pkAdministradorDuenio=idAdmin).delete()
+        messages.success(request, 'El empleado fue despedido exitosamente')
+        return render(request, "usuarios/duenioAdminEliminar.html", context, {})
+    return render(request, "usuarios/duenioAdminEliminar.html", context, {})
+
 def duenioClienteConsultar(request, *args, **kwargs):
     from django.db.models import Q
     categorias = Categoria.objects.all()
@@ -203,7 +215,7 @@ def clientePerfil(request, nombre):
 
 
 def clienteCarrito(request, nombre):
-    
+    categorias = Categoria.objects.all()
     accion = request.POST
     idEliminar = accion.get('eliminar')
     if(idEliminar):
@@ -230,7 +242,7 @@ def clienteCarrito(request, nombre):
             
 
 
-    context = {'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
+    context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {})
 
 

@@ -18,6 +18,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0,os.path.join(BASE_DIR, 'apps'))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -83,11 +84,11 @@ WSGI_APPLICATION = 'nova.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres', #novaDB
+        'NAME': 'novaDB',
         'USER': 'postgres',
-        #'PASSWORD': 'novaSecret',
+        'PASSWORD': 'novaSecret',
         'HOST': 'db',
-        'PORT': '5432', 
+        'PORT': '5432',
     }
 }
 
@@ -137,3 +138,4 @@ STATICFILES_DIRS = [
 ]
 
 
+os.path.join(BASE_DIR,'postgresql/bin')
