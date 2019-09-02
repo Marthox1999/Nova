@@ -10,8 +10,11 @@ def inicioReportes(request, *args, **kwargs):
         data = request.POST
         print(data)
         reporte = data.get('tipoReporte')
+        url = 'reportes:'+reporte
         if(reporte == '1'):
             return redirect(to='reportes:reporteVentas')
+        else:
+            return redirect(to=url)
     return render (request, "reportes/reportes.html", context, {})
 
 def daterange(start_date, end_date):
@@ -40,3 +43,39 @@ def reporteVentas(request, *args, **kwargs):
         return render(request, "reportes/reporteVentas.html", context, {})
     
     return render (request, "reportes/reporteVentas.html", context, {})
+
+def reporteVentasCategoria(request, *args, **kwargs):
+    context = {}
+            
+    cats = Categoria.objects.all()
+    categorias = []
+    cantidades = []
+
+    for p in cats:
+        categorias.append(p.nombreCategoria)
+        cant = 0
+
+        subCats = SubCategoria.objects.filter(fkCategoria=p.pkCategoria)
+
+        for subC in subCats:
+            productos = Producto.objects.filter(fkSubCategoria=subC.pkSubCategoria)
+
+            for product in productos:
+                detalles = DetallesProducto.objects.filter(fkProducto=product.pkProducto)
+
+                for deta in detalles:
+                    detallesFacturas = DetallesFactura.objects.filter(fkDetallesP=deta.pkDetallesP)
+
+                    for detaFact in detallesFacturas:
+                        cant = cant + detaFact.cantidad
+
+        cantidades.append(cant)
+
+    context={"datax":categorias,"datay":cantidades}
+
+    if(categorias == []):
+        messages.info(request, 'No hay categorías')
+
+    print(context)
+    
+    return render (request, "reportes/reporteVentasCategoria.html", context, {})
