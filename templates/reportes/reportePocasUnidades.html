@@ -9,18 +9,15 @@
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
-        <h1> Más Vendidos </h1>
+        <h1> Pocas Unidades </h1>
       </center>
     </div>
   </div>
-  
   <div class="panel-body">
     <div class="row">
       <div class="col-lg-12">
         {% if productos %}
-                
         <div>
-            
           <form method='post' id='eliminar' name='eliminar' class='login-form'>
             {% csrf_token %}
             <table class="table">
@@ -41,25 +38,18 @@
                 {% endfor %}
               </tbody>
             </table>
-            
           </form>
-          
         </div>
-
         {% else %}
           <p>
             <div class="alert alert-info" role="alert">
-              No hay ventas
+              No hay productos con pocas unidades
               </div>
           </p>
         {% endif %}
-                        
-                        
-
       </div>
     </div>
   </div>
 </div>
-
 
 {% endblock %}
