@@ -42,4 +42,13 @@ def reporteVentas(request, *args, **kwargs):
     return render (request, "reportes/reporteVentas.html", context, {})
 
 def reportePocasUnidades(request):
+    def masVendidos(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    ingresar = request.POST
     
+    
+    productos = DetallesProducto.objects.values('fkProducto__nombre').annotate(total=Sum('cantidad')).order_by('-total')[:10]
+    print (productos)
+    
+    context={'categorias':categorias, 'productos': productos}
+    return render(request, 'reportes/masVendidos.html', context, {})
