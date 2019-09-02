@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
 from ventas.models import *
 from datetime import timedelta, date, datetime
+from django.db.models import Sum
+from inventario.models import *
 
 def inicioReportes(request, *args, **kwargs):
     context = {}
@@ -47,7 +48,7 @@ def reportePocasUnidades(request):
     categorias = Categoria.objects.all()
     ingresar = request.POST
 
-    productos = "aqui va la consulta"
+    productos = DetallesProducto.objects.values('fkProducto__nombre').annotate(total=Sum('cantidad')).filter(cantidad__lte=5)
     
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/reportePocasUnidades.html', context, {})
