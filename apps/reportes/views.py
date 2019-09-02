@@ -40,3 +40,6 @@ def reporteVentas(request, *args, **kwargs):
         return render(request, "reportes/reporteVentas.html", context, {})
     
     return render (request, "reportes/reporteVentas.html", context, {})
+
+def reportePocasUnidades(request):
+    
