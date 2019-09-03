@@ -234,3 +234,29 @@ def clienteCarrito(request, nombre):
     return render(request, "usuarios/clienteCarrito.html", context, {})
 
 
+
+def clienteEliminar(request, nombre):
+
+    cliente = Cliente.objects.filter(nombre=nombre)
+    
+    print('primero')
+
+    accion = request.POST
+    confirmar = accion.get('confirmar')
+    context = {'nombre':nombre, 'cliente':cliente}
+    if(confirmar=="si"):
+        print ("entra aca")
+        try:
+            Cliente.objects.filter(nombre=nombre).delete()
+            messages.warning(request, 'Su cuenta fue eliminada satisfactoriamente')
+            return redirect(to='usuarios:ingreso')
+        except:
+            messages.info(request, 'No fue posible la eliminación de esta cuenta, verifique que se trate de una cuenta registrada')
+    if(confirmar=="no"):
+        print ("ENTRA ACA")
+        return redirect(to='usuarios:clientePerfil/<str:nombre>/')
+        #return render(request,"usuarios/clientePerfil.html", context, {})
+
+    
+    return render(request,"usuarios/clienteEliminar.html", context, {})
+

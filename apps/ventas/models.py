@@ -39,7 +39,7 @@ class DescuentoSubCategoria(models.Model):
 #Factura
 class Factura(models.Model):
     pkFactura = models.AutoField(primary_key=True)
-    fkCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    fkCliente = models.ForeignKey(Cliente, null=True, on_delete=models.SET_NULL)
     fecha = models.DateField()
 
 #Detalles Factura

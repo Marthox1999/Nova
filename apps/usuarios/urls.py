@@ -24,6 +24,8 @@ urlpatterns = [
     path('clienteinicio/<str:nombre>', clienteInicio, name='inicioCliente'),
     path('clientePerfil/<str:nombre>/', clientePerfil, name='clientePerfil'),
 
+    path('clienteEliminar/<str:nombre>/', clienteEliminar, name='clienteEliminar'),
+
 
     path('carrito/<str:nombre>/', clienteCarrito, name='clienteCarrito'),
 
