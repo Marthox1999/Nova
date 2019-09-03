@@ -8,4 +8,5 @@ urlpatterns = [
     path('inicioReportes', inicioReportes, name='inicioReportes'),
     path('reporteVentas', reporteVentas, name='reporteVentas'),
     path('reporteVentasCategoria', reporteVentasCategoria, name='reporteVentasCategoria'),
+    path('reporteTopClientes', reporteTopClientes, name='reporteTopClientes'),
 ]
