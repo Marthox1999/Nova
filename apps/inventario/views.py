@@ -85,7 +85,7 @@ def bodegaEliminar(request, *args, **kwargs):
                 except ValidationError as e:
                     messages.info(request, 'Bodega no registrada en el sistema')
                 
-                print("HOLAAAAAAAAAA")
+                #print("HOLAAAAAAAAAA")
                 context={'bodegas':bodegas, 'ciudadBodega':'', 'dirBodega':'', 'idBodega':-1}
                 return render(request, 'inventario/bodegaEliminar.html', context, {})
 

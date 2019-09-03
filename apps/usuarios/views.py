@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from usuarios.models import *
+from ventas.models import *
 from inventario.models import Categoria
 
 
@@ -212,6 +213,25 @@ def clientePerfil(request, nombre):
     cliente = Cliente.objects.filter(nombre=nombre)
     context = {'nombre':nombre, 'cliente':cliente}
     return render(request,"usuarios/clientePerfil.html", context, {})
+
+def clienteHistorialCompras(request, nombre):
+    cliente = Cliente.objects.filter(nombre=nombre)
+
+    facturas = Factura.objects.filter(fkCliente=nombre)
+    detalles = []
+
+    for factura in facturas:
+        detalleFactura = DetallesFactura.objects.filter(fkFactura=factura.pkFactura)        
+        total = 0
+
+        for detalleFact in detalleFactura:
+            total = total + (detalleFact.precio * detalleFact.cantidad)
+
+        detalles.append({'id':factura.pkFactura, 'fecha':factura.fecha, 'total':total , 'detalle':detalleFactura})
+
+
+    context = {'nombre':nombre, 'cliente':cliente, 'facturas':detalles}
+    return render(request,"usuarios/clienteHistorialCompras.html", context, {})
 
 
 def clienteCarrito(request, nombre):
