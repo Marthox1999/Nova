@@ -9,15 +9,23 @@ from django.db.models import Sum
 
 
 from inventario.models import *
+from ventas.models import *
 # Create your views here.
 
 def masVendidos(request, *args, **kwargs):
     categorias = Categoria.objects.all()
-    ingresar = request.POST
     
+    productos = DetallesFactura.objects.values('fkDetallesP__fkProducto__fkSubCategoria__nombreSubCategoria', 'fkDetallesP__fkProducto__fkSubCategoria__fkCategoria__nombreCategoria', 'fkDetallesP__fkProducto__pkProducto', 'fkDetallesP__fkProducto__nombre').annotate(total=Sum('cantidad')).order_by('-total')[:20]
     
-    productos = DetallesProducto.objects.values('fkProducto__nombre').annotate(total=Sum('cantidad')).order_by('-total')[:10]
-    print (productos)
+    context={'categorias':categorias, 'productos': productos, 'masOMenos': 'Más'}
+    return render(request, 'reportes/vendidos.html', context, {})
+
     
-    context={'categorias':categorias, 'productos': productos}
-    return render(request, 'reportes/masVendidos.html', context, {})
+
+def menosVendidos(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    
+    productos = DetallesFactura.objects.values('fkDetallesP__fkProducto__fkSubCategoria__nombreSubCategoria', 'fkDetallesP__fkProducto__fkSubCategoria__fkCategoria__nombreCategoria', 'fkDetallesP__fkProducto__pkProducto', 'fkDetallesP__fkProducto__nombre').annotate(total=Sum('cantidad')).order_by('total')[:20]
+    
+    context={'categorias':categorias, 'productos': productos, 'masOMenos': 'Menos'}
+    return render(request, 'reportes/vendidos.html', context, {})

@@ -6,5 +6,6 @@ app_name='reportes'
 
 urlpatterns = [
     path('masVendidos/', masVendidos, name='masVendidos'),
+    path('menosVendidos/', menosVendidos, name='menosVendidos'),
 
 ]

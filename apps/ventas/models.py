@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
-from inventario.models import Producto, Categoria, SubCategoria
+from inventario.models import Producto, DetallesProducto, Categoria, SubCategoria
 from usuarios.models import Cliente
 
 #DescuentoProducto
@@ -45,7 +45,7 @@ class Factura(models.Model):
 #Detalles Factura
 class DetallesFactura(models.Model):
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    fkProducto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    fkDetallesP = models.ForeignKey(DetallesProducto, on_delete=models.CASCADE, default=0)
     cantidad = models.IntegerField()
     precio = models.FloatField()
 
