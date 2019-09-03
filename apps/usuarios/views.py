@@ -212,6 +212,24 @@ def clienteCarrito(request, nombre):
         except ValidationError as e:
             messages.info(request, 'El artículo no pudo ser eliminado del carrito')
     productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
+    totalcompra = 0
+    for producto in productosCarrito:
+        totalcompra += (producto.precioActual *  producto.cantidad)
+    
+    context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'totalcompra':totalcompra, 'numtarjetas':0}
+    return render(request, "usuarios/clienteCarrito.html", context, {})
+
+'''
+def clienteCarrito(request, nombre):
+    categorias = Categoria.objects.all()
+    accion = request.POST
+    idEliminar = accion.get('eliminar')
+    if(idEliminar):
+        try:
+            Carrito.objects.filter(pkCarrito=idEliminar).delete()
+        except ValidationError as e:
+            messages.info(request, 'El artículo no pudo ser eliminado del carrito')
+    productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
 
     numeroDebito = accion.get('cuantasDebito')
     cuantasDebito = {}
@@ -232,5 +250,5 @@ def clienteCarrito(request, nombre):
 
     context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {})
-
+'''
 

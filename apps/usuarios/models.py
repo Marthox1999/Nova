@@ -63,3 +63,4 @@ class Carrito(models.Model):
     fkNombreCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fkDetalleProducto =  models.ForeignKey(DetallesProducto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
+    precioActual = models.FloatField()
