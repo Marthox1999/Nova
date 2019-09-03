@@ -58,6 +58,40 @@ def bodegaconsulta(request, *args, **kwargs):
     context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}    
     return render(request, 'inventario/bodegaconsulta.html', context, {})
 
+def bodegaEliminar(request, *args, **kwargs):
+    bodegas = Bodega.objects.all()
+
+    modificar = request.POST
+    idBodega = "-1"
+    ciudadBodega = ""
+    dirBodega = ""
+    
+
+    if(request.method=="POST"):
+        idBodega = modificar.get('bodega')
+        if(idBodega!='-1' or idBodega!=None):
+            BodegaObject = Bodega.objects.get(pkBodega=idBodega)
+            ciudadBodega = BodegaObject.ciudad
+            dirBodega = BodegaObject.direccion
+
+            detallesP = DetallesProducto.objects.filter(fkBodega=idBodega)
+
+            if((len(detallesP) > 0) and (detallesP != None)):
+                messages.info(request, 'Esta referencia tiene productos asociados ¿Está seguro que desea eliminarla?')
+
+            if (modificar.get('bodega-submit')=="Eliminar Bodega"): #Se Elimina La Bodega            
+                try:
+                    Bodega.objects.get(pkBodega=idBodega).delete()
+                except ValidationError as e:
+                    messages.info(request, 'Bodega no registrada en el sistema')
+                
+                print("HOLAAAAAAAAAA")
+                context={'bodegas':bodegas, 'ciudadBodega':'', 'dirBodega':'', 'idBodega':-1}
+                return render(request, 'inventario/bodegaEliminar.html', context, {})
+
+    context={'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega, 'idBodega':int(idBodega)}    
+    return render(request, 'inventario/bodegaEliminar.html', context, {})
+
 def consultarcategorias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     nombreO = ""

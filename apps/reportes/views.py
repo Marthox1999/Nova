@@ -139,7 +139,7 @@ def reporteTopClientes(request, *args, **kwargs):
         conteoTop = top
         if(top>len(clientesTop)):
             conteoTop = len(clientesTop)
-            messages.info(request,'Los clientes sin compras son omitidos')#MOVERRRRRRRRRRRRRRRR
+            messages.info(request,'Los clientes sin compras son omitidos')
         elif(top>numClientes): conteoTop = numClientes
 
         #Acomoda la lista del top en el formato para el html
