@@ -254,7 +254,7 @@ def clienteEliminar(request, nombre):
             messages.info(request, 'No fue posible la eliminación de esta cuenta, verifique que se trate de una cuenta registrada')
     if(confirmar=="no"):
         print ("ENTRA ACA")
-        return redirect(to='usuarios:clientePerfil/<str:nombre>/')
+        return redirect('/usuarios/clientePerfil/'+nombre+'/')
         #return render(request,"usuarios/clientePerfil.html", context, {})
 
     
