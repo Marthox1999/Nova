@@ -24,6 +24,8 @@
               <thead>
                 <tr>
                   <th scope="col"><center>Productos</center></th>
+                  <th scope="col"><center>Talla</center></th>
+                  <th scope="col"><center>Color</center></th>
                   <th scope="col"><center>Cantidad</center></th>
                 </tr>
               </thead>
@@ -31,10 +33,12 @@
                 {% for producto in productos %}
                   <tr>
                     <td><center>{{producto.fkProducto__nombre}}</center></td>
+                    <td><center>{{producto.talla}}</center></td>
+                    <td><center>{{producto.color}}</center></td>
                     <td><center>{{producto.total}}</center></td>
                   </tr>
                   {% empty %}
-                  <p>No hay ventas</p>
+                  <p>No hay productos</p>
                 {% endfor %}
               </tbody>
             </table>

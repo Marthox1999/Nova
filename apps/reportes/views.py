@@ -11,10 +11,11 @@ def inicioReportes(request, *args, **kwargs):
         data = request.POST
         print(data)
         reporte = data.get('tipoReporte')
+        url = 'reportes:'+reporte
         if(reporte == '1'):
             return redirect(to='reportes:reporteVentas')
-        if(reporte == '2'):
-            return redirect(to='reportes:reportePocasUnidades')
+        else: 
+            return redirect(to=url)
     return render (request, "reportes/reportes.html", context, {})
 
 def daterange(start_date, end_date):
@@ -48,7 +49,9 @@ def reportePocasUnidades(request):
     categorias = Categoria.objects.all()
     ingresar = request.POST
 
-    productos = DetallesProducto.objects.values('fkProducto__nombre').annotate(total=Sum('cantidad')).filter(cantidad__lte=5)
+    productos = DetallesProducto.objects.values('fkProducto__nombre', 'color', 'talla').annotate(total=Sum('cantidad')).filter(total__lte=5)
+    print(productos.query)
+    print(productos)
     
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/reportePocasUnidades.html', context, {})
