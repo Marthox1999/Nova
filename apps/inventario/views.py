@@ -1069,9 +1069,6 @@ def aniadirProveedor(request, *args, **kwargs):
     return render(request, "inventario/proveedorCrear.html",context ,{})
 
 
-
-
-
 def modificarProveedor(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     proveedores = Proveedor.objects.all()
@@ -1117,6 +1114,25 @@ def modificarProveedor(request, *args, **kwargs):
     context={'categorias': categorias, 'proveedores': proveedores, 'nit': nit, 'telefono': telefono, 'direccion': direccion}
     
     return render(request, "inventario/proveedorModificar.html", context, {})
+
+def eliminarProveedor(request, *args, **kwargs):
+    categorias = Categoria.objects.all()
+    proveedores = Proveedor.objects.all()
+    context={'categorias': categorias, 'proveedores': proveedores}
+    if request.method == 'POST':
+        modificar = request.POST
+        nit = modificar.get('nitProveedor')
+        print(nit)
+        if(nit !=  "no elegido"):
+            Proveedor.objects.filter(pknit = nit).delete()
+        else:
+            messages.info(request, 'Por favor seleccione un proveedor')
+            return render(request, "inventario/proveedorEliminar.html",context,{})
+        messages.success(request, 'El proveedor ha sido eliminado correctamente')
+        return render(request, "inventario/proveedorEliminar.html",context,{})
+        
+    return render(request, "inventario/proveedorEliminar.html", context, {})
+
 
 def productosCategoriasVista(request, nombre, categoria):
     categorias = Categoria.objects.all()
