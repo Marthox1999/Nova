@@ -1218,26 +1218,39 @@ def modificarBodega(request, *args, **kwargs):
         direccionNueva = modificar.get('direccionBodega')
         
         
-        aux = Bodega( pkBodega = actualId, direccion = direccionNueva, ciudad = ciudadNueva)
+        aux = Bodega(actualId, direccionNueva, ciudadNueva)
         
         try:
-            #No se puede full_clean debido a que no seria una clave unica en el modelo su id
             aux.clean_fields()
             aux.clean()
         except ValidationError as e:
+            print(request.POST)
             messages.info(request, 'Alguno(s) campo(s) no son validos')
             return render(request, "inventario/bodegaModificar.html",context,{})
         Bodega.objects.filter(pkBodega = actualId).update(direccion=direccionNueva, ciudad = ciudadNueva)
         messages.success(request, 'La bodega ha sido actualizado correctamente')
         return render(request, "inventario/bodegaModificar.html",context,{})
 
-    if (idB != "no elegido" and idB != None):
+    if (idB != '0' and idB != None):
         ciudad = objectBodega.ciudad
         direccion = objectBodega.direccion
     else:
         idB = ''
         ciudad = ''
         direccion = ''
-    context={'categorias': categorias, 'bodegas': bodegas, 'idB': idB, 'ciudad': ciudad, 'direccion': direccion}
+    ciudades = {
+        '',
+        'BOG',
+        'MED',
+        'CALI',
+        'B/Q',
+        'CART',
+        'CUC',
+        'SOL',
+        'IBG',
+        'BCM',
+        'SOAC'
+    }
+    context={'categorias': categorias, 'bodegas': bodegas, 'idB': idB, 'ciudad': ciudad, 'direccion': direccion, 'ciudades':ciudades}
     
     return render(request, "inventario/bodegaModificar.html", context, {})

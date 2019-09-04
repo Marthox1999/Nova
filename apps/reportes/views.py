@@ -55,3 +55,4 @@ def reportePocasUnidades(request):
     
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/reportePocasUnidades.html', context, {})
+   

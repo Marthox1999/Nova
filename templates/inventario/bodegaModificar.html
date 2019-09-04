@@ -34,8 +34,17 @@
           </div>
 
           <div class="form-group">
-            <label for ="ciudadBodega">Nueva Ciudad</label>
-            <input value="{{ciudad}}" type="text" name="ciudadBodega" id="ciudadBodega" class="form-control" placeholder="Nueva ciudad">
+            <select class="form-control" id="ciudadBodega" name="ciudadBodega">
+                {% for listaCiudad in ciudades %}
+                  {% if listaCiudad == ciudad   %}
+                  <option selected value={{ciudad}} name={{ciudad}}>{{ciudad}}</option>
+                  {% else %}
+                  <option value="{{listaCiudad}}" name="{{listaCiudad}}">{{listaCiudad}}</option>
+                  {% endif %}
+                {% empty %}
+                <p>No hay ciudades</p>
+                {% endfor %}
+              </select>
           </div>
           
           <div class="form-group">
