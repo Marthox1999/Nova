@@ -152,126 +152,133 @@ def categoria(request, *args, **kwargs):
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
-    idCategoria = modificar.get('categoria')#actualiza combobox
+    idCategoria = "-1"#actualiza combobox
     subCategorias = {}
     nombreCategoria = ""
     rutaImagenO = ""
-    idCategoriaSubCat = modificar.get('idCat')
-    nombreSubCat = modificar.get('nombreSubCategoria')
-    accionSubCatSubmit = modificar.get('SubCat-submit')
-    acccionModCatSubmit = modificar.get('modfCat-submit')
-    selectSubCat = modificar.get('subCategoria')#actualizar combobox subcategoria
-    idSubCategoria = modificar.get('idSubCategoria')
-
-    print(idCategoria)
-    print(idSubCategoria)
-
-    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoriaSubCat, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
-
-    ###################################
-
-    #modificar categoria
-    if ( acccionModCatSubmit == "Modificar"):
-        nombreCategoria = modificar.get('nombreCategoria')
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoriaSubCat)
-        imagen = categoriaObject.rutaImagen
-        rutaImagenO = "../"+imagen.name
-
-        imagenModif = False
-        
-        if((modificar.get('buscadorImagen')!= '')):
-            imagen = request.FILES['buscadorImagen']
-            imagenModif = True
-        
-        aux =  Categoria(nombreCategoria = nombreCategoria,
-                         rutaImagen = imagen)
-        try:
-            aux.clean_fields()
-            aux.clean()
-        except ValidationError as e:
-            print(e)
-            context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoriaSubCat, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
-            messages.info(request, 'Nuevo nombre de categoria invalido')
-            return render(request, "inventario/modificar_categoria.html", context, {})
+    idCategoriaSubCat = "-1"
+    nombreSubCat = ""
+    selectSubCat = "-1"#actualizar combobox subcategoria
+    idSubCategoria = "-1"
 
 
-        Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
-        if(imagenModif):
-                categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
-                categ.rutaImagen.save(imagen.name,File(imagen),'r')
-        context={'categorias':categorias}
-        messages.success(request, 'Categoria modificada exitosamente')
-        return render(request, "inventario/modificar_categoria.html", context, {})
-    ########################### 
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':int(idCategoriaSubCat), 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
+    if (request.method == 'POST'):
+        idCategoria = modificar.get('categoria')
+        idCategoriaSubCat = modificar.get('idCat')
+        nombreSubCat = modificar.get('nombreSubCategoria')
+        accionSubCatSubmit = modificar.get('SubCat-submit')
+        acccionModCatSubmit = modificar.get('modfCat-submit')
+        selectSubCat = modificar.get('subCategoria')#actualizar combobox subcategoria
+        idSubCategoria = modificar.get('idSubCategoria')
+        ###################################
+        print("idCat ",idCategoria)
+        print("idSubCat ",idSubCategoria)
 
-    #agregar subcategoria
-    if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
-        print("solicitudcorrecta")
-        aux = SubCategoria(
-            fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
-            nombreSubCategoria=nombreSubCat
-        )
-        try:
-            aux.full_clean()
-        except ValidationError as e:
+        #modificar categoria
+        print("HOLAAA ", acccionModCatSubmit, " - ", idCategoria)
+        if ( acccionModCatSubmit == "Modificar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
+            nombreCategoria = modificar.get('nombreCategoria')
+            categoriaObject = Categoria.objects.get(pkCategoria=idCategoriaSubCat)
+            imagen = categoriaObject.rutaImagen
+            rutaImagenO = "../"+imagen.name
+
+            imagenModif = False
+            
+            if((modificar.get('buscadorImagen')!= '')):
+                imagen = request.FILES['buscadorImagen']
+                imagenModif = True
+            
+            aux =  Categoria(nombreCategoria = nombreCategoria,
+                            rutaImagen = imagen)
+            try:
+                aux.clean_fields()
+                aux.clean()
+            except ValidationError as e:
+                print(e)
+                context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoriaSubCat, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
+                messages.info(request, 'Nuevo nombre de categoria invalido')
+                return render(request, "inventario/modificar_categoria.html", context, {})
+
+            print("HOLAAA ", nombreCategoria)
+            Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
+            if(imagenModif):
+                    categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
+                    categ.rutaImagen.save(imagen.name,File(imagen),'r')
             context={'categorias':categorias}
-            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            messages.success(request, 'Categoria modificada exitosamente')
             return render(request, "inventario/modificar_categoria.html", context, {})
-        aux.save()
-        context={'categorias':categorias}
-        messages.success(request, 'SubCategoria agregada con exito')
-        return render(request, "inventario/modificar_categoria.html", context, {})
-    #########################
+        ########################### 
 
-    #modificar subcategoria
-    if(accionSubCatSubmit=="Modificar" and not(idSubCategoria==-1 or idSubCategoria==None)):
-        try:
-            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).first()
+        #agregar subcategoria
+        if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='' or idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
+            print("solicitudcorrecta")
             aux = SubCategoria(
-                fkCategoria= idCat.fkCategoria,
+                fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
                 nombreSubCategoria=nombreSubCat
-            ) 
-            aux.full_clean()
-        except ValidationError as e:
+            )
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias}
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "inventario/modificar_categoria.html", context, {})
+            aux.save()
             context={'categorias':categorias}
-            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            messages.success(request, 'SubCategoria agregada con exito')
             return render(request, "inventario/modificar_categoria.html", context, {})
-        SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).update(nombreSubCategoria = aux.nombreSubCategoria)
-        context={'categorias':categorias}
-        messages.success(request, 'SubCategoria modificada con exito')
-        return render(request, "inventario/modificar_categoria.html", context, {})        
-    #########################
+        #########################
 
-    #eliminar subcategoria
-    if(accionSubCatSubmit=="Eliminar" and not(idSubCategoria==-1 or idSubCategoria==None)):
-        try:
-            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria)
-        except ValidationError as e:
+        #modificar subcategoria
+        if(accionSubCatSubmit=="Modificar" and not(idCategoriaSubCat=='' or idSubCategoria=='-1' or idSubCategoria==None)):
+            try:
+                idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).first()
+                aux = SubCategoria(
+                    fkCategoria= idCat.fkCategoria,
+                    nombreSubCategoria=nombreSubCat
+                ) 
+                aux.full_clean()
+            except ValidationError as e:
+                context={'categorias':categorias}
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "inventario/modificar_categoria.html", context, {})
+            SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).update(nombreSubCategoria = aux.nombreSubCategoria)
             context={'categorias':categorias}
-            messages.info(request, 'Por favor seleccione una subcategoria')
-            return render(request, "inventario/modificar_categoria.html", context, {})
-        SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).delete()
-        context={'categorias':categorias}
-        messages.success(request, 'SubCategoria eliminada con exito')
-        return render(request, "inventario/modificar_categoria.html", context, {})   
-    ##########################3
+            messages.success(request, 'SubCategoria modificada con exito')
+            return render(request, "inventario/modificar_categoria.html", context, {})        
+        #########################
 
-    #actualiza combobox categoria 
-    subCategorias = {}
-    subCat = ""
-    nombreCategoria = ""
-    nombreSubCategoria = ""
-    if(idCategoria !='-1' and idCategoria != None):
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-        nombreCategoria = categoriaObject.nombreCategoria
-        rutaImagenO = "../"+categoriaObject.rutaImagen.name
-        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
-    if (selectSubCat != '-1' and selectSubCat != None):
-        subCat = SubCategoria.objects.filter(pkSubCategoria = selectSubCat)
-        #print(subCat.nombreSubCategoria)
-        nombreSubCategoria = subCat[0].nombreSubCategoria
-    #actualiza combobox subcategoria
-    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
+        #eliminar subcategoria
+        if(accionSubCatSubmit=="Eliminar" and not(idCategoriaSubCat=='' or idSubCategoria=='-1' or idSubCategoria==None)):
+            try:
+                idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria)
+            except ValidationError as e:
+                context={'categorias':categorias}
+                messages.info(request, 'Por favor seleccione una subcategoria')
+                return render(request, "inventario/modificar_categoria.html", context, {})
+            SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).delete()
+            context={'categorias':categorias}
+            messages.success(request, 'SubCategoria eliminada con exito')
+            return render(request, "inventario/modificar_categoria.html", context, {})   
+        ##########################3
+
+        #actualiza combobox categoria 
+        subCategorias = {}
+        subCat = ""
+        nombreCategoria = ""
+        nombreSubCategoria = ""
+        if(idCategoria !='-1' and idCategoria != None):
+            categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+            nombreCategoria = categoriaObject.nombreCategoria
+            rutaImagenO = "../"+categoriaObject.rutaImagen.name
+            subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+        if (selectSubCat != '-1' and selectSubCat != None):
+            subCat = SubCategoria.objects.filter(pkSubCategoria = selectSubCat)
+            #print(subCat.nombreSubCategoria)
+            nombreSubCategoria = subCat[0].nombreSubCategoria
+        #actualiza combobox subcategoria
+        if(idCategoria==None): idCategoria = "-1"
+        context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':int(idCategoria), 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
     return render(request, "inventario/modificar_categoria.html", context, {})
 
 @csrf_protect
