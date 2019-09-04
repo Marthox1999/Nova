@@ -148,7 +148,6 @@ def duenioAdminIngreso(request, *args, **kwargs):
             messages.success(request, f'¡Bienvenido {nombre}!')
             return redirect(to='usuarios:paginaPrincipal_admin')
         elif (duenio.autenticarDuenio()):
-            print("entra al elif")
             messages.success(request, f'¡Bienvenido {nombre}!')
             return redirect(to='usuarios:paginaPrincipal_duenio')
         else:
@@ -205,50 +204,64 @@ def clientePerfil(request, nombre):
 def clienteCarrito(request, nombre):
     categorias = Categoria.objects.all()
     accion = request.POST
+    print(accion)
     idEliminar = accion.get('eliminar')
-    if(idEliminar):
-        try:
-            Carrito.objects.filter(pkCarrito=idEliminar).delete()
-        except ValidationError as e:
-            messages.info(request, 'El artículo no pudo ser eliminado del carrito')
+    numTarjetas = accion.get('cuantas')
+    tipoTarjeta = accion.get('tipotarjeta')
+    venta = accion.get('venta-submit')
+    #subtotal de productos en carrito
     productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
     totalcompra = 0
+    cantidadValida = False
+    num = {}
     for producto in productosCarrito:
         totalcompra += (producto.precioActual *  producto.cantidad)
-    
-    context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'totalcompra':totalcompra, 'numtarjetas':0}
-    return render(request, "usuarios/clienteCarrito.html", context, {})
-
-'''
-def clienteCarrito(request, nombre):
-    categorias = Categoria.objects.all()
-    accion = request.POST
-    idEliminar = accion.get('eliminar')
+    #eliminar producto
     if(idEliminar):
         try:
             Carrito.objects.filter(pkCarrito=idEliminar).delete()
         except ValidationError as e:
             messages.info(request, 'El artículo no pudo ser eliminado del carrito')
-    productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
-
-    numeroDebito = accion.get('cuantasDebito')
-    cuantasDebito = {}
-    numeroCredito = accion.get('cuantasCredito')
-    cuantasCredito = {}
-
-    if(numeroDebito or numeroCredito):
+    #cantidad de tarjetas a utilizar 1, 2 o 3
+    if(numTarjetas):
         try:
-            cuantasDebito = range(1, int(numeroDebito)+1)
-            cuantasCredito = range(1, int(numeroCredito)+1)
+            num = range(1, int(numTarjetas)+1)
         except ValidationError as e:
             messages.info(request, 'Error para identificar la cantidad de tarjetas')
         except ValueError as e:
             pass
             #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
-            
+    #tipos de tarjetas
+    numeroDebito = accion.get('cuantasDebito')
+    cuantasDebito = {}
+    numeroCredito = accion.get('cuantasCredito')
+    cuantasCredito = {}
+    if(numeroDebito or numeroCredito):
+        try:
+            if(( int(numeroDebito) + int(numeroCredito) > 3) or (int(numeroCredito) + int(numeroDebito) == 0)):
+                messages.info(request, 'Error puede usar maximo 3 tarjetas y minimo 1 tarjeta')    
+            else:
+                cantidadValida = True
+                cuantasDebito = range(1, int(numeroDebito)+1)
+                cuantasCredito = range(1, int(numeroCredito)+1)
+        except ValidationError as e:
+            messages.info(request, 'Error para identificar la cantidad de tarjetas')
+        except ValueError as e:
+            pass
+            #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
+    
+    #recolectando info de tarjetas y destino
+    if(venta):
+        numDebito = len(accion.get('numDebito'))
+        numCredito = len(accion.get('CnumTarjeta'))
+        try:
+            print(accion.get('numDebito'))
+            print(accion.get('CnumTarjeta'))
+        except ValidationError as e:
+            messages.info(request, 'Error para identificar la cantidad de tarjetas')
+        except ValueError as e:
+            pass
 
-
-    context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
-    return render(request, "usuarios/clienteCarrito.html", context, {})
-'''
+    context = {'cantidadValida': cantidadValida, 'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
+    return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
 
