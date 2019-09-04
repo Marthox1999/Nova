@@ -153,7 +153,6 @@ def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
     idCategoria = modificar.get('categoria')#actualiza combobox
-    idCategoria = modificar.get('categoria')
     subCategorias = {}
     nombreCategoria = ""
     rutaImagenO = ""
@@ -163,6 +162,12 @@ def modificar_categoria(request, *args, **kwargs):
     acccionModCatSubmit = modificar.get('modfCat-submit')
     selectSubCat = modificar.get('subCategoria')#actualizar combobox subcategoria
     idSubCategoria = modificar.get('idSubCategoria')
+
+    print(idCategoria)
+    print(idSubCategoria)
+
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoriaSubCat, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
+
     ###################################
 
     #modificar categoria
@@ -198,6 +203,7 @@ def modificar_categoria(request, *args, **kwargs):
         messages.success(request, 'Categoria modificada exitosamente')
         return render(request, "inventario/modificar_categoria.html", context, {})
     ########################### 
+
     #agregar subcategoria
     if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
         print("solicitudcorrecta")
@@ -234,7 +240,20 @@ def modificar_categoria(request, *args, **kwargs):
         context={'categorias':categorias}
         messages.success(request, 'SubCategoria modificada con exito')
         return render(request, "inventario/modificar_categoria.html", context, {})        
+    #########################
 
+    #eliminar subcategoria
+    if(accionSubCatSubmit=="Eliminar" and not(idSubCategoria==-1 or idSubCategoria==None)):
+        try:
+            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria)
+        except ValidationError as e:
+            context={'categorias':categorias}
+            messages.info(request, 'Por favor seleccione una subcategoria')
+            return render(request, "inventario/modificar_categoria.html", context, {})
+        SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).delete()
+        context={'categorias':categorias}
+        messages.success(request, 'SubCategoria eliminada con exito')
+        return render(request, "inventario/modificar_categoria.html", context, {})   
     ##########################3
 
     #actualiza combobox categoria 
