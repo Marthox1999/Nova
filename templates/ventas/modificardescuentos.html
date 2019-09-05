@@ -15,66 +15,59 @@
         <div class="panel-login panel">
           <div class="panel-heading">
             <center>
-              <h1> Crear Descuento </h1>
+              <h1> Modificar Descuento </h1>
             </center>
           </div>
         </div>
         <div class="panel-body" >
           <div class="row">
             <div class="col-lg-12">
-              <form id="login-form" name='crearDescuento' method="post">
+              <form id="login-form" name='ModificarDescuento' method="post">
                   {% csrf_token %}
 
                   <div class="form-group">
-                    <label for="categoria">Categoria</label>
-                    <select class="form-control" id="categoria" name="categoria" onclick="javascript:location.href = this.value;">
-                        <option selected value="{% url 'ventas:descuentoCrear'%}" >Seleccione una Categoria</option>
-                        {% for cat in categorias %}
-                          {% if categoria == cat.pkCategoria  %}
-                            <option selected value="{% url 'ventas:descuentoCrearCategoria' idCategoria=cat.pkCategoria %}" >{{cat.nombreCategoria}}</option>
+                    <label for="descuentoCategoria">Descuentos por categoria</label>
+                    <select class="form-control" id="descuentoCategoria" name="descuentoCategoria" onChange="form.submit();">
+                        <option selected value=-1>Seleccione un descuento de categoria</option>
+                        {% for cat in descuentosCategoria %}
+                          {% if descuentoCategoria == cat.pkDescuentoCategoria  %}
+                            <option selected value={{cat.pkDescuentoCategoria}} >{{cat.fechaInicio}}, {{cat.fechaFin}} - {{cat.porcentajeDescuento}}%</option>
                           {% else %}
-                            <option value="{% url 'ventas:descuentoCrearCategoria' idCategoria=cat.pkCategoria %}" >{{cat.nombreCategoria}}</option>
+                            <option value={{cat.pkDescuentoCategoria}} >{{cat.fechaInicio}}, {{cat.fechaFin}} - {{cat.porcentajeDescuento}}%</option>
                           {% endif %}
                         {% endfor %}
                     </select>
                   </div>
 
                   <div class="form-group">
-                    <label for="subcategoria">SubCategoria</label>
-                    <select class="form-control" id="subcategoria" name="subcategoria" onclick="javascript:location.href = this.value;">
-                        <option selected value="{% url 'ventas:descuentoCrearCategoria' idCategoria=categoria%}">Seleccione una subcatergoria</option>
-                        {% for subcat in subcategorias %}
-                          {% if subcategoria == subcat.pkSubCategoria %}
-                            <option selected value="{% url 'ventas:descuentoCrearSubCategoria' idCategoria=categoria idSubCategoria=subcat.pkSubCategoria %}">{{subcat.nombreSubCategoria}}</option>
+                    <label for="descuentoSubcategoria">Descuentos por subcategoria</label>
+                    <select class="form-control" id="descuentoSubcategoria" name="descuentoSubcategoria" onChange="form.submit();">
+                        <option selected value=-1>Seleccione un descuento de subcategoria</option>
+                        {% for subcat in descuentosSubcategorias %}
+                          {% if descuentoSubcategoria == subcat.pkDescuentoSubCategoria %}
+                            <option selected value={{subcat.pkDescuentoSubCategoria}}>{{subcat.fechaInicio}}, {{subcat.fechaFin}} - {{subcat.porcentajeDescuento}}%</option>
                           {% else %}
-                            <option value="{% url 'ventas:descuentoCrearSubCategoria' idCategoria=categoria idSubCategoria=subcat.pkSubCategoria %}">{{subcat.nombreSubCategoria}}</option>
+                            <option value={{subcat.pkDescuentoSubCategoria}}>{{subcat.fechaInicio}}, {{subcat.fechaFin}} - {{subcat.porcentajeDescuento}}%</option>
                           {% endif %}
                         {% endfor %}
                     </select>
                   </div>
 
                   <div class="form-group">
-                    <label for="ciudad">Producto</label>
-                    <select class="form-control" id="producto" name="producto" onclick="javascript:location.href = this.value;">
-                        <option selected value="{% url 'ventas:descuentoCrearSubCategoria' idCategoria=categoria idSubCategoria=subcategoria %}">Seleccione un producto</option>
-                        {% for prod in productos %}
-                          {% if producto == prod.pkProducto %}
-                            <option selected value="{% url 'ventas:descuentoCrearProducto' idCategoria=categoria idSubCategoria=subcategoria idProducto=prod.pkProducto %}">{{prod.nombre}}</option>
+                    <label for="descuentoProducto">Descuentos por producto</label>
+                    <select class="form-control" id="descuentoProducto" name="descuentoProducto">
+                        <option selected value=-1>Seleccione un descuento de producto</option>
+                        {% for prod in descuentosProductos %}
+                          {% if descuentoProducto == prod.pkDescuentoProducto %}
+                            <option selected value={{prod.pkDescuentoProducto}}>{{prod.fechaInicio}}, {{prod.fechaFin}} - {{prod.porcentajeDescuento}}%</option>
                           {% else %}
-                            <option value="{% url 'ventas:descuentoCrearProducto' idCategoria=categoria idSubCategoria=subcategoria idProducto=prod.pkProducto %}">{{prod.nombre}}</option>
+                            <option value={{prod.pkDescuentoProducto}}>{{prod.fechaInicio}}, {{prod.fechaFin}} - {{prod.porcentajeDescuento}}%</option>
                           {% endif %}
                         {% endfor %}
                     </select>
                   </div>
 
                   <div class="form-group">
-                      <label for="fecha_inicio">Fecha de inicio</label>
-                      <input id="fecha_inicio" name='fecha_inicio' class="form-control">
-                      <script>
-                        $(function () {
-                          $("#fecha_inicio").datepicker({format:'yyyy-mm-dd'},);
-                        });
-                      </script>
                       <label for="fecha_fin">Fecha de fin</label>
                       <input id="fecha_fin" name='fecha_fin' class="form-control">
                       <script>
@@ -92,7 +85,7 @@
                   <div class="form-group">
                       <div class="row">
                           <div class="col-sm-6 col-sm-offset-3">
-                              <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Crear">
+                              <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Modificar">
                           </div>
                       </div>
                   </div>
