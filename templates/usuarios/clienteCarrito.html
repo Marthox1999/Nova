@@ -2,72 +2,10 @@
 
 {% load static %}
 
-{% block head %}
+{% block content %}
 <script src="{% static 'css/ventaCliente/jquery-1.11.1.min.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/ventaCliente/styleStepper.css' %}" />
-{% endblock %}
-
-{% block content %}
-<script type="text/javascript">
-
-  function isNumberKey(evt){
-      var charCode = (evt.which) ? evt.which : evt.keyCode
-      return !(charCode > 31 && (charCode < 48 || charCode > 57));
-  }
-  function verificarPorcentaje() {
-    
-    let num = document.getElementsByName("porcentaje")[0].value;
-    if (num>=0 && num<=100) {
-      document.getElementsByName("porcentaje")[0].value = num;
-    }
-  }
-
-  $(document).ready(function () {
-  var navListItems = $('div.setup-panel div a'),
-          allWells = $('.setup-content'),
-          allNextBtn = $('.nextBtn');
-
-  allWells.hide();
-
-  navListItems.click(function (e) {
-      e.preventDefault();
-      var $target = $($(this).attr('href')),
-              $item = $(this);
-
-      if (!$item.hasClass('disabled')) {
-          navListItems.removeClass('btn-primary').addClass('btn-default');
-          $item.addClass('btn-primary');
-          allWells.hide();
-          $target.show();
-          $target.find('input:eq(0)').focus();
-      }
-  });
-
-  allNextBtn.click(function(){
-      var curStep = $(this).closest(".setup-content"),
-          curStepBtn = curStep.attr("id"),
-          nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
-          curInputs = curStep.find("input[type='text'],input[type='url']"),
-          isValid = true;
-
-      $(".form-group").removeClass("has-error");
-      for(var i=0; i<curInputs.length; i++){
-          if (!curInputs[i].validity.valid){
-              isValid = false;
-              $(curInputs[i]).closest(".form-group").addClass("has-error");
-          }
-      }
-
-      if (isValid)
-          nextStepWizard.removeAttr('disabled').trigger('click');
-  });
-
-  $('div.setup-panel div a.btn-primary').trigger('click');
-});
-
-</script>
-
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-6 col-md-offset-3">
   <br>
   <div class="panel-login panel">
     <div class="panel-heading">
@@ -167,87 +105,82 @@
                 <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
                 <p>Paso 3</p>
               </div>
-              <div class="stepwizard-step">
-                  <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
-                  <p>Paso 4</p>
-                </div>
             </div>
           </div>
           {% if totalcompra == 0 %}
-            <br>
-            <p>
-              <div class="alert alert-info" role="alert">
-                No hay ningún artículo para comprar
-                </div>
-            </p>
-            <br>
+          <br>
+          <p>
+            <div class="alert alert-info" role="alert">
+              No hay ningún artículo para comprar
+              </div>
+          </p>
+          <br>
           {% else %}
-            <div class="row setup-content" id="step-1">
-              <div class="col-lg-12">
-                <br>
-                <h3> <center>Paso 1: Cantidad Tarjetas</center></h3>
-                <br>
+          <div class="row setup-content" id="step-1">
+            <div class="col-lg-12">
+              <br>
+              <h3> <center>Paso 1: Cantidad Tarjetas</center></h3>
+              <br>
+              <center>
+                <h3>
+                  Cantidad de Tarjetas
+                </h3>
+              </center>
+              <br>
+              <center>
+              <form method='post' id='cuantas' name='cuantas' class='login-form'>
+              {% csrf_token %}
                 <center>
-                  <h3>
-                    Cantidad de Tarjetas
-                  </h3>
-                </center>
-                <br>
-                <center>
-                <form method='post' id='cuantas' name='cuantas' class='login-form'>
-                {% csrf_token %}
-                  <div class="container">
-                    <div class="row">
-                      <div class="col-0 col-sm-4">
-                        <center>
-                          <h2>
-                            Débito
-                          </h2>
-                        </center>
-                        <br>
-                        <div class="form-group">
-                          <label for="cuantasDebito">¿Cuántas tarjetas débito desea usar?</label>
-                          <input type="number" min="0" max="3"  name="cuantasDebito" id="cuantasDebito" class="form-control" placeholder="¿Cuántas tarjetas débito desea usar?" value="{{ numeroDebito }}" onkeypress="return isNumberKey(event);">
-                        </div>
+                  <div class="row">
+                  
+                    <div class="col-md-6 col-sm-4 col-xs-12">
+                      <center>
+                        <h2>
+                          Débito
+                        </h2>
+                      </center>
+                      <br>
+                      <div class="form-group">
+                        <label for="cuantasDebito">¿Cuántas tarjetas débito desea usar?</label>
+                        <input type="number" min="0" max="3"  name="cuantasDebito" id="cuantasDebito" class="form-control" placeholder="¿Cuántas tarjetas débito desea usar?" value="{{ numeroDebito }}" onkeypress="return isNumberKey(event);">
                       </div>
-                      <div class="col-0 col-sm-4">
-                        <center>
-                          <h2>
-                            Crédito
-                          </h2>
-                        </center>
-                        <br>
-                        <div class="form-group">
-                          <label for="cuantasCredito">¿Cuántas tarjetas crédito desea usar?</label>
-                          <input type="number" min="0" max="3"  name="cuantasCredito" id="cuantasCredito" class="form-control" placeholder="¿Cuántas tarjetas crédito desea usar?" value="{{ numeroCredito }}" onkeypress="return isNumberKey(event);">
-                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-4 col-xs-12">
+                      <center>
+                        <h2>
+                          Crédito
+                        </h2>
+                      </center>
+                      <br>
+                      <div class="form-group">
+                        <label for="cuantasCredito">¿Cuántas tarjetas crédito desea usar?</label>
+                        <input type="number" min="0" max="3"  name="cuantasCredito" id="cuantasCredito" class="form-control" placeholder="¿Cuántas tarjetas crédito desea usar?" value="{{ numeroCredito }}" onkeypress="return isNumberKey(event);">
                       </div>
                     </div>
                   </div>
-                  <center>
-                    <button type="submit" class="btn btn-primary mb-2">Confirmar número de tarjetas</button>
-                  </center>
-                <br>
-                {% if cantidadValida %}
-                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
-                {% else %}
-                  <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" disabled>Next</button>
-                {% endif %}
+                </center>
+                <center>
+                  <button type="submit" class="btn btn-primary mb-2">Confirmar número de tarjetas</button>
+                </center>
+              <br>
+              {% if cantidadValida %}
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button">Next</button>
+              {% else %}
+                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" disabled>Next</button>
+              {% endif %}
               </form>
-              </div>  
-              
-            </div>
-            <form id="venta" name="venta" class='login-form' method="post">
+            </div>  
+          </div>
+          <form  class='login-form' id="venta" name="venta" method="post">
             {% csrf_token %}
             <div class="row setup-content" id="step-2">
               <div class="col-lg-12">
                 <br>
                 <h3><center>Paso 2: Medios de Pago</center></h3>
                 <!--form dinamico para tipos tarjetas-->
-                <div class="container">
                   <div class="row">
                     <center>
-                    <div class="col-0 col-sm-4">
+                    <div class="col-md-6 col-sm-4 col-xs-12">
                       {% for iteracion in rangeDebito %}
                         <br>
                         <center>
@@ -266,13 +199,13 @@
                         </div>
                         <div class="form-group">
                           <label for="porcentaje">Porcentaje de pago</label>
-                          <input required="required" type="number" min="1" max="100"  name="Dporcentaje{{iteracion}}" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return isNumberKey(event);">
+                          <input required="required" type="number" min="1" max="100"  name="Dporcentaje" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return isNumberKey(event);">
                         </div>
                         {% empty %}
                         <p>No se ha indicado el número de tarjetas débito con las que se pagará</p>
                       {% endfor %}
                     </div>
-                    <div class="col-0 col-sm-4">
+                    <div class="col-md-6 col-sm-4 col-xs-12">
                       {% for iteracion in rangeCredito %}
                         <br>
                         <center>
@@ -291,12 +224,16 @@
                         </div>
                         <div class="form-group">
                           <label for="entidad">Entidad que aprobó</label>
-                          <select class="form-control" id="entidad" name="Centidad">
+                          <select class="form-control" id="entidad" name="entidad">
                             <option value="-1">--</option>
                             <option value="VI">VISA</option>
                             <option value="CA">MASTERCARD</option>
                             <option value="AX">AMERICANEXPRESS</option>
                           </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="Ccuotas">Cuotas</label>
+                          <input required="required" type="number" name="Ccuotas" id="Ccuotas" min="1" max="36" class="form-control" placeholder="Número de cuotas" value="">
                         </div>
                         <div class="form-group">
                           <label for="porcentaje">Porcentaje de pago</label>
@@ -308,56 +245,109 @@
                     </div>
                   </div>
                 </center>
-              </div>
+              
               <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
             </div>
           </div>
-            <div class="row setup-content" id="step-3">
-              <div class="col-md-12">
-                <br>
-                <br>
-                <h3><center>Paso 3: Información envio</center></h3>
-                <br>
-                <label>Usuario:  </label>
-                <span>{{nombre}}</span>
-                <br>
-                <div class="form-group">
-                  <label class="control-label">Dirección Destino</label>
-                  <input required="required" maxlength="100" type="text" name="direccion" class="form-control" placeholder="Destino" />
-                </div>
-                <div class="form-group">
-                    <label for="Ciudad">Ciudad Destino</label>
-                      <select class="form-control" id="ciudad" name="ciudad">
-                        <option value="BOG">Bogotá</option>
-                        <option value="MED">Medellín</option>
-                        <option value="CALI">Cali</option>
-                        <option value="B/Q">Barranquilla</option>
-                        <option value="CART">Cartagena</option>
-                        <option value="CUC">Cucuta</option>
-                        <option value="SOL">Soledad</option>
-                        <option value="IBG">Ibague</option>
-                        <option value="BCM">Bucaramanga</option>
-                        <option value="SOAC">Soacha</option>
-                      </select>
-                </div>
-                <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
+          <div class="row setup-content" id="step-3">
+            <div class="col-md-12">
+              <br>
+              <br>
+              <h3><center>Paso 3: Información envio</center></h3>
+              <br>
+              <label>Usuario:  </label>
+              <span>{{nombre}}</span>
+              <br>
+              <div class="form-group">
+                <label class="control-label">Dirección Destino</label>
+                <input required="required" maxlength="100" type="text" name="direccion" placeholder="Destino" />
               </div>
-                
-            </div>
-            <div class="row setup-content" id="step-4">
-
-              <div class="col-md-12">
-                <h3><center>Paso 4: Confirmación de Compra</center></h3>
-                <button class="btn btn-success btn-lg pull-right" name="venta-submit" value="venta" onclick="form.submit();" type="submit">Enviar</button>
+              <div class="form-group">
+                  <label for="Ciudad">Ciudad Destino</label>
+                    <select class="form-control" id="ciudad" name="ciudad">
+                      <option value="BOG">Bogotá</option>
+                      <option value="MED">Medellín</option>
+                      <option value="CALI">Cali</option>
+                      <option value="B/Q">Barranquilla</option>
+                      <option value="CART">Cartagena</option>
+                      <option value="CUC">Cucuta</option>
+                      <option value="SOL">Soledad</option>
+                      <option value="IBG">Ibague</option>
+                      <option value="BCM">Bucaramanga</option>
+                      <option value="SOAC">Soacha</option>
+                    </select>
               </div>
+              <button type="submit" class="btn btn-success btn-lg pull-right" onclick="form.submit();" id="venta-submit" name="venta-submit">Enviar</button>
             </div>
+          </div>
           </form>
-          
-          {% endif %}
+        {% endif %}
       </div>
     </div>
-  </div>    
-</div>  
+  </div>
+</div>
+
+
+<script type="text/javascript">
+
+  function isNumberKey(evt){
+      var charCode = (evt.which) ? evt.which : evt.keyCode
+      return !(charCode > 31 && (charCode < 48 || charCode > 57));
+  }
+  function verificarPorcentaje() {
+    
+    let num = document.getElementsByName("porcentaje")[0].value;
+    if (num>=0 && num<=100) {
+      document.getElementsByName("porcentaje")[0].value = num;
+    }
+  }
+
+  $(document).ready(function () {
+  var navListItems = $('div.setup-panel div a'),
+          allWells = $('.setup-content'),
+          allNextBtn = $('.nextBtn');
+
+  allWells.hide();
+
+  navListItems.click(function (e) {
+      e.preventDefault();
+      var $target = $($(this).attr('href')),
+              $item = $(this);
+
+      if (!$item.hasClass('disabled')) {
+          navListItems.removeClass('btn-primary').addClass('btn-default');
+          $item.addClass('btn-primary');
+          allWells.hide();
+          $target.show();
+          $target.find('input:eq(0)').focus();
+      }
+  });
+
+  allNextBtn.click(function(){
+      var curStep = $(this).closest(".setup-content"),
+          curStepBtn = curStep.attr("id"),
+          nextStepWizard = $('div.setup-panel div a[href="#' + curStepBtn + '"]').parent().next().children("a"),
+          curInputs = curStep.find("input[type='text'],input[type='url']"),
+          isValid = true;
+
+      $(".form-group").removeClass("has-error");
+      for(var i=0; i<curInputs.length; i++){
+          if (!curInputs[i].validity.valid){
+              isValid = false;
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+          }
+      }
+
+      if (isValid)
+          nextStepWizard.removeAttr('disabled').trigger('click');
+  });
+
+  $('div.setup-panel div a.btn-primary').trigger('click');
+});
+
+</script>
+
+
 
 <!--
 <div class="col-md-8 col-md-offset-2">
@@ -486,6 +476,4 @@
     </div>
 </div>
 -->
-
-
 {% endblock %}
