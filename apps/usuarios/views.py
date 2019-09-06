@@ -224,6 +224,7 @@ def clienteCarrito(request, nombre):
     if(idEliminar):
         try:
             Carrito.objects.filter(pkCarrito=idEliminar).delete()
+            return redirect('/usuarios/carrito/'+nombre)
         except ValidationError as e:
             messages.info(request, 'El artículo no pudo ser eliminado del carrito')
     #compra transaccional
