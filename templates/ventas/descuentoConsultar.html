@@ -31,11 +31,18 @@
           </div>
         </form>
           {% if categoria %}
+          <div class="panel-login panel">
+            <div class="panel-heading">
+              <center>
+                <h1> Tabla de Consulta por Categorias </h1>
+              </center>
+            </div>
+          </div>
           <table class="table">
             <thead>
               <tr>
                 <th scope="col"><center>Categoría</center></th>
-                <th scope="col"><center>Descuento</center></th>
+                <th scope="col"><center>Descuento (%)</center></th>
                 <th scope="col"><center>Fecha de Inicio</center></th>
                 <th scope="col"><center>Fecha de Fin</center></th>
               </tr>
@@ -54,12 +61,19 @@
           {% endif %}
 
           {% if subcategoria %}
+          <div class="panel-login panel">
+            <div class="panel-heading">
+              <center>
+                <h1> Tabla de Consulta por Subcategorias </h1>
+              </center>
+            </div>
+          </div>
           <table class="table">
             <thead>
               <tr>
                 <th scope="col"><center>Categoría</center></th>
                 <th scope="col"><center>Subcategoría</center></th>
-                <th scope="col"><center>Descuento</center></th>
+                <th scope="col"><center>Descuento (%)</center></th>
                 <th scope="col"><center>Fecha de Inicio</center></th>
                 <th scope="col"><center>Fecha de Fin</center></th>
               </tr>
@@ -79,13 +93,20 @@
           {% endif %}
 
           {% if producto %}
+          <div class="panel-login panel">
+            <div class="panel-heading">
+              <center>
+                <h1> Tabla de Consulta por Productos </h1>
+              </center>
+            </div>
+          </div>
           <table class="table">
             <thead>
               <tr>
                 <th scope="col"><center>Categoría</center></th>
                 <th scope="col"><center>Subcategoría</center></th>
                 <th scope="col"><center>Producto</center></th>
-                <th scope="col"><center>Descuento</center></th>
+                <th scope="col"><center>Descuento (%)</center></th>
                 <th scope="col"><center>Fecha de Inicio</center></th>
                 <th scope="col"><center>Fecha de Fin</center></th>
               </tr>
