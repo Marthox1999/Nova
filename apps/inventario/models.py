@@ -189,9 +189,16 @@ class DetallesProducto(models.Model):
         ('Beige','Beige'),
         ('Otros','Otro'),
     }
+    TALLA = {
+        ('XS','xs'),
+        ('S','s'),
+        ('M','m'),                  
+        ('L','l'),
+        ('XL','xl'),
+    }
     pkDetallesP = models.AutoField(primary_key=True)
     fkProducto =  models.ForeignKey(Producto, on_delete=models.CASCADE)
-    talla = models.CharField(max_length=32)
+    talla = models.CharField(max_length=32, choices=TALLA)
     nit = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     color = models.CharField(max_length=64, choices=COLOR)
     fkBodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)

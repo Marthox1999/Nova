@@ -15,34 +15,34 @@
 {% endblock %}
 
 {% block content %}
-  <div class="col-md-6 col-md-offset-3">
+<div class="col-md-6 col-md-offset-3">
   <br>
   <div class="panel-login panel">
-    <div class="panel-heading" >
-				<div class="row mb_20">
-						<h1 style="text-align: center">Tus categorias</h1>
-				</div>
-			<hr>
-			<form method="post" id="form" name="modificarAdmin">
-          {% csrf_token %} 
-          <div class="form-group">
-            <label for="tipoReporte">Ingrese el tipo de reporte</label>
-              <select class="form-control" id="tipoReporte" name="tipoReporte">
-                  <option value=1>Reporte de Ventas</option>
-                  <option value=reportePocasUnidades>Reporte de pocas unidades</option>
-              </select>
-          </div>
-
-					<div class="form-group">
-            <div class="row">
-              <div class="col-sm-6 col-sm-offset-3">
-                <input type="submit" name="seleccionarReporte-submit" id="seleccionarReporte-submit"  class="form-control btn btn-login" value="Seleccionar">
-              </div>
-            </div>
-          </div>
-
-			</form>
-		</div>
+    <div class="panel-heading">
+      <center>
+        <h1> Reportes </h1>      
+      </center>
+    </div>
   </div>
+  <form method="post" id="form" name="modificarAdmin">
+    {% csrf_token %} 
+    <div class="form-group">
+      <label for="tipoReporte">Ingrese el tipo de reporte</label>
+      <select class="form-control" id="tipoReporte" name="tipoReporte">
+        <option value=1>Reporte de Ventas</option>
+        <option value="reporteVentasCategoria">Reporte de Ventas por categoria</option>
+        <option value="reporteTopClientes">Top Clientes</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+          <input type="submit" name="seleccionarReporte-submit" id="seleccionarReporte-submit"  class="form-control btn btn-login" value="Seleccionar">
+        </div>
+      </div>
+    </div>
+  </form>		
+</div>
   
 {% endblock %}

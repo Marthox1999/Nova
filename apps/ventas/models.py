@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
-from inventario.models import Producto, Categoria, SubCategoria
+from inventario.models import Producto, Categoria, SubCategoria, DetallesProducto
 from usuarios.models import Cliente
 
 #DescuentoProducto
@@ -45,7 +45,7 @@ class Factura(models.Model):
 #Detalles Factura
 class DetallesFactura(models.Model):
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    fkProducto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    fkDetallesP = models.ForeignKey(DetallesProducto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     precio = models.FloatField()
 
@@ -59,6 +59,7 @@ class PagosCredito(models.Model):
     pkPagosCredito = models.AutoField(primary_key=True)
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     numeroAprobacion = models.CharField(max_length=4) #donde se genera automatico?
+    cuotas = models.FloatField([MinValueValidator(1), MaxValueValidator(36)],)
     fechaAprobacion = models.DateField()
     entidadAprobacion = models.CharField(max_length=2,choices=ENTIDAD)
     porcentajePago = models.FloatField([MinValueValidator(0), MaxValueValidator(99)],
@@ -68,7 +69,6 @@ class PagosDebito(models.Model):
     pkPagosDebito = models.AutoField(primary_key=True)
     numeroTarjetaDebito = models.IntegerField()#min_length=16
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    numeroPago = models.CharField(max_length=4) 
     ahorros = models.BooleanField()
     porcentajePago = models.FloatField([MinValueValidator(0), MaxValueValidator(99)],
 )
