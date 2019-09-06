@@ -222,7 +222,6 @@ def clienteCarrito(request, nombre):
     
     categorias = Categoria.objects.all()
     accion = request.POST
-    print(accion)
     idEliminar = accion.get('eliminar')
     tipoTarjeta = accion.get('tipotarjeta')
     #subtotal de productos en carrito
@@ -291,7 +290,6 @@ def clienteCarrito(request, nombre):
                             cuotas = accion.getlist('Ccuotas')
                             #cuotas validas
                             for c in cuotas:
-                                print(c)
                                 if (int(c) > 36 or int(c) < 1):
                                     messages.info(request, 'Error, cantidad de cuotas invalida')
                                     raise IntegrityError
@@ -311,7 +309,7 @@ def clienteCarrito(request, nombre):
                         for item in productosCarrito:
                             auxDetalleproducto = DetallesProducto.objects.get(pkDetallesP = item.fkDetalleProducto.pkDetallesP)
                             auxDetalleFactura = DetallesFactura(fkFactura = auxFactura,
-                                                                fkDetallesProducto = item.fkDetalleProducto,
+                                                                fkDetallesP = item.fkDetalleProducto,
                                                                 cantidad = item.cantidad,
                                                                 precio = item.precioActual)   
                             auxDetalleFactura.full_clean()
