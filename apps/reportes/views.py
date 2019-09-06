@@ -12,10 +12,7 @@ def inicioReportes(request, *args, **kwargs):
         print(data)
         reporte = data.get('tipoReporte')
         url = 'reportes:'+reporte
-        if(reporte == '1'):
-            return redirect(to='reportes:reporteVentas')
-        else:
-            return redirect(to=url)
+        return redirect(to=url)
     return render (request, "reportes/reportes.html", context, {})
 
 def daterange(start_date, end_date):
@@ -106,52 +103,58 @@ def reporteTopClientes(request, *args, **kwargs):
 
     if request.method == 'POST':
         datos = request.POST
-        top = int(datos.get('top'))
-        clientes = Cliente.objects.all()
-        numClientes = clientes.count()
+        topStr = datos.get('top')
 
-        #Consigue una lista de los clientes con su respectiva cantidad de productos comprada y dinero invertido
-        for cliente in clientes:
-            totalC = 0
-            totalV = 0
-            
-            facturas = Factura.objects.filter(fkCliente=cliente.nombre)
+        if((topStr!='') and (topStr!=None) and (int(topStr)>0)):
+            top = int(topStr)
+            clientes = Cliente.objects.all()
+            numClientes = clientes.count()
 
-            for factura in facturas:
-                detalleFactura = DetallesFactura.objects.filter(fkFactura=factura.pkFactura).annotate(totalC=Sum('cantidad'),totalV=Sum('precio'))    
+            #Consigue una lista de los clientes con su respectiva cantidad de productos comprada y dinero invertido
+            for cliente in clientes:
+                totalC = 0
+                totalV = 0
+                
+                facturas = Factura.objects.filter(fkCliente=cliente.nombre)
 
-                if(not(detalleFactura.exists())):
-                    continue
-                    
-                totalC = totalC + detalleFactura[0].totalC
-                totalV = totalV + detalleFactura[0].totalV
+                for factura in facturas:
+                    detalleFactura = DetallesFactura.objects.filter(fkFactura=factura.pkFactura).annotate(totalC=Sum('cantidad'),totalV=Sum('precio'))    
+
+                    if(not(detalleFactura.exists())):
+                        continue
                         
-            if(totalC!=0):
-                clientesTop.append([cliente.nombre,totalC,totalV])                
-        
+                    totalC = totalC + detalleFactura[0].totalC
+                    totalV = totalV + detalleFactura[0].totalV
+                            
+                if(totalC!=0):
+                    clientesTop.append([cliente.nombre,totalC,totalV])                
+            
 
-        clientesTop = insertionSort(clientesTop) #Organiza la lista del top de mayor a menor
+            clientesTop = insertionSort(clientesTop) #Organiza la lista del top de mayor a menor
 
-        if(top>numClientes):
-            messages.info(request,'Hay menos clientes registrados de los indicados')
+            if(top>numClientes):
+                messages.info(request,'Hay menos clientes registrados de los indicados')
 
-        conteo = 0
-        conteoTop = top
-        if(top>len(clientesTop)):
-            conteoTop = len(clientesTop)
-            messages.info(request,'Los clientes sin compras son omitidos')
-        elif(top>numClientes): conteoTop = numClientes
+            conteo = 0
+            conteoTop = top
+            if(top>len(clientesTop)):
+                conteoTop = len(clientesTop)
+                messages.info(request,'Los clientes sin compras son omitidos')
+            elif(top>numClientes): conteoTop = numClientes
 
-        #Acomoda la lista del top en el formato para el html
-        for Ctop in clientesTop:
-            if(Ctop[1]==0):
-                continue
+            #Acomoda la lista del top en el formato para el html
+            for Ctop in clientesTop:
+                if(Ctop[1]==0):
+                    continue
 
-            if(conteo>=conteoTop):
-                break
+                if(conteo>=conteoTop):
+                    break
 
-            clientesTopFinal.append({'nombre':Ctop[0],'cantidad':Ctop[1],'dinero':Ctop[2]})
-            conteo = conteo + 1
+                clientesTopFinal.append({'nombre':Ctop[0],'cantidad':Ctop[1],'dinero':Ctop[2]})
+                conteo = conteo + 1
+
+        else:
+            messages.info(request, 'Por favor ingrese una cantidad válida')
         
     context = {'top':top, 'clientes':clientesTopFinal}
     return render (request, "reportes/reporteTopClientes.html", context, {})
