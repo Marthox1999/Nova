@@ -1229,39 +1229,62 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
     context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
     return render(request, 'inventario/productoDetalles.html', context, {})
 
-def modificarBodega(request):
+
+def modificarBodega(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     bodegas = Bodega.objects.all()
+
+    context={'categorias': categorias, 'bodegas': bodegas, 'direccion': '', 'ciudad': ''}
     modificar = request.POST
-    idBodega = modificar.get('bodega')
-    bodegaSeleccionada = False
+    idB = modificar.get('idBodega')
+    actualId = modificar.get('idB')
+    acccionModBodegaSubmit = modificar.get('modificarBodega-submit')
 
-    if(idBodega=='-1' or idBodega==None):
-        ciudadBodega = ""
-        dirBodega = ""
-    else:
-        BodegaObject = Bodega.objects.get(pkBodega=idBodega)
-        ciudadBodega = BodegaObject.ciudad
-        dirBodega = BodegaObject.direccion
-        ciudadB = modificar.get('ciudad')
-        dirB = modificar.get('direccion')
-                    
-        aux =  Bodega(direccion =dirB, ciudad = ciudadB)
+    #Seleccionar la bodega
+    objectBodega = Bodega.objects.filter(pkBodega = idB).first()
+    
+    if ( acccionModBodegaSubmit == "Modificar"):
+        if (actualId == ''):
+            messages.info(request, 'Seleccione la bodega que desea actualizar')
+            return render(request, "inventario/bodegaModificar.html",context,{})
         
-        if(modificar.get('modfBod-submit')!= None):
-            try:
-                aux.full_clean()
-            except ValidationError as e:
-                context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
-                messages.info(request, 'Datos invalidos')
-                return render(request, "inventario/bodegaModificar.html", context, {})
+        ciudadNueva = modificar.get('ciudadBodega')
+        direccionNueva = modificar.get('direccionBodega')
+        
+        
+        aux = Bodega(actualId, direccionNueva, ciudadNueva)
+        
+        try:
+            aux.clean_fields()
+            aux.clean()
+        except ValidationError as e:
+            print(request.POST)
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/bodegaModificar.html",context,{})
+        Bodega.objects.filter(pkBodega = actualId).update(direccion=direccionNueva, ciudad = ciudadNueva)
+        messages.success(request, 'La bodega ha sido actualizado correctamente')
+        return render(request, "inventario/bodegaModificar.html",context,{})
 
-            Bodega.objects.filter(pkBodega=idBodega).update(ciudad= aux.ciudad, direccion=aux.direccion)
-            context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadB, 'dirBodega':dirB} 
-            messages.info(request, 'Bodega modificada correctamente')   
-            return render(request, 'inventario/bodegaModificar.html', context, {})
-
-
-    context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+    if (idB != '0' and idB != None):
+        ciudad = objectBodega.ciudad
+        direccion = objectBodega.direccion
+    else:
+        idB = ''
+        ciudad = ''
+        direccion = ''
+    ciudades = {
+        '',
+        'BOG',
+        'MED',
+        'CALI',
+        'B/Q',
+        'CART',
+        'CUC',
+        'SOL',
+        'IBG',
+        'BCM',
+        'SOAC'
+    }
+    context={'categorias': categorias, 'bodegas': bodegas, 'idB': idB, 'ciudad': ciudad, 'direccion': direccion, 'ciudades':ciudades}
+    
     return render(request, "inventario/bodegaModificar.html", context, {})
-

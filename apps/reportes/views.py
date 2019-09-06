@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
 from ventas.models import *
+from inventario.models import *
 from datetime import timedelta, date, datetime
 from django.db.models import Sum
 
@@ -158,3 +158,16 @@ def reporteTopClientes(request, *args, **kwargs):
         
     context = {'top':top, 'clientes':clientesTopFinal}
     return render (request, "reportes/reporteTopClientes.html", context, {})
+
+    
+def reportePocasUnidades(request):
+    categorias = Categoria.objects.all()
+    ingresar = request.POST
+
+    productos = DetallesProducto.objects.values('fkProducto__nombre', 'color', 'talla').annotate(total=Sum('cantidad')).filter(total__lte=5)
+    print(productos.query)
+    print(productos)
+    
+    context={'categorias':categorias, 'productos': productos}
+    return render(request, 'reportes/reportePocasUnidades.html', context, {})
+   
