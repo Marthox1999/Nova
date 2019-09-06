@@ -181,6 +181,18 @@ def duenioAdminModificar(request, *args, **kwargs):
             
     return render(request, "usuarios/duenioAdminModificar.html", context, {})
     
+def duenioAdminEliminar(request, *args, **kwargv):
+    categorias = Categoria.objects.all()
+    usuarios = AdministradorDuenio.objects.filter(tipo='ADMIN')
+    context={'categorias':categorias, 'usuarios':usuarios}
+    if(request.method == 'POST'):
+        data = request.POST
+        idAdmin = data.get('idAdmin')
+        AdministradorDuenio.objects.filter(pkAdministradorDuenio=idAdmin).delete()
+        messages.success(request, 'El empleado fue despedido exitosamente')
+        return render(request, "usuarios/duenioAdminEliminar.html", context, {})
+    return render(request, "usuarios/duenioAdminEliminar.html", context, {})
+
 def duenioClienteConsultar(request, *args, **kwargs):
     from django.db.models import Q
     categorias = Categoria.objects.all()

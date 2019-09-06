@@ -1,13 +1,6 @@
 {% extends 'baseAdmin.html' %}
-
-
-{% block head %}
-
-{% load static %}
-
-{% endblock %}
-
 {% block content %}
+	
 <div class="col-md-6 col-md-offset-3">
   <br>
   <div class="panel-login panel">
@@ -17,37 +10,76 @@
       </center>
     </div>
   </div>
-  
   <div class="panel-body">
     <div class="row">
       <div class="col-lg-12">
-        <form id="login-form" name='modificarBodega' method="post">
-          {% csrf_token %}
+        {% if bodegas %}
+        <form method="post" id="form" name="modificarBodega">
+          {% csrf_token %} 
           <div class="form-group">
-            <label for="bodega">Bodega</label>
-            <select class="form-control" id="bodega" name="bodega" onChange="form.submit();"> <!--onChange="form.submit();"-->
-              <option value="-1"  name='vacio'>Bodega</option>
-              {% for bodega in bodegas %}
-                <option value={{bodega.pkBodega}} id="idBodega" name="idBodega">{{bodega.pkBodega}} - {{bodega.ciudad}}</option>
-                {% empty %}
+            <label for="idBodega">Seleccione la bodega a modificar</label>
+            <select class="form-control" id="idBodega" name="idBodega" onchange="form.submit();">
+              <option value="0" name="comboBoxBodega">Bodega</option>
+                {% for bodega in bodegas %}
+                  <option value="{{bodega.pkBodega}}" name="{{bodega.pkBodega}}">{{bodega.pkBodega}}</option>
+                  {% empty %}
+                  <p>No hay Bodegas</p>
                 {% endfor %}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="Ciudad">Ciudad</label>
-            <input type="text"  name="ciudad" id="ciudad" tabindex="1" class="form-control" placeholder="Ciudad" value="{{ciudadBodega}}">
+              </select>
           </div>
 
           <div class="form-group">
-              <label for="direccion">Dirección</label>
-              <input type="text"  name="direccion" id="direccion" tabindex="1" class="form-control" placeholder="Direccion" value="{{dirBodega}}">
+            <label for ="idB">Bodega que se modificará</label>
+            <input value="{{idB}}" readonly type="text" name="idB" id="idB" class="form-control">
           </div>
+
           <div class="form-group">
-            <input type="submit" name="modfBod-submit" id="modfBod-submit" tabindex="4" class="form-control btn btn-register" value="Modificar"></input>
+            <select class="form-control" id="ciudadBodega" name="ciudadBodega">
+                {% for listaCiudad in ciudades %}
+                  {% if listaCiudad == ciudad   %}
+                  <option selected value={{ciudad}} name={{ciudad}}>{{ciudad}}</option>
+                  {% else %}
+                  <option value="{{listaCiudad}}" name="{{listaCiudad}}">{{listaCiudad}}</option>
+                  {% endif %}
+                {% empty %}
+                <p>No hay ciudades</p>
+                {% endfor %}
+              </select>
           </div>
-        </form> 
+          
+          <div class="form-group">
+            <label for ="direccionBodega">Nueva dirección</label>
+            <input value="{{direccion}}" type="text" name="direccionBodega" id="direccionBodega" class="form-control" placeholder="Nueva dirección">
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6 col-sm-offset-3">
+                <input type="submit" name="modificarBodega-submit" id="modificarBodega-submit"  class="form-control btn btn-login" value="Modificar">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-12">
+              </div>
+            </div>
+          </div>
+        </form>
+        {% else %}
+        
+            <p>
+                <div class="alert alert-info" role="alert">
+                    No hay bodegas registrados
+                </div>
+            </p>
+        
+        {% endif %}
+                    
       </div>
     </div>
   </div>
 </div>
+
 {% endblock %}
