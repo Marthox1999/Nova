@@ -19,6 +19,7 @@ urlpatterns = [
     path('duenioClienteConsultar/', duenioClienteConsultar, name='duenioClienteConsultar'),
     path('clienteinicio/<str:nombre>', clienteInicio, name='inicioCliente'),
     path('clientePerfil/<str:nombre>/', clientePerfil, name='clientePerfil'),
+    path('clienteHistorialCompras/<str:nombre>/', clienteHistorialCompras, name='clienteHistorialCompras'),
     path('duenioAdminEliminar/', duenioAdminEliminar, name='duenioEliminarAdmin'),
     path('clienteEliminar/<str:nombre>/', clienteEliminar, name='clienteEliminar'),
     path('carrito/<str:nombre>/', clienteCarrito, name='clienteCarrito'),
