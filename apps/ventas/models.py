@@ -8,7 +8,7 @@ from usuarios.models import Cliente
 #DescuentoProducto
 class DescuentoProducto(models.Model):
     pkDescuentoProducto = models.AutoField(primary_key=True)
-    fkProducto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    fkProducto = models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField() 
     porcentajeDescuento = models.FloatField(
@@ -18,7 +18,7 @@ class DescuentoProducto(models.Model):
 #DescuentoCategoria
 class DescuentoCategoria(models.Model): 
     pkDescuentoCategoria = models.AutoField(primary_key=True)
-    fkCategoria = models.ForeignKey(Categoria,on_delete=models.CASCADE)
+    fkCategoria = models.ForeignKey(Categoria,on_delete=models.SET_NULL, null=True)
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField()
     porcentajeDescuento = models.FloatField(
@@ -29,7 +29,7 @@ class DescuentoCategoria(models.Model):
 #DescuentoSubCategoria
 class DescuentoSubCategoria(models.Model):
     pkDescuentoSubCategoria = models.AutoField(primary_key=True)
-    fkSubCategoria = models.ForeignKey(SubCategoria,on_delete=models.CASCADE)
+    fkSubCategoria = models.ForeignKey(SubCategoria,on_delete=models.SET_NULL, null=True)
     fechaInicio = models.DateField(default=timezone.now)
     fechaFin = models.DateField()
     porcentajeDescuento = models.FloatField(
@@ -51,7 +51,7 @@ class Factura(models.Model):
         ('SOAC','Soacha'),
     }
     pkFactura = models.AutoField(primary_key=True)
-    fkCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)####################
+    fkCliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True)####################
     ciudad = models.CharField(max_length=4, choices = CIUDAD, default='CALI')
     direccion = models.CharField(max_length=32)
     fecha = models.DateField()
@@ -59,7 +59,7 @@ class Factura(models.Model):
 #Detalles Factura
 class DetallesFactura(models.Model):
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-    fkDetallesProducto = models.ForeignKey(DetallesProducto, on_delete=models.CASCADE)
+    fkDetallesProducto = models.ForeignKey(DetallesProducto, on_delete=models.SET_NULL, null=True)
     cantidad = models.IntegerField()
     precio = models.FloatField()
 

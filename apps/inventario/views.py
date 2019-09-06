@@ -1171,6 +1171,21 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
                 messages.info(request, 'Seleccione una cantidad de productos mayor a 0')
                 context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
                 return render(request,'inventario/productoDetalles.html',context,{})
+            #verificar si ya hay productos de este tipo en el carrito para acumular
+            carritoActual = Carrito.objects.filter(fkNombreCliente = nombre)
+            print(carritoActual)
+            if (carritoActual != None):
+                for c in carritoActual:
+                    if (c.fkDetalleProducto == sdp):
+                        if (c.cantidad + cantidadcomprar > sdp.cantidad):
+                            #se quieren acumular mas elementos de los que hay en inventario
+                            messages.info(request, 'Cantidad de articulos solicitado mayor al que hay en inventario')
+                            context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                            return render(request,'inventario/productoDetalles.html',context,{})
+                        Carrito.objects.filter(pkCarrito = c.pkCarrito).update(cantidad = c.cantidad + cantidadcomprar)
+                        messages.success(request, 'Producto agregado al carrito')
+                        context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                        return render(request,'inventario/productoDetalles.html',context,{})
             carrito = Carrito(fkNombreCliente = cliente, fkDetalleProducto = sdp, cantidad = cantidadcomprar, precioActual=precio)
             try:
                 carrito.full_clean()
@@ -1196,7 +1211,7 @@ def modificarBodega(request):
         dirBodega = ""
     else:
         BodegaObject = Bodega.objects.get(pkBodega=idBodega)
-        ciudadBodega = BodegaObject.ciudad
+        ciudadBodega = BodegaObject.ciudad 
         dirBodega = BodegaObject.direccion
         ciudadB = modificar.get('ciudad')
         dirB = modificar.get('direccion')

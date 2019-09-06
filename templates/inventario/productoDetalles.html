@@ -75,8 +75,12 @@
                                         <span>{{productoS.color}}</span>
                                     </div>
                                     <div class="block">
-                                        <label>Cantidad Disponible: </label>
-                                        <span>{{productoS.cantidad}}</span>
+                                        {% if productoS.cantidad == 0 %}
+                                            <label style="color: crimson">No hay productos disponibles</label>
+                                        {% else %}
+                                            <label>Cantidad Disponible: </label>
+                                            <span>{{productoS.cantidad}}</span>
+                                        {% endif %}
                                     </div>
                                     <label for="inputCantidad">Cantidad a comprar:</label>
                                     <div class="form-group" >                                
@@ -86,7 +90,11 @@
                                     <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{precio}} COP</span></span>
                                     <br><br>
                                     {% if esCliente  %}
-                                    <input type="submit" name="AgregarCarrito-submit" id="AgregarCarrito-submit" tabindex="1" class="form-control btn btn-register" value="AgregarCarrito"></input>
+                                        {% if productoS.cantidad == 0 %}
+                                            <label style="color: crimson">No hay productos para comprar</label>
+                                        {% else %}
+                                            <input type="submit" name="AgregarCarrito-submit" id="AgregarCarrito-submit" tabindex="1" class="form-control btn btn-register" value="AgregarCarrito"></input>
+                                        {% endif %}
                                     {% else %}
                                     <label for="advertencia" style="color: crimson">Para poder adicionar al carrito, debe tener su sesion iniciada.</label>
                                     {% endif %}

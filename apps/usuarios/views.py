@@ -206,11 +206,12 @@ def clientePerfil(request, nombre):
 def clienteCarrito(request, nombre):
     import datetime
     from ventas.models import PagosDebito, PagosCredito, DetallesFactura, Factura
+    from django.db import IntegrityError
+    
     categorias = Categoria.objects.all()
     accion = request.POST
     print(accion)
     idEliminar = accion.get('eliminar')
-    numTarjetas = accion.get('cuantas')
     tipoTarjeta = accion.get('tipotarjeta')
     #subtotal de productos en carrito
     productosCarrito = Carrito.objects.filter(fkNombreCliente=nombre)
@@ -227,145 +228,139 @@ def clienteCarrito(request, nombre):
             messages.info(request, 'El artículo no pudo ser eliminado del carrito')
     #compra transaccional
     #cantidad de tarjetas a utilizar 1, 2 o 3
-    with transaction.atomic():
-        if(numTarjetas):
-            try:
+    try:
+        with transaction.atomic():
+            numeroDebito = accion.get('cuantasDebito')
+            cuantasDebito = {}
+            numeroCredito = accion.get('cuantasCredito')
+            cuantasCredito = {}
+            numTarjetas = accion.get('cuantas')
+            if(numTarjetas):
                 num = range(1, int(numTarjetas)+1)
-            except ValidationError as e:
-                messages.info(request, 'Error para identificar la cantidad de tarjetas')
-            except ValueError as e:
-                pass
-                #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
-        #tipos de tarjetas
-        numeroDebito = accion.get('cuantasDebito')
-        cuantasDebito = {}
-        numeroCredito = accion.get('cuantasCredito')
-        cuantasCredito = {}
-        if(numeroDebito or numeroCredito):
-            try:
+            #tipos de tarjetas
+            if(numeroDebito or numeroCredito):
                 if(( int(numeroDebito) + int(numeroCredito) > 3) or (int(numeroCredito) + int(numeroDebito) == 0)):
-                    messages.info(request, 'Error puede usar maximo 3 tarjetas y minimo 1 tarjeta')    
+                    messages.info(request, 'Error, puede usar maximo 3 tarjetas y minimo 1 tarjeta')
+                    raise IntegrityError('numerodebito or numerocredito') 
                 else:
                     cantidadValida = True
                     cuantasDebito = range(1, int(numeroDebito)+1)
                     cuantasCredito = range(1, int(numeroCredito)+1)
-            except ValidationError as e:
-                messages.info(request, 'Error para identificar la cantidad de tarjetas')
-                context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
-                return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
-                #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
-        
-        #recolectando info de tarjetas y destino
-        numDebito = accion.getlist('numDebito')
-        numCredito = accion.getlist('CnumTarjeta')
-        if(numDebito or numCredito):
-            if (len(numDebito) + len(numCredito) > 3):
-                messages.info(request, 'Error maximo puede usar 3 tarjetas')
-            else:
-                Dporcentaje = accion.getlist('Dporcentaje')
-                Cporcentaje = accion.getlist('Cporcentaje')
-                sumd = sumc = 0
-                #acumular porcentajes de tarjetas
-                try:
+                    #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
+
+            #recolectando info de tarjetas y destino
+            numDebito = accion.getlist('numDebito')
+            numCredito = accion.getlist('CnumTarjeta')
+            if(numDebito or numCredito):
+                if (len(numDebito) + len(numCredito) > 3):
+                    messages.info(request, 'Error maximo puede usar 3 tarjetas')
+                    raise IntegrityError('maximo 3 tarjetas')
+                else:
+                    Dporcentaje = accion.getlist('Dporcentaje')
+                    Cporcentaje = accion.getlist('Cporcentaje')
+                    sumd = sumc = 0
+                    #acumular porcentajes de tarjetas
                     for dp in Dporcentaje:
                         sumd += int(dp)
                     for dc in Cporcentaje:
                         sumc += int(dc)
-                except ValueError as e:
-                    messages.info(request, 'No agrego porcentajes de pago validos')
-                    context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
-                    return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
-                #porcentajes que sumen 100
-                if(sumd + sumc  != 100):
-                    messages.info(request, 'Error, no se a asignado el total de la venta en los porcentajes de las tarjetas')
-                else:
-                    #haber seleccionado entidades
-                    entidades = accion.getlist('entidad')
-                    for e in entidades:
-                        if(e == '-1'):
-                            messages.info(request, 'Error, no se selecciono una entidad valida')
-                            break
-                    #atrapar toda la informacion para crear las tarjetas
-                    Dahorros = accion.getlist('Dahorros')
-                    CnumAprobacion = accion.getlist('CnumAprobacion')
-                    direccion = accion.get('direccion')
-                    ciudad = accion.get('ciudad')
-                    cuotas = accion.get('Ccuotas')
-                    hoy =datetime.date.today()
-                    #crear factura general
-                    auxCliente = Cliente.objects.get(nombre = nombre)
-                    auxFactura = Factura(fkCliente = auxCliente, ciudad = ciudad, direccion = direccion, fecha = hoy)
-                    try:   
-                        auxFactura.full_clean() #
-                    except ValidationError as e:
-                        messages.info(request, 'Error para la creación de la factura')
-                        context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
-                        return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
-                    auxFactura.save()
-                    print("factura guardada")
-                    print(productosCarrito)
-                    #crear detalles de factura uno por producto en carrito
-                    for item in productosCarrito:
-                        print(item)
-                        auxDetalleproducto = DetallesProducto.objects.get(pkDetallesP = item.fkDetalleProducto.pkDetallesP)
-                        auxDetalleFactura = DetallesFactura(fkFactura = auxFactura,
-                                                            fkDetallesProducto = item.fkDetalleProducto,
-                                                            cantidad = item.cantidad,
-                                                            precio = item.precioActual)
-                        try:   
+                    #porcentajes que sumen 100
+                    if(sumd + sumc  != 100):
+                        messages.info(request, 'Error, no se a asignado el total de la venta en los porcentajes de las tarjetas')
+                    else:
+                        if(len(numCredito) != 0):
+                            #haber seleccionado entidades
+                            entidades = accion.getlist('entidad')
+                            for e in entidades:
+                                if(e == '-1'):
+                                    messages.info(request, 'Error, no se selecciono una entidad valida')
+                                    raise IntegrityError('entidad')
+                            cuotas = accion.getlist('Ccuotas')
+                            #cuotas validas
+                            for c in cuotas:
+                                print(c)
+                                if (int(c) > 36 or int(c) < 1):
+                                    messages.info(request, 'Error, cantidad de cuotas invalida')
+                                    raise IntegrityError
+                            CnumAprobacion = accion.getlist('CnumAprobacion')
+                        if (len(numDebito) != 0):
+                            #atrapar toda la informacion para crear las tarjetas
+                            Dahorros = accion.getlist('Dahorros')
+                        hoy =datetime.date.today()
+                        direccion = accion.get('direccion')
+                        ciudad = accion.get('ciudad')
+                        #crear factura general
+                        auxCliente = Cliente.objects.get(nombre = nombre)
+                        auxFactura = Factura(fkCliente = auxCliente, ciudad = ciudad, direccion = direccion, fecha = hoy)
+                        auxFactura.full_clean()
+                        auxFactura.save()
+                        #crear detalles de factura uno por producto en carrito
+                        for item in productosCarrito:
+                            auxDetalleproducto = DetallesProducto.objects.get(pkDetallesP = item.fkDetalleProducto.pkDetallesP)
+                            auxDetalleFactura = DetallesFactura(fkFactura = auxFactura,
+                                                                fkDetallesProducto = item.fkDetalleProducto,
+                                                                cantidad = item.cantidad,
+                                                                precio = item.precioActual)   
                             auxDetalleFactura.full_clean()
-                        except ValidationError as e:
-                            messages.info(request, 'Error para productos asociados a la venta')
-                            context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
-                            return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
-                        auxDetalleFactura.save()
-                    #crear tarjetas usadas
-                    #tarjetas debito
-                    count = 0
-                    for d in numDebito:
-                        auxahorro = False
-                        if (Dahorros == 'on'):
-                            auxahorro = True
-                        auxDebito = PagosDebito(numeroTarjetaDebito = d,
-                                                fkFactura = auxFactura,
-                                                porcentajePago = Dporcentaje[count],
-                                                ahorros = auxahorro)
-                        try:   
-                            auxDebito.full_clean()
-                        except ValidationError as e:
-                            print(str(e))
-                            messages.info(request, 'Error en los datos de la(s) tarjeta(s) de debito')
-                            context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
-                            return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
-                        auxDebito.save()
-                        count+=1
-                    print("falta credito pero se creo la debito")
-                    #tarjetas credito
-                    count = 0
-                    for c in numCredito:
-                        auxCredito = PagosCredito(fkFactura = auxFactura,
-                                                  numeroAprobacion = CnumAprobacion,
-                                                  cuotas = cuotas,
-                                                  fechaAprobacion = hoy,
-                                                  entidadAprobacion = entidades[count],
-                                                  porcentajePago = Cporcentaje[count])
-                        try:
-                            auxCredito.full_clean()
-                        except ValidationError as e:
-                            print(str(e))
-                            messages.info(request, 'Error en los datos de la(s) tarjeta(s) de credito')
-                        auxCredito.save()
-                        count += 1
-                    #restar del inventario
-                    for item in productosCarrito:
-                        auxcantidad = item.cantidad
-                        DetallesProducto.objects.filter(pkDetallesP = item.fkDetalleProducto.pkDetallesP).update(cantidad = item.fkDetalleProducto.cantidad  - auxcantidad)
-                    #vaciar el carrito
-                    
-                    Carrito.objects.filter(fkNombreCliente = auxCliente).delete() #elimino los items en carrito
-                    #si todo salio bien
-                    messages.success(request, 'Compra realizada exitosamente')
-
+                            auxDetalleFactura.save()
+                        #crear tarjetas usadas
+                        #tarjetas debito
+                        count = 0
+                        if (len(numDebito) != 0):
+                            for d in numDebito:
+                                auxahorro = False
+                                if (Dahorros[count] == '-1'):
+                                    raise IntegrityError('Error al escoger el tipo de cuenta')
+                                if (Dahorros[count] == 'Ahorros'):
+                                    auxahorro = True
+                                auxDebito = PagosDebito(numeroTarjetaDebito = d,
+                                                        fkFactura = auxFactura,
+                                                        porcentajePago = Dporcentaje[count],
+                                                        ahorros = auxahorro) 
+                                auxDebito.full_clean()
+                                auxDebito.save()
+                                count+=1
+                        #tarjetas credito
+                        count = 0
+                        if(len(numCredito) != 0):
+                            for c in numCredito:
+                                auxCredito = PagosCredito(fkFactura = auxFactura,
+                                                        numeroAprobacion = CnumAprobacion,
+                                                        cuotas = cuotas[count],
+                                                        fechaAprobacion = hoy,
+                                                        entidadAprobacion = entidades[count],
+                                                        porcentajePago = Cporcentaje[count])
+                                
+                                auxCredito.full_clean()
+                                auxCredito.save()
+                                count += 1
+                        #restar del inventario
+                        for item in productosCarrito:
+                            auxcantidad = item.cantidad
+                            DetallesProducto.objects.filter(pkDetallesP = item.fkDetalleProducto.pkDetallesP).update(cantidad = item.fkDetalleProducto.cantidad  - auxcantidad)
+                            #agregar gastos de envio
+                            if(item.fkDetalleProducto.fkBodega.ciudad != ciudad):
+                                totalcompra += 5000
+                        #vaciar el carrito
+                        Carrito.objects.filter(fkNombreCliente = auxCliente).delete() #elimino los items en carrito
+                        #si todo salio bien
+                        messages.success(request, 'Compra realizada exitosamente total: '+str(totalcompra))
+                        productosCarrito = {}
+    except ValidationError as e:
+        messages.info(request, str(e))
+    except ValueError as e:
+        messages.info(request, "Algun valor numerico dado no es valido")
+    except IntegrityError as e:
+        pass
+    
     context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
 
+'''
+def handler404(request, exception):
+    print('handler 404')
+    return render('usuarios/404.html',{},{})
+
+def handler500(request):
+    return HttpResponse('error 500 en, nova', status=404)
+    '''

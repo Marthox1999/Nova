@@ -105,6 +105,10 @@
                 <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
                 <p>Paso 3</p>
               </div>
+              <div class="stepwizard-step">
+                  <a href="#step-4" type="button" class="btn btn-default btn-circle" disabled="disabled">4</a>
+                  <p>Paso 4</p>
+                </div>
             </div>
           </div>
           {% if totalcompra == 0 %}
@@ -191,17 +195,22 @@
                         <br>
                         <div class="form-group">
                           <label for="numeroDebito">Número de tarjeta</label>
-                          <input required="required" type="text" name="numDebito" id="numeroDebito" class="form-control" placeholder="Número de tarjeta" value="">
+                          <input required="required" type="text" name="numDebito" id="numeroDebito" class="form-control" placeholder="Número de tarjeta" value="" onkeypress="return isNumberKey(event);">
                         </div>
                         <div class="form-group">
-                          <label for="ahorros">¿Es una cuenta de ahorros?</label>
-                          <input type="checkbox" name="Dahorros" id="ahorros" class="form-control">
+                          <label for="ahorros">¿Es una cuenta tipo?</label>
+                          <select class="form-control" id="Dahorros" name="Dahorros">
+                            <option value="-1">--</option>
+                            <option value="Ahorros">Ahorros</option>
+                            <option value="Corriente">Corriente</option>
+                          </select>                   
                         </div>
                         <div class="form-group">
                           <label for="porcentaje">Porcentaje de pago</label>
-                          <input required="required" type="number" min="1" max="100"  name="Dporcentaje" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return isNumberKey(event);">
+                          <input required="required" type="number" min="1" max="100"  name="Dporcentaje" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return verificarPorcentaje();">
                         </div>
                         {% empty %}
+                        <br>
                         <p>No se ha indicado el número de tarjetas débito con las que se pagará</p>
                       {% endfor %}
                     </div>
@@ -209,21 +218,21 @@
                       {% for iteracion in rangeCredito %}
                         <br>
                         <center>
-                          <h3>
+                          <h3>  
                             Tarjeta crédito número {{iteracion}}
                           </h3>
                         </center>
                         <br>
                         <div class="form-group">
-                          <label for="numeroTarjeta">Número de tarjeta</label>
-                          <input required="required" type="text" name="CnumTarjeta" id="numeroTarjeta" class="form-control" placeholder="Número de tarjeta" value="">
+                          <label for="numeroTarjeta">Número de tarjeta:</label>
+                          <input required="required" type="text" name="CnumTarjeta" id="numeroTarjeta" class="form-control" placeholder="Número de tarjeta" value="" onkeypress="return isNumberKey(event);">
                         </div>
                         <div class="form-group">
-                          <label for="numeroAprobacion">Número de aprobación</label>
+                          <label for="numeroAprobacion">Número de aprobación:</label>
                           <input required="required" type="text" name="CnumAprobacion" id="numeroAprobacion" class="form-control" placeholder="Número de aprobación" value="">
                         </div>
                         <div class="form-group">
-                          <label for="entidad">Entidad que aprobó</label>
+                          <label for="entidad">Entidad que aprobó:</label>
                           <select class="form-control" id="entidad" name="entidad">
                             <option value="-1">--</option>
                             <option value="VI">VISA</option>
@@ -233,13 +242,14 @@
                         </div>
                         <div class="form-group">
                           <label for="Ccuotas">Cuotas</label>
-                          <input required="required" type="number" name="Ccuotas" id="Ccuotas" min="1" max="36" class="form-control" placeholder="Número de cuotas" value="">
+                          <input type="number" name="Ccuotas" id="Ccuotas" min="1" max="36" class="form-control" placeholder="Número de cuotas" value="" onkeypress="return isNumberKey(event);">
                         </div>
                         <div class="form-group">
-                          <label for="porcentaje">Porcentaje de pago</label>
-                          <input type="number" min="1" max="100"  name="Cporcentaje" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return isNumberKey(event);">
+                          <label for="porcentaje">Porcentaje de pago:</label>
+                          <input type="number" min="1" max="100"  name="Cporcentaje" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return verificarPorcentaje();">
                         </div>
                         {% empty %}
+                        <br>
                         <p>No se ha indicado el número de tarjetas crédito con las que se pagará</p>
                       {% endfor %}
                     </div>
@@ -255,15 +265,17 @@
               <br>
               <h3><center>Paso 3: Información envio</center></h3>
               <br>
-              <label>Usuario:  </label>
-              <span>{{nombre}}</span>
+              <div class="block">
+              <label for='nombre'>Usuario:  </label>
+              <p id='nombre'>{{nombre}}</p>
+              </div>
               <br>
               <div class="form-group">
-                <label class="control-label">Dirección Destino</label>
-                <input required="required" maxlength="100" type="text" name="direccion" placeholder="Destino" />
+                <label class="control-label" for='direccion'>Dirección Destino:</label>
+                <input required="required" class='form-control' maxlength="100" type="text" name="direccion" id='direccion' placeholder="Destino" />
               </div>
               <div class="form-group">
-                  <label for="Ciudad">Ciudad Destino</label>
+                  <label for="Ciudad">Ciudad Destino:</label>
                     <select class="form-control" id="ciudad" name="ciudad">
                       <option value="BOG">Bogotá</option>
                       <option value="MED">Medellín</option>
@@ -277,9 +289,49 @@
                       <option value="SOAC">Soacha</option>
                     </select>
               </div>
-              <button type="submit" class="btn btn-success btn-lg pull-right" onclick="form.submit();" id="venta-submit" name="venta-submit">Enviar</button>
+              <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
             </div>
           </div>
+          <div class="row setup-content" id="step-4">
+              <div class="col-md-12">
+                <br>
+                <br>
+                <h3><center>Paso 4: Información adicional</center></h3>
+                <br>
+                <div class="block">
+                <label for='nombre'>Usuario:  </label>
+                <p id='nombre'>{{nombre}}</p>
+                </div>
+                <br>
+                <div class='block'>
+                  <h4>
+                    <label>SubTotal:  </label>
+                    <span>{{totalcompra}}</span>
+                  </h4>
+                  <br>
+                  <p>El subtotal actual puede verse alterado por gastos de envio </p>
+                  <br>
+                  <p>Los productos se encuentran en:</p>
+                  <br>
+                  <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col"><center>Producto</center></th>
+                          <th scope="col"><center>Ciudad</center></th>
+                        </tr>
+                        <tbody>
+                        {% for carrito in productosCarrito %}
+                        <tr>
+                          <td> <center>{{carrito.fkDetalleProducto.fkProducto.nombre}}</center></td>
+                          <td> <center>{{ carrito.fkDetalleProducto.fkBodega.ciudad }}</center></td>
+                        </tr>
+                      </tbody>
+                    {% endfor %}
+                  </table>
+                </div>
+                <button type="submit" class="btn btn-success btn-lg pull-right" onclick="form.submit();" id="venta-submit" name="venta-submit">Enviar</button>
+              </div>
+            </div>
           </form>
         {% endif %}
       </div>
@@ -295,7 +347,6 @@
       return !(charCode > 31 && (charCode < 48 || charCode > 57));
   }
   function verificarPorcentaje() {
-    
     let num = document.getElementsByName("porcentaje")[0].value;
     if (num>=0 && num<=100) {
       document.getElementsByName("porcentaje")[0].value = num;
@@ -347,133 +398,4 @@
 
 </script>
 
-
-
-<!--
-<div class="col-md-8 col-md-offset-2">
-  <br>
-  <div class="panel-login panel">
-    <div class="panel-heading">
-      <center>
-        <h1> Configuración del medio de pago </h1>
-      </center>
-    </div>
-  </div>
-
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-lg-12">
-        <form method='post' id='cuantas' name='cuantas' class='login-form'>
-        {% csrf_token %}
-          <div class="container">
-            <div class="row">
-              <div class="col-0 col-sm-4">
-                <center>
-                  <h2>
-                    Débito
-                  </h2>
-                </center>
-                <br>
-                <div class="form-group">
-                  <label for="cuantasDebito">¿Cuántas tarjetas débito desea usar?</label>
-                  <input type="number" min="0" max="3"  name="cuantasDebito" id="cuantasDebito" class="form-control" placeholder="¿Cuántas tarjetas débito desea usar?" value="{{ numeroDebito }}" onkeypress="return isNumberKey(event);">
-                </div>
-              </div>
-              <div class="col-0 col-sm-4">
-                <center>
-                  <h2>
-                    Crédito
-                  </h2>
-                </center>
-                <br>
-                <div class="form-group">
-                  <label for="cuantasCredito">¿Cuántas tarjetas crédito desea usar?</label>
-                  <input type="number" min="0" max="3"  name="cuantasCredito" id="cuantasCredito" class="form-control" placeholder="¿Cuántas tarjetas crédito desea usar?" value="{{ numeroCredito }}" onkeypress="return isNumberKey(event);">
-                </div>
-              </div>
-            </div>
-          </div>
-          <center>
-            <button type="submit" class="btn btn-primary mb-2">Confirmar número de tarjetas</button>
-          </center>
-        </form>
-      </div>
-    </div>
-  </div>
-  
-</div>
-
-
-
-<div class="col-md-8 col-md-offset-2">
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="container">
-            <div class="row">
-              <div class="col-0 col-sm-4">
-                
-
-                {% for iteracion in rangeDebito %}
-                  <br>
-                  <center>
-                    <h3>
-                      Tarjeta débito número {{iteracion}}
-                    </h3>
-                  </center>
-                  <div class="form-group">
-                    <label for="numeroDebito">Número de tarjeta</label>
-                    <input type="text" name="numeroDebito{{iteracion}}" id="numeroDebito" class="form-control" placeholder="Número de tarjeta" value="">
-                  </div>
-                  <div class="form-group">
-                    <label for="ahorros">¿Es una cuenta de ahorros?</label>
-                    <input type="checkbox" name="ahorros{{iteracion}}" id="ahorros" class="form-control"  value="">
-                  </div>
-                  <div class="form-group">
-                    <label for="porcentaje">Porcentaje de pago</label>
-                    <input type="number" min="1" max="100"  name="porcentaje{{iteracion}}" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return isNumberKey(event);">
-                  </div>
-                  {% empty %}
-                  <p>No se ha indicado el número de tarjetas débito con las que se pagará</p>
-                {% endfor %}
-              </div>
-
-
-              <div class="col-0 col-sm-4">
-                
-                {% for iteracion in rangeCredito %}
-                  <br>
-                  <center>
-                    <h3>
-                      Tarjeta crédito número {{iteracion}}
-                    </h3>
-                  </center>
-                  <div class="form-group">
-                    <label for="numeroTarjeta">Número de tarjeta</label>
-                    <input type="text" name="numeroTarjeta{{iteracion}}" id="numeroTarjeta" class="form-control" placeholder="Número de tarjeta" value="">
-                  </div>
-                  <div class="form-group">
-                    <label for="numeroAprobacion">Número de aprobación</label>
-                    <input type="text" name="numeroAprobacion{{iteracion}}" id="numeroAprobacion" class="form-control" placeholder="Número de aprobación" value="">
-                  </div>
-                  <div class="form-group">
-                    <label for="entidad">Entidad que aprobó</label>
-                    <input type="text" name="entidad{{iteracion}}" id="entidad" class="form-control" placeholder="Entidad que aprobó" value="">
-                  </div>
-                  <div class="form-group">
-                    <label for="porcentaje">Porcentaje de pago</label>
-                    <input type="number" min="1" max="100"  name="porcentaje{{iteracion}}" id="porcentaje" class="form-control" placeholder="Porcentaje de pago" value="" onkeypress="return isNumberKey(event);">
-                  </div>
-                  {% empty %}
-                  <p>No se ha indicado el número de tarjetas crédito con las que se pagará</p>
-                {% endfor %}
-                
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-</div>
--->
 {% endblock %}
