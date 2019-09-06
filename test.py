@@ -50,6 +50,60 @@ def duenioAdminIngreso(request, ingresar):
     return "SEND"
 
 
+#FUNCION - CUARTA PRUEBA
+def consultarReferencias(categoria, subcategoria, producto):
+    categorias = Categoria.objects.all()
+    idcategoria = categoria
+    subcategorias = {}
+    idsubcategoria = subcategoria
+    productos = {}
+    idproducto = producto
+    catSeleccionada = False
+    subCatSeleccionada = False
+    producSeleccionado = False
+    
+    if((categoria != "") and (categoria != None) and (categoria != "-1")):
+        subcategorias = SubCategoria.objects.filter(fkCategoria=idcategoria)
+        catSeleccionada = True
+    else:
+        idcategoria = -1
+    if((subcategoria != "") and (subcategoria != None) and (subcategoria != "-1")):
+        productos = Producto.objects.filter(fkSubCategoria=idsubcategoria)
+        subCatSeleccionada = True
+    else:
+        idsubcategoria = -1
+    if((producto != "") and (producto != None) and (producto != "-1")):                
+        idproducto = producto
+        producSeleccionado = True
+    else:
+        idproducto = -1
+
+    context={
+        'nombre': "",
+        'descripcion': "",
+        'iva': "",
+        'precio': "",
+        'rutaImagen': "",
+    }
+
+    if((idproducto != "") and (idproducto != None) and (idproducto != "-1") and (idproducto != -1)): #SE CARGAN LOS VALORES DE LA REFERENCIA
+        producObject = Producto.objects.get(pkProducto=idproducto)
+        nombreO = producObject.nombre
+        descripcionO = producObject.descripcion        
+        precioO = producObject.precio
+        ivaO = producObject.iva
+        rutaImagenO = producObject.rutaImagen
+
+        context={
+            'nombre': nombreO,
+            'descripcion': descripcionO,
+            'iva': int(ivaO),
+            'precio': precioO,
+            'rutaImagen': "../"+rutaImagenO.name,
+        }
+
+    return context
+
 #PRUEBAS
 class PruebasFunciones(TestCase):
 
@@ -86,24 +140,43 @@ class PruebasFunciones(TestCase):
         self.adminDatos = {'nombreUsuario':"Admin", 'clave':"123",'tipo':"ADMIN"}
 
         self.noUser = {'nombreUsuario':"user", 'clave':"0",'tipo':"Nada"}
-    
-    def test_bodegaConsulta(self):
-        print("Realizando la primera prueba (bodegaConsulta)")
-        self.assertEqual(bodegaconsulta(2), self.bodega2Datos)
-        self.assertEqual(bodegaconsulta('-1'), self.bodega3Datos)
-        self.assertEqual(bodegaconsulta(1), self.bodega1Datos)
-        self.assertEqual(bodegaconsulta(None), self.bodega4Datos)
 
-    def test_duenioAdminIngreso(self):
-        print("Realizando la segunda prueba (duenioAdminIngreso)")
-        #Caso de prueba (T,T,T) no es posible, admin.autenticarAdmin() y duenio.autenticarDuenio() no pueden ser ambas verdaeras
-        self.assertEqual(duenioAdminIngreso(self.request1, self.adminDatos), "ADMIN") #Caso de prueba (T,T,F)
-        self.assertEqual(duenioAdminIngreso(self.request1, self.duenioDatos), "DUENIO") #Caso de prueba (T,F,T)
-        self.assertEqual(duenioAdminIngreso(self.request1, self.noUser), "INVALIDO") #Caso de pureba (T,F,F)
-        #Caso de prueba (F,T,T) no es posible, admin.autenticarAdmin() y duenio.autenticarDuenio() no pueden ser ambas verdaeras
-        self.assertEqual(duenioAdminIngreso(self.request2, self.adminDatos), "SEND")  #Caso de pureba (F,T,F)
-        self.assertEqual(duenioAdminIngreso(self.request2, self.duenioDatos), "SEND") #Caso de pureba (F,F,T)
-        self.assertEqual(duenioAdminIngreso(self.request2, self.noUser), "SEND") #Caso de pureba (F,F,F)
+        
+        self.categoria = Categoria(nombreCategoria="Hombres",rutaImagen= "../media/categoriasImagenes/categorias.jpg").save()
+        self.subCategoria = SubCategoria(fkCategoria=Categoria.objects.get(nombreCategoria="Hombres"),nombreSubCategoria= "CamisetasM").save() 
+        self.producto = Producto(   fkSubCategoria= SubCategoria.objects.get(nombreSubCategoria="CamisetasM"),
+                                    nombre= "Camiseta1",
+                                    descripcion= "descripcion1",
+                                    iva= 19.0,
+                                    precio= 23000,
+                                    rutaImagen= "../media/productosImagenes/Camiseta1.jpg").save()
+
+        self.productoDatos = {'nombre': "Camiseta1",
+                                'descripcion': "descripcion1",
+                                'iva': 19.0,
+                                'precio': 23000,
+                                'rutaImagen': "../media/productosImagenes/Camiseta1.jpg"}
+        
+        self.producto2 = Producto(   fkSubCategoria= SubCategoria.objects.get(nombreSubCategoria="CamisetasM"),
+                                    nombre= "Camiseta2",
+                                    descripcion= "descripcion2",
+                                    iva= 19.0,
+                                    precio= 23000,
+                                    rutaImagen= "../media/productosImagenes/Camiseta1.jpg").save()
+
+        self.productoDatos2 = {'nombre': "Camiseta2",
+                                'descripcion': "descripcion2",
+                                'iva': 19.0,
+                                'precio': 23000,
+                                'rutaImagen': "../media/productosImagenes/Camiseta2.jpg"}
+
+
+    
+    def test_consultarReferencias(self):
+        print("Realizando la prueba consultarReferencias)
+        self.assertEqual(consultarReferencias(1,3,0),self.productoDatos)
+        self.assertEqual(consultarReferencias(1,'-1','-1'),self.productoDatos2)
+
 
     def tearDown(self):
         print("Destruyendo el contexto")
@@ -118,3 +191,7 @@ class PruebasFunciones(TestCase):
         del(self.admin)
         del(self.adminDatos)
         del(self.noUser)
+        del(self.producto)
+        del(self.productoDatos)
+        del(self.producto2)
+        del(self.productoDatos2)
