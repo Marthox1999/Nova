@@ -45,11 +45,7 @@ class Factura(models.Model):
 #Detalles Factura
 class DetallesFactura(models.Model):
     fkFactura = models.ForeignKey(Factura, on_delete=models.CASCADE)
-<<<<<<< HEAD
     fkDetallesP = models.ForeignKey(DetallesProducto, on_delete=models.CASCADE, default=0)
-=======
-    fkDetallesP = models.ForeignKey(DetallesProducto, on_delete=models.CASCADE)
->>>>>>> origin/master
     cantidad = models.IntegerField()
     precio = models.FloatField()
 
