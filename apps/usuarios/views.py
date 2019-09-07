@@ -260,9 +260,29 @@ def clienteCarrito(request, nombre):
             pass
             #Significa que uno de los campos no fue llenado pero no es necesario informar, porque pudo ser aproposito si solo se usa un medio de pago
             
-
-
     context = {'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {})
 
+
+
+def clienteEliminar(request, nombre):
+
+    cliente = Cliente.objects.filter(nombre=nombre)
+    
+    accion = request.POST
+    confirmar = accion.get('confirmar')
+    context = {'nombre':nombre, 'cliente':cliente}
+    if(confirmar=="si"):
+        try:
+            Cliente.objects.filter(nombre=nombre).delete()
+            messages.warning(request, 'Su cuenta fue eliminada satisfactoriamente')
+            return redirect(to='usuarios:ingreso')
+        except:
+            messages.info(request, 'No fue posible la eliminación de esta cuenta, verifique que se trate de una cuenta registrada')
+    if(confirmar=="no"):
+        
+        return redirect('/usuarios/clientePerfil/'+nombre+'/')
+
+    
+    return render(request,"usuarios/clienteEliminar.html", context, {})
 
