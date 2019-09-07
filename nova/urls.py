@@ -17,8 +17,13 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import handler404, handler500
+
+from usuarios.views import clienteIngreso
+
 
 urlpatterns = [
+    path('',clienteIngreso, name='ingreso'),
     path('usuarios/', include('usuarios.urls', namespace='usuarios')),
     path('inventario/', include('inventario.urls', namespace='inventario')),
     path('ventas/', include('ventas.urls', namespace='ventas')),
@@ -27,3 +32,5 @@ urlpatterns = [
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+#handler404 = 'usuarios.views.handler404'
+#handler500 = 'usuarios.views.handler500'

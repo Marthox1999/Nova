@@ -1,6 +1,6 @@
 #!bin/sh
 
-echo "Hello"
+echo "Migraciones"
 python manage.py makemigrations inventario
 python manage.py makemigrations usuarios
 python manage.py makemigrations ventas
