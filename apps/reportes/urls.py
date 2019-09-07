@@ -1,7 +1,9 @@
 from django.urls import include, path
 from reportes.views import *
+
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 app_name = 'reportes'
 urlpatterns = [
@@ -10,4 +12,6 @@ urlpatterns = [
     path('reporteVentasCategoria', reporteVentasCategoria, name='reporteVentasCategoria'),
     path('reporteTopClientes', reporteTopClientes, name='reporteTopClientes'),
     path('reportePocasUnidades', reportePocasUnidades, name='reportePocasUnidades'),
+    path('masVendidos/', masVendidos, name='masVendidos'),
+    path('menosVendidos/', menosVendidos, name='menosVendidos'),
 ]

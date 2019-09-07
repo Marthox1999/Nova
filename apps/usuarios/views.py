@@ -387,6 +387,7 @@ def clienteCarrito(request, nombre):
     context = {'cantidadValida': cantidadValida, 'totalcompra':totalcompra,'categorias':categorias,'nombre': nombre, 'productosCarrito': productosCarrito, 'rangeDebito': cuantasDebito, 'numtarjetas':num, 'numeroDebito': numeroDebito, 'rangeCredito': cuantasCredito, 'numeroCredito': numeroCredito}
     return render(request, "usuarios/clienteCarrito.html", context, {'form':accion})
 
+
 '''
 def handler404(request, exception):
     print('handler 404')
@@ -395,3 +396,25 @@ def handler404(request, exception):
 def handler500(request):
     return HttpResponse('error 500 en, nova', status=404)
     '''
+
+
+def clienteEliminar(request, nombre):
+
+    cliente = Cliente.objects.filter(nombre=nombre)
+    
+    accion = request.POST
+    confirmar = accion.get('confirmar')
+    context = {'nombre':nombre, 'cliente':cliente}
+    if(confirmar=="si"):
+        try:
+            Cliente.objects.filter(nombre=nombre).delete()
+            messages.warning(request, 'Su cuenta fue eliminada satisfactoriamente')
+            return redirect(to='usuarios:ingreso')
+        except:
+            messages.info(request, 'No fue posible la eliminación de esta cuenta, verifique que se trate de una cuenta registrada')
+    if(confirmar=="no"):
+        
+        return redirect('/usuarios/clientePerfil/'+nombre+'/')
+
+    
+    return render(request,"usuarios/clienteEliminar.html", context, {})

@@ -9,4 +9,7 @@ urlpatterns = [
     path('descuentoCrear/<int:idCategoria>', crearDescuentoCategoria, name='descuentoCrearCategoria'),
     path('descuentoCrear/<int:idCategoria>/<int:idSubCategoria>', crearDescuentoSubCategoria, name='descuentoCrearSubCategoria'),
     path('descuentoCrear/<int:idCategoria>/<int:idSubCategoria>/<int:idProducto>', crearDescuentoProducto, name='descuentoCrearProducto'),
+
+    path('descuentoCrud', descuentoCrud, name='descuentoCrud'),
+    path('descuentoConsultar', descuentoConsultar, name='descuentoConsultar'),
 ]

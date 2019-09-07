@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
-from inventario.models import Producto, Categoria, SubCategoria, DetallesProducto
+from inventario.models import Producto, DetallesProducto, Categoria, SubCategoria
 from usuarios.models import Cliente
 
 #DescuentoProducto
