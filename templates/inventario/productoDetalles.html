@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="background-color:#FEF0F0;">
-                    <div class="product-layout  product-grid  col-md-6 col-sm-4 col-xs-2    ">
+                    <div class="product-layout  product-grid  col-md-6 col-sm-4 col-xs-12">
                         <div class="item">
                             <div class="product-thumb clearfix mb_30">
                                 <div class="image product-imageblock">
@@ -57,7 +57,6 @@
                                     {% csrf_token %}
                                     <label>Productos disponibles: </label>
                                     <select class="form-control" id="detalleproducto" name="detalleproducto" onChange="form.submit();">
-                                        <option value="-1"  name='vacio'>Producto</option>
                                         {% for dp in detallesproducto %}
                                             {% if idDetalleproducto == dp.pkDetallesP   %}
                                             <option selected value={{dp.pkDetallesP}} name={{dp.pkDetallesP}}>Talla: {{dp.talla}} - Color: {{dp.color}}</option>
@@ -76,8 +75,12 @@
                                         <span>{{productoS.color}}</span>
                                     </div>
                                     <div class="block">
-                                        <label>Cantidad Disponible: </label>
-                                        <span>{{productoS.cantidad}}</span>
+                                        {% if productoS.cantidad == 0 %}
+                                            <label style="color: crimson">No hay productos disponibles</label>
+                                        {% else %}
+                                            <label>Cantidad Disponible: </label>
+                                            <span>{{productoS.cantidad}}</span>
+                                        {% endif %}
                                     </div>
                                     <label for="inputCantidad">Cantidad a comprar:</label>
                                     <div class="form-group" >                                
@@ -87,7 +90,11 @@
                                     <span class="price"><span class="amount"><span class="currencySymbol">$</span>{{precio}} COP</span></span>
                                     <br><br>
                                     {% if esCliente  %}
-                                    <input type="submit" name="AgregarCarrito-submit" id="AgregarCarrito-submit" tabindex="1" class="form-control btn btn-register" value="AgregarCarrito"></input>
+                                        {% if productoS.cantidad == 0 %}
+                                            <label style="color: crimson">No hay productos para comprar</label>
+                                        {% else %}
+                                            <input type="submit" name="AgregarCarrito-submit" id="AgregarCarrito-submit" tabindex="1" class="form-control btn btn-register" value="AgregarCarrito"></input>
+                                        {% endif %}
                                     {% else %}
                                     <label for="advertencia" style="color: crimson">Para poder adicionar al carrito, debe tener su sesion iniciada.</label>
                                     {% endif %}

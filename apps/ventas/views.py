@@ -162,3 +162,32 @@ def crearDescuentoProducto(request, idCategoria, idSubCategoria, idProducto):
         return redirect(to='ventas:descuentoCrear')
 
     return render(request, "ventas/creardescuentos.html", context, {})
+
+
+
+def descuentoCrud(request, *args, **kwargs):
+    return render(request, "ventas/descuentosCRUD.html", {})
+
+
+def descuentoConsultar(request, *args, **kwargs):
+    accion = request.POST
+    consultar = accion.get('consultarBoton')
+    categoria = {}
+    subcategoria = {}
+    producto = {}
+    
+    if(consultar):
+        try:
+            tipo = accion.get('tipoConsulta')
+            if (tipo == "categoria"):
+                categoria = DescuentoCategoria.objects.all().order_by('fkCategoria__nombreCategoria', 'fechaInicio')
+            elif (tipo == "subcategoria"):
+                subcategoria = DescuentoSubCategoria.objects.all().order_by('fkSubCategoria__fkCategoria__nombreCategoria', 'fkSubCategoria__nombreSubCategoria', 'fechaInicio')
+            elif (tipo == "producto"):
+                producto = DescuentoProducto.objects.all().order_by('fkProducto__fkSubCategoria__fkCategoria__nombreCategoria', 'fkProducto__fkSubCategoria__nombreSubCategoria', 'fkProducto__nombre', 'fechaInicio')
+            else:
+                messages.info(request, 'Debe seleccionar un tipo de descuento para realizar una consulta')
+        except:
+            pass
+    context={'categoria': categoria, 'subcategoria': subcategoria, 'producto': producto}
+    return render(request, "ventas/descuentoConsultar.html", context, {})
