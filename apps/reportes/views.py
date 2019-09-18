@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Sum
 from ventas.models import *
 from inventario.models import *
+from usuarios.models import *
 from datetime import timedelta, date, datetime
 
 # Create your views here.
@@ -196,3 +197,31 @@ def reportePocasUnidades(request):
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/reportePocasUnidades.html', context, {})
    
+
+def reporteCumpleañosCliente(request):
+    import datetime
+    hoy = datetime.date.today()
+    clientes = Cliente.objects.all()
+    salida = []
+    for cliente in clientes:
+        if (cliente.fechaNacimiento.month == hoy.month):
+            salida.append(cliente)
+    context={'clientes': salida, 'mes': hoy.strftime('%B')}
+    return render(request, 'reportes/reporteCumpleañosClientes.html', context, {})
+
+def reporteProductosCliente(request):
+    cliente = Cliente.objects.all()
+    context={'clientes':cliente}
+    if (request.method == 'POST'):
+        reporte = request.POST
+        cliente = reporte.get('clientes')
+        if (cliente != ''):
+            facturas = Factura.objects.filter(fkCliente = cliente)
+            items = []
+            for factura in facturas:
+                items.append(DetallesFactura.objects.values('fkDetallesP__fkProducto__nombre').filter(fkFactura = factura))
+            for i in items:
+                print(i)
+        else:
+            messages.info(request, 'No se seleccionó un cliente valido')
+    return render(request, 'reportes/reporteProductosClientes.html', context, {})
