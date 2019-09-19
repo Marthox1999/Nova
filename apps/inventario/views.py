@@ -27,8 +27,6 @@ def bodegaRegistro(request, *args, **kwargs):
             direccion = crearBodega.get('direccion'),
             ciudad = crearBodega.get('ciudad')
         )
-        print(crearBodega.get('direccion'))
-        print(crearBodega.get('ciudad'))
         try:
             bodega.full_clean()
         except ValidationError as e:
@@ -57,6 +55,40 @@ def bodegaconsulta(request, *args, **kwargs):
 
     context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}    
     return render(request, 'inventario/bodegaconsulta.html', context, {})
+
+def bodegaEliminar(request, *args, **kwargs):
+    bodegas = Bodega.objects.all()
+
+    modificar = request.POST
+    idBodega = "-1"
+    ciudadBodega = ""
+    dirBodega = ""
+    
+
+    if(request.method=="POST"):
+        idBodega = modificar.get('bodega')
+        if(idBodega!='-1' or idBodega!=None):
+            BodegaObject = Bodega.objects.get(pkBodega=idBodega)
+            ciudadBodega = BodegaObject.ciudad
+            dirBodega = BodegaObject.direccion
+
+            detallesP = DetallesProducto.objects.filter(fkBodega=idBodega)
+
+            if((len(detallesP) > 0) and (detallesP != None)):
+                messages.info(request, 'Esta referencia tiene productos asociados ¿Está seguro que desea eliminarla?')
+
+            if (modificar.get('bodega-submit')=="Eliminar Bodega"): #Se Elimina La Bodega            
+                try:
+                    Bodega.objects.get(pkBodega=idBodega).delete()
+                except ValidationError as e:
+                    messages.info(request, 'Bodega no registrada en el sistema')
+                
+                #print("HOLAAAAAAAAAA")
+                context={'bodegas':bodegas, 'ciudadBodega':'', 'dirBodega':'', 'idBodega':-1}
+                return render(request, 'inventario/bodegaEliminar.html', context, {})
+
+    context={'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega, 'idBodega':int(idBodega)}    
+    return render(request, 'inventario/bodegaEliminar.html', context, {})
 
 def consultarcategorias(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -92,12 +124,9 @@ def eliminarCategorias(request, *args, **kwargs):
     if(request.method=="POST"):
         idcategoria = datos.get('categoria')
         if(idcategoria!="-1" and idcategoria != None):
-            print("HOLAA ",datos.get('categoria-submit'))
             if(datos.get('categoria-submit')=="Eliminar Categoria"):
                 try:
-                    print("HOLLO")
                     Categoria.objects.filter(pkCategoria=idcategoria).delete()
-                    print("DIE")
                     messages.success(request, 'Categoria eliminada exitosamente')
                     return render(request,'inventario/categoriasEliminar.html', context,{})
                 except:
@@ -152,7 +181,11 @@ def categoria(request, *args, **kwargs):
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
+<<<<<<< HEAD
     idCategoria = "-1"#actualiza combobox
+=======
+    idCategoria = modificar.get('categoria')#actualiza combobox
+>>>>>>> master
     subCategorias = {}
     nombreCategoria = ""
     rutaImagenO = ""
@@ -161,6 +194,7 @@ def modificar_categoria(request, *args, **kwargs):
     selectSubCat = "-1"#actualizar combobox subcategoria
     idSubCategoria = "-1"
 
+<<<<<<< HEAD
 
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':int(idCategoriaSubCat), 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
     if (request.method == 'POST'):
@@ -205,14 +239,57 @@ def modificar_categoria(request, *args, **kwargs):
             if(imagenModif):
                     categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
                     categ.rutaImagen.save(imagen.name,File(imagen),'r')
+=======
+        imagenModif = False
+        
+        if((modificar.get('buscadorImagen')!= '')):
+            imagen = request.FILES['buscadorImagen']
+            imagenModif = True
+        
+        aux =  Categoria(nombreCategoria = nombreCategoria,
+                         rutaImagen = imagen)
+        try:
+            aux.clean_fields()
+            aux.clean()
+        except ValidationError as e:
+            context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
+            messages.info(request, 'Nuevo nombre de categoria invalido')
+            return render(request, "inventario/modificar_categoria.html", context, {})
+
+        Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
+        if(imagenModif):
+                categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
+                categ.rutaImagen.save(imagen.name,File(imagen),'r')
+        context={'categorias':categorias}
+        messages.success(request, 'Categoria modificada exitosamente')
+        return render(request, "inventario/modificar_categoria.html", context, {})
+    ########################### 
+    #agregar subcategoria
+    if(accionSubCatSubmit=="Agregar" and not(idSubCategoria==.1 or idSubCategoria == '' or idSubCategoria == None)):
+        
+        aux = SubCategoria(
+            fkCategoria=SubCategoria.objects.get(pkSubCategoria=idSubCategoria).fkCategoria,
+            nombreSubCategoria=nombreSubCat
+        )
+        try:
+            aux.full_clean()
+        except ValidationError as e:
+>>>>>>> master
             context={'categorias':categorias}
             messages.success(request, 'Categoria modificada exitosamente')
             return render(request, "inventario/modificar_categoria.html", context, {})
         ########################### 
 
+<<<<<<< HEAD
         #agregar subcategoria
         if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='' or idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
             print("solicitudcorrecta")
+=======
+    #modificar subcategoria
+    if(accionSubCatSubmit=="Modificar" and not(idSubCategoria==-1 or idSubCategoria=='' or idSubCategoria==None)):
+        try:
+            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).first()
+>>>>>>> master
             aux = SubCategoria(
                 fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
                 nombreSubCategoria=nombreSubCat
@@ -227,6 +304,7 @@ def modificar_categoria(request, *args, **kwargs):
             context={'categorias':categorias}
             messages.success(request, 'SubCategoria agregada con exito')
             return render(request, "inventario/modificar_categoria.html", context, {})
+<<<<<<< HEAD
         #########################
 
         #modificar subcategoria
@@ -279,6 +357,29 @@ def modificar_categoria(request, *args, **kwargs):
         #actualiza combobox subcategoria
         if(idCategoria==None): idCategoria = "-1"
         context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':int(idCategoria), 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
+=======
+        SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).update(nombreSubCategoria = aux.nombreSubCategoria)
+        context={'categorias':categorias}
+        messages.success(request, 'SubCategoria modificada con exito')
+        return render(request, "inventario/modificar_categoria.html", context, {})        
+    ##########################3
+
+    #actualiza combobox categoria 
+    subCategorias = {}
+    subCat = ""
+    nombreCategoria = ""
+    nombreSubCategoria = ""
+    if(idCategoria !='-1' and idCategoria != None):
+        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
+        nombreCategoria = categoriaObject.nombreCategoria
+        rutaImagenO = "../"+categoriaObject.rutaImagen.name
+        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
+    if (selectSubCat != '-1' and selectSubCat != None):
+        subCat = SubCategoria.objects.filter(pkSubCategoria = selectSubCat)
+        nombreSubCategoria = subCat[0].nombreSubCategoria
+    #actualiza combobox subcategoria
+    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
+>>>>>>> master
     return render(request, "inventario/modificar_categoria.html", context, {})
 
 @csrf_protect
@@ -357,7 +458,6 @@ def aniadirReferencias(request, *args, **kwargs):
             try:
                 aux.full_clean()
             except ValidationError as e:
-                print(e)
                 context={'categorias':categorias, 'idCategoria':int(idCategoria), 'subCategorias':subCategorias}
                 messages.info(request, 'Alguno(s) campo(s) no son validos')
                 return render(request, "inventario/referenciasCrear.html", context, {})
@@ -668,7 +768,7 @@ def modificarProductos(request, *args, **kwargs):
             try:
                 aux.full_clean()
             except ValidationError as e:
-                print(e)
+                
                 messages.info(request, 'Cantidad invalida')
                 context={'categorias':categorias, 'productos':productos, 'idProducto':idProducto, 'proveedores':proveedores, 'idProveedor':idProveedor, 'bodegas':bodegas, 'idBodega':idBodega, 'detalles':detalles, 'idDetalle':idDetalle, 'referencia':aux.fkProducto.nombre, 'idref':aux.fkProducto.pkProducto, 'talla':talla, 'nit':nit, 'color':color, 'pkBodega':PkBodega, 'cantidad':cantidad}
                 return render(request, "inventario/productosModificar.html",context, {})
@@ -682,7 +782,7 @@ def modificarProductos(request, *args, **kwargs):
         #OBTENER LOS CAMPOS ANTIGUOS
         elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
             idDetalle = int(modificar.get('detalle'))
-            print(idDetalle)
+            
             detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
             
             referenciaO = detalleObject.fkProducto.nombre
@@ -827,7 +927,7 @@ def consultarProductos(request, *args, **kwargs):
         #OBTENER LOS CAMPOS ANTIGUOS
         if((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
             idDetalle = int(modificar.get('detalle'))
-            print(idDetalle)
+            
             detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
             
             referenciaO = detalleObject.fkProducto.nombre
@@ -1053,7 +1153,7 @@ def eliminarProductos(request, *args, **kwargs):
         #OBTENER LOS CAMPOS ANTIGUOS
         elif((modificar.get('detalle') != None) and (modificar.get('detalle') != "") and (modificar.get('detalle') != "-1")):
             idDetalle = int(modificar.get('detalle'))
-            print(idDetalle)
+            
             detalleObject = DetallesProducto.objects.get(pkDetallesP=idDetalle)
             
             referenciaO = detalleObject.fkProducto.nombre
@@ -1179,7 +1279,7 @@ def productosSubCategoriasVista(request, nombre, categoria ,subCategoria):
     #productos con detallesproducto o no
     for producto in productos:
         detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
-        print(producto.nombre, " ", detallesProducto)
+        
         if detallesProducto:
             finales.append(producto)
 
@@ -1198,7 +1298,7 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
     # producto
     producto = Producto.objects.get(pkProducto = idproducto)
     detallesProducto = DetallesProducto.objects.filter(fkProducto = producto)
-    print(detallesProducto)
+    
     idDetalleproducto = detallesProducto.first().pkDetallesP
     sdp = detallesProducto.get(pkDetallesP = idDetalleproducto)
     # cargar informacion del detalle
@@ -1224,7 +1324,22 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
                 messages.info(request, 'Seleccione una cantidad de productos mayor a 0')
                 context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
                 return render(request,'inventario/productoDetalles.html',context,{})
-            carrito = Carrito(fkNombreCliente = cliente, fkDetalleProducto = sdp, cantidad = cantidadcomprar)
+            #verificar si ya hay productos de este tipo en el carrito para acumular
+            carritoActual = Carrito.objects.filter(fkNombreCliente = nombre)
+            print(carritoActual)
+            if (carritoActual != None):
+                for c in carritoActual:
+                    if (c.fkDetalleProducto == sdp):
+                        if (c.cantidad + cantidadcomprar > sdp.cantidad):
+                            #se quieren acumular mas elementos de los que hay en inventario
+                            messages.info(request, 'Cantidad de articulos solicitado mayor al que hay en inventario')
+                            context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                            return render(request,'inventario/productoDetalles.html',context,{})
+                        Carrito.objects.filter(pkCarrito = c.pkCarrito).update(cantidad = c.cantidad + cantidadcomprar)
+                        messages.success(request, 'Producto agregado al carrito')
+                        context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto,'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
+                        return render(request,'inventario/productoDetalles.html',context,{})
+            carrito = Carrito(fkNombreCliente = cliente, fkDetalleProducto = sdp, cantidad = cantidadcomprar, precioActual=precio)
             try:
                 carrito.full_clean()
             except ValidationError as e:
@@ -1237,39 +1352,61 @@ def productoDetalles(request, nombre,categoria, idproducto, precio):
     context={'categorias':categorias,'categoria':categoria, 'subCategorias':subCategorias, 'producto':producto, 'subtotal':subtotal, 'detallesproducto':detallesProducto,'idDetalleproducto':idDetalleproducto,'precio':precio, 'productoS':sdp,'nombre':nombre, 'esCliente':esCliente}
     return render(request, 'inventario/productoDetalles.html', context, {})
 
-def modificarBodega(request):
+
+def modificarBodega(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     bodegas = Bodega.objects.all()
+
+    context={'categorias': categorias, 'bodegas': bodegas, 'direccion': '', 'ciudad': ''}
     modificar = request.POST
-    idBodega = modificar.get('bodega')
-    bodegaSeleccionada = False
-
-    if(idBodega=='-1' or idBodega==None):
-        ciudadBodega = ""
-        dirBodega = ""
-    else:
-        BodegaObject = Bodega.objects.get(pkBodega=idBodega)
-        ciudadBodega = BodegaObject.ciudad
-        dirBodega = BodegaObject.direccion
-        ciudadB = modificar.get('ciudad')
-        dirB = modificar.get('direccion')
-                    
-        aux =  Bodega(direccion =dirB, ciudad = ciudadB)
+    idB = modificar.get('idBodega')
+    actualId = modificar.get('idB')
+    acccionModBodegaSubmit = modificar.get('modificarBodega-submit')
+    #Seleccionar la bodega
+    objectBodega = Bodega.objects.filter(pkBodega = idB).first()
+    
+    if ( acccionModBodegaSubmit == "Modificar"):
+        if (actualId == ''):
+            messages.info(request, 'Seleccione la bodega que desea actualizar')
+            return render(request, "inventario/bodegaModificar.html",context,{})
+  
+        ciudadNueva = modificar.get('ciudadBodega')
+        direccionNueva = modificar.get('direccionBodega')
         
-        if(modificar.get('modfBod-submit')!= None):
-            try:
-                aux.full_clean()
-            except ValidationError as e:
-                context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
-                messages.info(request, 'Datos invalidos')
-                return render(request, "inventario/bodegaModificar.html", context, {})
+        
+        aux = Bodega(actualId, direccionNueva, ciudadNueva)
+        
+        try:
+            aux.clean_fields()
+            aux.clean()
+        except ValidationError as e:
+            print(request.POST)
+            messages.info(request, 'Alguno(s) campo(s) no son validos')
+            return render(request, "inventario/bodegaModificar.html",context,{})
+        Bodega.objects.filter(pkBodega = actualId).update(direccion=direccionNueva, ciudad = ciudadNueva)
+        messages.success(request, 'La bodega ha sido actualizado correctamente')
+        return render(request, "inventario/bodegaModificar.html",context,{})
 
-            Bodega.objects.filter(pkBodega=idBodega).update(ciudad= aux.ciudad, direccion=aux.direccion)
-            context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadB, 'dirBodega':dirB} 
-            messages.info(request, 'Bodega modificada correctamente')   
-            return render(request, 'inventario/bodegaModificar.html', context, {})
-
-
-    context={'categorias':categorias, 'bodegas':bodegas, 'ciudadBodega':ciudadBodega, 'dirBodega':dirBodega}
+    if (idB != '0' and idB != None):
+        ciudad = objectBodega.ciudad
+        direccion = objectBodega.direccion
+    else:
+        idB = ''
+        ciudad = ''
+        direccion = ''
+    ciudades = {
+        '',
+        'BOG',
+        'MED',
+        'CALI',
+        'B/Q',
+        'CART',
+        'CUC',
+        'SOL',
+        'IBG',
+        'BCM',
+        'SOAC'
+    }
+    context={'categorias': categorias, 'bodegas': bodegas, 'idB': idB, 'ciudad': ciudad, 'direccion': direccion, 'ciudades':ciudades}
+    
     return render(request, "inventario/bodegaModificar.html", context, {})
-

@@ -4,7 +4,6 @@
 
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/section.css' %}">
-
 <!-- contact  -->
 <div class="col-md-6 col-md-offset-3">
   <br>
@@ -15,14 +14,13 @@
       </center>
     </div>
   </div>
-
   <div class="ps-section--offer">
     <!-- <div class="ps-column"><a class="ps-offer" href="product-listing.html"><img src="images/banner/home-banner-1.png" alt=""></a></div>-->
     <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'usuarios:duenioClienteMenu' %}"><img src="{% static 'images/paginaPrincipal_admin/clientes.png' %}" alt=""></a></div>
     <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:productos' %}"><img src="{% static 'images/paginaPrincipal_admin/productos.png' %}" alt=""></a></div>
   </div>
   <div class="ps-section--offer">
-    <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'ventas:descuentoInicio' %}"><img src="{% static 'images/paginaPrincipal_admin/descuentos.png' %}" alt=""></a></div>
+    <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'ventas:descuentoCrud' %}"><img src="{% static 'images/paginaPrincipal_admin/descuentos.png' %}" alt=""></a></div>
     <div class="ps-column" style="padding: 5px"><a class="ps-offer" href="{% url 'inventario:proveedor' %}"><img src="{% static 'images/paginaPrincipal_admin/proveedores.png' %}" alt=""></a></div>
   </div>
   <div class="ps-section--offer">
@@ -34,5 +32,4 @@
   </div>
   <br>
 </div>
-
 {% endblock %}

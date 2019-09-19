@@ -10,22 +10,23 @@ urlpatterns = [
     path('duenioAdminIngreso/', duenioAdminIngreso, name='duenioAdminIngreso'),
     path('principalDuenio/', paginaPrincipal_duenio, name='paginaPrincipal_duenio'),
     path('adminMenu/', adminMenu, name='duenioAdminMenu'),
-
     path('clienteMenu/', clienteMenu, name='duenioClienteMenu'),
-
     path('duenioAdminAgregar/', duenioAdminAgregar, name='duenioAgregarAdmin'),
     path('clienteingresar', clienteIngreso, name='ingreso'),
     path('clienteregistro',clienteregistro, name='registro'),
     path('clientecerrarsesion', clienteCerrarSesion, name='cerrarsesion'),
-
     path('duenioAdminModificar/', duenioAdminModificar, name='duenioModificarAdmin'),
     path('duenioClienteConsultar/', duenioClienteConsultar, name='duenioClienteConsultar'),
+<<<<<<< HEAD
     path('duenioAdminConsultar/', duenioAdminConsultar, name='duenioAdminConsultar'),
 
+=======
+>>>>>>> master
     path('clienteinicio/<str:nombre>', clienteInicio, name='inicioCliente'),
     path('clientePerfil/<str:nombre>/', clientePerfil, name='clientePerfil'),
-  
+    path('clienteHistorialCompras/<str:nombre>/', clienteHistorialCompras, name='clienteHistorialCompras'),
     path('duenioAdminEliminar/', duenioAdminEliminar, name='duenioEliminarAdmin'),
+    path('clienteEliminar/<str:nombre>/', clienteEliminar, name='clienteEliminar'),
+    path('carrito/<str:nombre>/', clienteCarrito, name='clienteCarrito'),
 
-    path('carrito/<str:nombre>/', clienteCarrito, name='clienteCarrito')
 ]
