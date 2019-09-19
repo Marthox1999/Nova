@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Sum
 from ventas.models import *
 from inventario.models import *
+from usuarios.models import *
 from datetime import timedelta, date, datetime
 from dateutil import relativedelta
 
@@ -264,3 +265,37 @@ def reportePocasUnidades(request):
     
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/reportePocasUnidades.html', context, {})
+
+def reporteCumpleañosCliente(request):
+    import datetime
+    hoy = datetime.date.today()
+    clientes = Cliente.objects.all()
+    salida = []
+    for cliente in clientes:
+        if (cliente.fechaNacimiento.month == hoy.month):
+            salida.append(cliente)
+    context={'clientes': salida, 'mes': hoy.strftime('%B')}
+    return render(request, 'reportes/reporteCumpleañosClientes.html', context, {})
+
+def reporteProductosCliente(request):
+    infocliente = Cliente.objects.all()
+    context={'clientes':infocliente, 'datax':[],'datay':[] }
+    if (request.method == 'POST'):
+        reporte = request.POST
+        cliente = reporte.get('clientes')
+        if (infocliente != ''):
+            facturas = Factura.objects.filter(fkCliente = cliente)
+            datax = []
+            datay = []
+            salida = []
+            for factura in facturas:
+                aux = DetallesFactura.objects.values('fkDetallesP__fkProducto__nombre', 'cantidad').filter(fkFactura = factura)
+                for item in aux:
+                    datax.append(item['fkDetallesP__fkProducto__nombre'])
+                    datay.append(item['cantidad'])
+            print(datax)
+            print(datay)
+            context = {'clientes':infocliente, 'datax':datax,'datay':datay}
+        else:
+            messages.info(request, 'No se seleccionó un cliente valido')
+    return render(request, 'reportes/reporteProductosClientes.html', context, {})
