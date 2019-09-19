@@ -9,6 +9,7 @@ app_name = 'reportes'
 urlpatterns = [
     path('inicioReportes', inicioReportes, name='inicioReportes'),
     path('reporteVentas', reporteVentas, name='reporteVentas'),
+    path('reporteProducto', reporteProducto, name='reporteProducto'),
     path('reporteVentasCategoria', reporteVentasCategoria, name='reporteVentasCategoria'),
     path('reporteTopClientes', reporteTopClientes, name='reporteTopClientes'),
     path('reportePocasUnidades', reportePocasUnidades, name='reportePocasUnidades'),

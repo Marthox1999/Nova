@@ -206,6 +206,20 @@ def duenioClienteConsultar(request, *args, **kwargs):
         
     return render(request, "usuarios/duenioClienteConsultar.html", context, {})
 
+def duenioAdminConsultar(request, *args, **kwargs):
+    from django.db.models import Q
+    categorias = Categoria.objects.all()
+    administradores = {}
+    consultar = request.POST
+    buscador = consultar.get('buscador')
+    if (buscador):
+        administradores = AdministradorDuenio.objects.filter(Q(tipo='ADMIN') & (Q(nombreUsuario__icontains=buscador) | Q(pkAdministradorDuenio__icontains=buscador)))
+    else:
+        administradores = AdministradorDuenio.objects.filter(tipo='ADMIN')
+    context={'categorias':categorias, 'clientes': administradores}
+        
+    return render(request, "usuarios/duenioAdminConsultar.html", context, {})
+
 
 def clientePerfil(request, nombre):
     cliente = Cliente.objects.filter(nombre=nombre)

@@ -98,7 +98,7 @@
         <div class="form-group">
           <label for="subCategoria">SubCategoria</label>                 
           <select class="form-control" id="subCategoria" name="subCategoria" onChange="form.submit();">
-            <option value="null">subCategoria</option>
+            <option value="-1">subCategoria</option>
             {% for subCategoria in subCategorias %}
               {% if idSubCategoria == subCategoria.pkSubCategoria   %}
                 <option selected value={{subCategoria.pkSubCategoria}}>{{subCategoria.nombreSubCategoria}}</option>
