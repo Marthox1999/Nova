@@ -210,18 +210,24 @@ def reporteCumpleañosCliente(request):
     return render(request, 'reportes/reporteCumpleañosClientes.html', context, {})
 
 def reporteProductosCliente(request):
-    cliente = Cliente.objects.all()
-    context={'clientes':cliente}
+    infocliente = Cliente.objects.all()
+    context={'clientes':infocliente, 'datax':[],'datay':[] }
     if (request.method == 'POST'):
         reporte = request.POST
         cliente = reporte.get('clientes')
-        if (cliente != ''):
+        if (infocliente != ''):
             facturas = Factura.objects.filter(fkCliente = cliente)
-            items = []
+            datax = []
+            datay = []
+            salida = []
             for factura in facturas:
-                items.append(DetallesFactura.objects.values('fkDetallesP__fkProducto__nombre').filter(fkFactura = factura))
-            for i in items:
-                print(i)
+                aux = DetallesFactura.objects.values('fkDetallesP__fkProducto__nombre', 'cantidad').filter(fkFactura = factura)
+                for item in aux:
+                    datax.append(item['fkDetallesP__fkProducto__nombre'])
+                    datay.append(item['cantidad'])
+            print(datax)
+            print(datay)
+            context = {'clientes':infocliente, 'datax':datax,'datay':datay}
         else:
             messages.info(request, 'No se seleccionó un cliente valido')
     return render(request, 'reportes/reporteProductosClientes.html', context, {})

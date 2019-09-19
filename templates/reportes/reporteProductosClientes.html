@@ -1,9 +1,17 @@
 {% extends 'baseAdmin.html' %}
-{% block content %}
+
+{% block head %}
 
 {% load static %}
 
+<script src="{% static 'graficos/plotly.js' %}"></script>
 
+<script src="{% static 'css/registroCliente/jquery-3.3.1.slim.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block content %}
 <div class="col-md-8 col-md-offset-2">
   <br>
   <div class="panel-login panel">
@@ -38,7 +46,27 @@
         </div>
       </div>
     </form>
-
+    {% if datay %}
+      <center><div id="tester" style="width:600px;height:250px;"></div></center>
+      <script>
+        TESTER = document.getElementById('tester');
+        Plotly.plot( TESTER, [
+            {
+              x:{{datax|safe}},
+              y:{{datay}},
+              type: 'bar'
+            }
+          ], 
+          {
+            margin: { t: 0 } 
+          } 
+        );
+      </script>
+      {% else %}
+        <div class="alert alert-info" role="alert">
+          El cliente no a realizado compras
+        </div> 
+    {% endif %}
   </div>
 </div>
 
