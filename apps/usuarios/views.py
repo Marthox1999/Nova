@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
@@ -13,6 +12,7 @@ from ventas.models import *
 from inventario.models import Categoria
 
 from django.db import transaction
+from datetime import datetime
 
 def clienteIngreso(request, *args, **kwargs):
     categorias = Categoria.objects.all()
@@ -49,28 +49,49 @@ def clienteInicio(request, nombre):
 
 @csrf_protect
 def clienteregistro(request):
-    categorias = Categoria.objects.all()
-    context={'categorias':categorias, 'nombre':'noRegistrado'}
+    categorias = Categoria.objects.all()    
     registrar = request.POST
     if(request.method == 'POST'):
-        aux = Cliente(
-            nombre= registrar.get('nombreCliente'),
-            clave = registrar.get('claveCliente'),
-            fechaNacimiento = registrar.get('fechaNacimiento'),
-            direccion = registrar.get('direccionCliente'),
-            telefono = registrar.get('telefonoCliente'),
-            tipoDocumento = registrar.get('tipoDocumento'),
-            numeroDocumento = registrar.get('documentoCliente'),
-        )
-        try:
-            aux.full_clean()
-        except ValidationError as e:
-            messages.info(request, 'Alguno(s) campo(s) no son validos')
+        nombre = registrar.get('nombreCliente')
+        clave = registrar.get('claveCliente')
+        fechaNacimiento = registrar.get('fechaNacimiento')
+        direccion = registrar.get('direccionCliente')
+        telefono = registrar.get('telefonoCliente')
+        tipoDocumento = registrar.get('tipoDocumento')
+        numeroDocumento = registrar.get('documentoCliente')        
+
+        auxfechaNac = datetime.strptime(fechaNacimiento,'%Y-%m-%d')
+        hoy = datetime.today()
+        #print("NAC: ", auxfechaNac, "   Hoy: ", hoy, "    -  ", auxfechaNac>=hoy)
+        #print((({auxfechaNac.day} == {hoy.day}) and ({auxfechaNac.month} == {hoy.month})))
+
+        context={'categorias':categorias, 'nombre':'noRegistrado', 'nombrer':nombre, 'clave':clave, 'fechaNacimiento':fechaNacimiento, 'direccion':direccion, 'telefono':telefono, 'tipoDocumento':tipoDocumento, 'numeroDoc':numeroDocumento}
+
+        if((auxfechaNac.year >= hoy.year) and (auxfechaNac.month >= hoy.month) and (auxfechaNac.day >= hoy.day)):
+            messages.info(request, 'La fecha no puede ser igual o mayor a la fecha actual')
             return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
-        nombre =registrar.get('nombreCliente')
-        aux.save()
-        messages.success(request, f'¡{nombre} bienvenido(a) a Nova!')
-        return render(request, 'usuarios/clienteingreso.html', context,{})
+        else:
+            aux = Cliente(
+                nombre= nombre,
+                clave = clave,
+                fechaNacimiento = fechaNacimiento,
+                direccion = direccion,
+                telefono = telefono,
+                tipoDocumento = tipoDocumento,
+                numeroDocumento = numeroDocumento,
+            )
+            try:
+                aux.full_clean()
+            except ValidationError as e:
+                messages.info(request, 'Alguno(s) campo(s) no son validos')
+                return render(request, "usuarios/clienteregistro.html", context,{'form':registrar})
+            nombre =registrar.get('nombreCliente')
+            aux.save()
+            messages.success(request, f'¡{nombre} bienvenido(a) a Nova!')
+            context={'categorias':categorias, 'nombre':'noRegistrado'}
+            return redirect(to='usuarios:ingreso')
+
+    context={'categorias':categorias, 'nombre':'noRegistrado'}
     return render(request, "usuarios/clienteregistro.html",context, {'form':registrar})
 
 
