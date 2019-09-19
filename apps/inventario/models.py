@@ -19,7 +19,7 @@ class SubCategoria(models.Model):
 #Producto
 class Producto(models.Model):
     pkProducto = models.AutoField(primary_key=True)
-    fkSubCategoria = models.ForeignKey(SubCategoria, on_delete=models.CASCADE)
+    fkSubCategoria = models.ForeignKey(SubCategoria, on_delete=models.SET_NULL, null=True)
     nombre = models.CharField(max_length=300, default = "null")
     descripcion = models.CharField(max_length=1024)
     iva = models.FloatField( default=0, validators=[MinValueValidator(0), MaxValueValidator(99)],)
@@ -189,11 +189,18 @@ class DetallesProducto(models.Model):
         ('Beige','Beige'),
         ('Otros','Otro'),
     }
+    TALLA = {
+        ('XS','xs'),
+        ('S','s'),
+        ('M','m'),                  
+        ('L','l'),
+        ('XL','xl'),
+    }
     pkDetallesP = models.AutoField(primary_key=True)
-    fkProducto =  models.ForeignKey(Producto, on_delete=models.CASCADE)
-    talla = models.CharField(max_length=32)
-    nit = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
+    fkProducto =  models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True)
+    talla = models.CharField(max_length=32, choices=TALLA)
+    nit = models.ForeignKey(Proveedor, on_delete=models.SET_NULL, null=True)
     color = models.CharField(max_length=64, choices=COLOR)
-    fkBodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
+    fkBodega = models.ForeignKey(Bodega, on_delete=models.SET_NULL, null=True)
     cantidad = models.IntegerField()
 
