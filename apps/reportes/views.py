@@ -121,15 +121,20 @@ def reporteProducto(request, *args, **kwargs):
         prod = Producto.objects.get(pkProducto=producto)
         for dia in daterangeday(fechaInicio, fechaFin):
             cant = 0
-            facturas = Factura.objects.filter(fecha=dia)
-            for factura in facturas:
-                cant += DetallesFactura.objects.filter(Q(fkProducto=producto) & Q(fkFactura=factura.pkFactura)).count()
+            detalles_p = DetallesProducto.objects.filter(fkProducto=producto)
+
+            for detalle in detalles_p:
+                facturas = Factura.objects.filter(fecha=dia)
+
+                for factura in facturas:
+                    cant += DetallesFactura.objects.filter(Q(fkFactura=factura.pkFactura) & Q(fkDetallesP=detalle.pkDetallesP)).count()
+
             cantidad.append(cant)
             dias.append(dia.strftime('%Y-%m-%d'))
-        context={"datax":dias,"datay":cantidad, "fechaInicio":fechaInicio.strftime('%Y-%m-%d'), "fechaFin":fechaFin.strftime('%Y-%m-%d')}
-        return render(request, "reportes/reporteVentas.html", context, {})
+        context={"datax":dias,"datay":cantidad, "fechaInicio":fechaInicio.strftime('%Y-%m-%d'), "fechaFin":fechaFin.strftime('%Y-%m-%d'), 'productos':productos}
+        return render(request, "reportes/reporteProducto.html", context, {})
     
-    return render (request, "reportes/reporteVentas.html", context, {})
+    return render (request, "reportes/reporteProducto.html", context, {})
 
 def reporteVentasCategoria(request, *args, **kwargs):
     context = {}
