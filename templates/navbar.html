@@ -12,7 +12,7 @@
       <li><a href="{% url 'inventario:productosCategorias' nombre=nombre categoria=categoria.pkCategoria %}">{{categoria.nombreCategoria}}</a></li>
       {% empty %}
   {% endfor %}
-  <li style="float:right"><a class="active" href="">Cerrar Sesion</a></li>
+  <li style="float:right"><a class="active" href="{% url 'usuarios:cerrarsesion' %}">Cerrar Sesion</a></li>
   {% if nombre == 'noRegistrado' %}  
   <li style="float:right"><a class="active" href="{% url 'usuarios:ingreso' %}">Iniciar Sesion</a></li>
   {% endif%}

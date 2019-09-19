@@ -38,9 +38,7 @@ def clienteIngreso(request, *args, **kwargs):
     return render(request, 'usuarios/clienteingreso.html', context,{'form':ingresar})
 
 def clienteCerrarSesion(request, *args, **kwargs):
-    categorias = Categoria.objects.all()
-    context={'categorias':categorias}
-    return render(request, 'usuarios/clienteingreso.html', context, {})
+    return redirect(to='usuarios:ingreso')
 
 def clienteInicio(request, nombre):
     categorias = Categoria.objects.all()
