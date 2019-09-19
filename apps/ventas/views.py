@@ -55,7 +55,7 @@ def crearDescuentoCategoria(request, idCategoria):
             porcentajeDescuento = descuento
         )
         auxfechafin = datetime.strptime(fechaFin,'%Y-%m-%d')
-        auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
+        auxfechainicio = datetime.strptime(fechaInicio,'%Y-%m-%d')
         difFechas = (auxfechafin-auxfechainicio).days
         fechaActual = (auxfechainicio-datetime.today()).days
         if(difFechas < 0 or fechaActual < -1):
@@ -99,7 +99,7 @@ def crearDescuentoSubCategoria(request, idCategoria, idSubCategoria):
             porcentajeDescuento = descuento
         )
         auxfechafin = datetime.strptime(fechaFin,'%Y-%m-%d')
-        auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
+        auxfechainicio = datetime.strptime(fechaInicio,'%Y-%m-%d')
         difFechas = (auxfechafin-auxfechainicio).days
         fechaActual = (auxfechainicio-datetime.today()).days
         if(difFechas < 0 or fechaActual < -1):
@@ -146,7 +146,7 @@ def crearDescuentoProducto(request, idCategoria, idSubCategoria, idProducto):
             porcentajeDescuento = descuento
         )
         auxfechafin = datetime.strptime(fechaFin,'%Y-%m-%d')
-        auxfechainicio = datetime.strptime(fechaFin,'%Y-%m-%d')
+        auxfechainicio = datetime.strptime(fechaInicio,'%Y-%m-%d')
         difFechas = (auxfechafin-auxfechainicio).days
         fechaActual = (auxfechainicio-datetime.today()).days
         if(difFechas < 0 or fechaActual < -1):
