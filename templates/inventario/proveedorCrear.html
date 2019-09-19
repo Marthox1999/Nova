@@ -19,15 +19,15 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="inputNitProveedor">Nit del proveedor</label>
-                        <input id="inputNitProveedor" name="nitProveedor" type="text" class="form-control" placeholder="Nit del proveedor">
+                        <input required id="inputNitProveedor" name="nitProveedor" type="text" class="form-control" placeholder="Nit del proveedor" value={{nit}}>
                     </div>
                     <div class="form-group">
                         <label for="inputDireccionProveedor">Dirección del proveedor</label>
-                        <input id="inputDireccionProveedor" name="direccionProveedor" type="text" class="form-control" placeholder="Dirección del proveedor">        
+                        <input required id="inputDireccionProveedor" name="direccionProveedor" type="text" class="form-control" placeholder="Dirección del proveedor" value={{direccion}}>
                     </div>
                     <div class="form-group">
                         <label for="inputTelefonoProveedor">Teléfono del proveedor</label>
-                        <input id="inputTelefonoProveedor" name="telefonoProveedor" type="text" class="form-control" placeholder="Teléfono del proveedor">        
+                        <input required id="inputTelefonoProveedor" name="telefonoProveedor" type="text" class="form-control" placeholder="Teléfono del proveedor" value={{telefono}}>
                     </div>
                     <div class="form-group">
                         <div class="row">
