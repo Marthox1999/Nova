@@ -4,6 +4,9 @@ from ventas.views import *
 
 app_name='ventas'
 urlpatterns = [
+
+    path('descuentoInicio', descuentoInicio, name='descuentoInicio'),
+
     path('descuentos', descuentos, name='descuentos'),
 
     path('descuentoCrear', crearDescuento, name='descuentoCrear'),

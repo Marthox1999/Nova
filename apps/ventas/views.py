@@ -26,6 +26,9 @@ def descuentos(request, *args, **kwargs):
 --------------------------------------------------------------------------------------------------------------------
 '''
 
+def descuentoInicio(request):
+    return render(request, "ventas/descuentoInicio.html", {})
+
 def crearDescuento(request):
     categorias = Categoria.objects.all()
     context={
