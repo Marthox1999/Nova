@@ -181,11 +181,7 @@ def categoria(request, *args, **kwargs):
 def modificar_categoria(request, *args, **kwargs):
     categorias = Categoria.objects.all()
     modificar = request.POST
-<<<<<<< HEAD
     idCategoria = "-1"#actualiza combobox
-=======
-    idCategoria = modificar.get('categoria')#actualiza combobox
->>>>>>> master
     subCategorias = {}
     nombreCategoria = ""
     rutaImagenO = ""
@@ -193,8 +189,6 @@ def modificar_categoria(request, *args, **kwargs):
     nombreSubCat = ""
     selectSubCat = "-1"#actualizar combobox subcategoria
     idSubCategoria = "-1"
-
-<<<<<<< HEAD
 
     context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':int(idCategoriaSubCat), 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
     if (request.method == 'POST'):
@@ -239,57 +233,14 @@ def modificar_categoria(request, *args, **kwargs):
             if(imagenModif):
                     categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
                     categ.rutaImagen.save(imagen.name,File(imagen),'r')
-=======
-        imagenModif = False
-        
-        if((modificar.get('buscadorImagen')!= '')):
-            imagen = request.FILES['buscadorImagen']
-            imagenModif = True
-        
-        aux =  Categoria(nombreCategoria = nombreCategoria,
-                         rutaImagen = imagen)
-        try:
-            aux.clean_fields()
-            aux.clean()
-        except ValidationError as e:
-            context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO}
-            messages.info(request, 'Nuevo nombre de categoria invalido')
-            return render(request, "inventario/modificar_categoria.html", context, {})
-
-        Categoria.objects.filter(pkCategoria = idCategoriaSubCat).update(nombreCategoria = aux.nombreCategoria)
-        if(imagenModif):
-                categ = Categoria.objects.get(pkCategoria = idCategoriaSubCat)
-                categ.rutaImagen.save(imagen.name,File(imagen),'r')
-        context={'categorias':categorias}
-        messages.success(request, 'Categoria modificada exitosamente')
-        return render(request, "inventario/modificar_categoria.html", context, {})
-    ########################### 
-    #agregar subcategoria
-    if(accionSubCatSubmit=="Agregar" and not(idSubCategoria==.1 or idSubCategoria == '' or idSubCategoria == None)):
-        
-        aux = SubCategoria(
-            fkCategoria=SubCategoria.objects.get(pkSubCategoria=idSubCategoria).fkCategoria,
-            nombreSubCategoria=nombreSubCat
-        )
-        try:
-            aux.full_clean()
-        except ValidationError as e:
->>>>>>> master
             context={'categorias':categorias}
             messages.success(request, 'Categoria modificada exitosamente')
             return render(request, "inventario/modificar_categoria.html", context, {})
         ########################### 
 
-<<<<<<< HEAD
         #agregar subcategoria
         if(accionSubCatSubmit=="Agregar" and not(idCategoriaSubCat=='' or idCategoriaSubCat=='-1' or idCategoriaSubCat==None)):
             print("solicitudcorrecta")
-=======
-    #modificar subcategoria
-    if(accionSubCatSubmit=="Modificar" and not(idSubCategoria==-1 or idSubCategoria=='' or idSubCategoria==None)):
-        try:
-            idCat = SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).first()
->>>>>>> master
             aux = SubCategoria(
                 fkCategoria=Categoria.objects.get(pkCategoria=idCategoriaSubCat),
                 nombreSubCategoria=nombreSubCat
@@ -304,7 +255,6 @@ def modificar_categoria(request, *args, **kwargs):
             context={'categorias':categorias}
             messages.success(request, 'SubCategoria agregada con exito')
             return render(request, "inventario/modificar_categoria.html", context, {})
-<<<<<<< HEAD
         #########################
 
         #modificar subcategoria
@@ -357,29 +307,6 @@ def modificar_categoria(request, *args, **kwargs):
         #actualiza combobox subcategoria
         if(idCategoria==None): idCategoria = "-1"
         context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':int(idCategoria), 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
-=======
-        SubCategoria.objects.filter(pkSubCategoria = idSubCategoria).update(nombreSubCategoria = aux.nombreSubCategoria)
-        context={'categorias':categorias}
-        messages.success(request, 'SubCategoria modificada con exito')
-        return render(request, "inventario/modificar_categoria.html", context, {})        
-    ##########################3
-
-    #actualiza combobox categoria 
-    subCategorias = {}
-    subCat = ""
-    nombreCategoria = ""
-    nombreSubCategoria = ""
-    if(idCategoria !='-1' and idCategoria != None):
-        categoriaObject = Categoria.objects.get(pkCategoria=idCategoria)    
-        nombreCategoria = categoriaObject.nombreCategoria
-        rutaImagenO = "../"+categoriaObject.rutaImagen.name
-        subCategorias = SubCategoria.objects.filter(fkCategoria=idCategoria)
-    if (selectSubCat != '-1' and selectSubCat != None):
-        subCat = SubCategoria.objects.filter(pkSubCategoria = selectSubCat)
-        nombreSubCategoria = subCat[0].nombreSubCategoria
-    #actualiza combobox subcategoria
-    context={'categorias':categorias, 'subCategorias':subCategorias, 'idCategoria':idCategoria, 'nombreCategoria':nombreCategoria, 'rutaImagenO':rutaImagenO,'idSubCategoria': selectSubCat, 'nombreSubCategoria': nombreSubCategoria}
->>>>>>> master
     return render(request, "inventario/modificar_categoria.html", context, {})
 
 @csrf_protect

@@ -5,8 +5,6 @@ from ventas.views import *
 app_name='ventas'
 urlpatterns = [
 
-    path('descuentoInicio', descuentoInicio, name='descuentoInicio'),
-
     path('descuentos', descuentos, name='descuentos'),
 
     path('descuentoCrear', crearDescuento, name='descuentoCrear'),
@@ -14,14 +12,12 @@ urlpatterns = [
     path('descuentoCrear/<int:idCategoria>/<int:idSubCategoria>', crearDescuentoSubCategoria, name='descuentoCrearSubCategoria'),
     path('descuentoCrear/<int:idCategoria>/<int:idSubCategoria>/<int:idProducto>', crearDescuentoProducto, name='descuentoCrearProducto'),
 
-<<<<<<< HEAD
     path('descuentoModificar', modificarDescuento, name='descuentoModificar'),
     
     #path('descuentoModificar/<int:idCategoria>', modificarDescuentoCategoria, name='descuentoModificarCategoria'),
     #path('descuentoModificar/<int:idCategoria>/<int:idSubCategoria>', modificarDescuentoSubCategoria, name='descuentoModificarSubCategoria'),
     #path('descuentoModificar/<int:idCategoria>/<int:idSubCategoria>/<int:idProducto>', modificarDescuentoProducto, name='descuentoModificarProducto'),
-=======
+
     path('descuentoCrud', descuentoCrud, name='descuentoCrud'),
     path('descuentoConsultar', descuentoConsultar, name='descuentoConsultar'),
->>>>>>> master
 ]

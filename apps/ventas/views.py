@@ -175,7 +175,6 @@ def crearDescuentoProducto(request, idCategoria, idSubCategoria, idProducto):
 
     return render(request, "ventas/creardescuentos.html", context, {})
 
-<<<<<<< HEAD
 '''
 --------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------
@@ -300,7 +299,6 @@ def modificarDescuento(request):
                 DescuentoProducto.objects.filter(pkDescuentoProducto=descuentoProd).update(fechaFin=fecha_fin, porcentajeDescuento= descuento)
 
     return render(request, "ventas/modificardescuentos.html", context, {})
-=======
 
 
 def descuentoCrud(request, *args, **kwargs):
@@ -329,4 +327,3 @@ def descuentoConsultar(request, *args, **kwargs):
             pass
     context={'categoria': categoria, 'subcategoria': subcategoria, 'producto': producto}
     return render(request, "ventas/descuentoConsultar.html", context, {})
->>>>>>> master

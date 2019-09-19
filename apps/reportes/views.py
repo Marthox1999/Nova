@@ -36,11 +36,7 @@ def inicioReportes(request, *args, **kwargs):
     if request.method == 'POST':
         data = request.POST
         reporte = data.get('tipoReporte')
-<<<<<<< HEAD
-        url = "reportes:"+reporte
-=======
         url = 'reportes:'+reporte
->>>>>>> master
         return redirect(to=url)
     return render (request, "reportes/reportes.html", context, {})
 
@@ -130,12 +126,6 @@ def reporteProducto(request, *args, **kwargs):
                 cant += DetallesFactura.objects.filter(Q(fkProducto=producto) & Q(fkFactura=factura.pkFactura)).count()
             cantidad.append(cant)
             dias.append(dia.strftime('%Y-%m-%d'))
-<<<<<<< HEAD
-        context={'productos':productos, "datax":dias,"datay":cantidad, "fechaInicio":fechaInicio.strftime('%Y-%m-%d'), "fechaFin":fechaFin.strftime('%Y-%m-%d'), 'producto':prod}
-        return render(request, "reportes/reporteProducto.html", context, {})
-
-    return render (request, "reportes/reporteProducto.html", context, {})
-=======
         context={"datax":dias,"datay":cantidad, "fechaInicio":fechaInicio.strftime('%Y-%m-%d'), "fechaFin":fechaFin.strftime('%Y-%m-%d')}
         return render(request, "reportes/reporteVentas.html", context, {})
     
@@ -269,5 +259,3 @@ def reportePocasUnidades(request):
     
     context={'categorias':categorias, 'productos': productos}
     return render(request, 'reportes/reportePocasUnidades.html', context, {})
-   
->>>>>>> master
