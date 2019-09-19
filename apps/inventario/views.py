@@ -1073,8 +1073,9 @@ def proveedor(request, *args, **kwargs):
     return render(request, "inventario/proveedor.html",context, {})
 
 def aniadirProveedor(request, *args, **kwargs):
-    categorias = Categoria.objects.all()
-    context={'categorias':categorias}
+    nit = ""
+    direccion = ""
+    telefono = ""    
     if request.method == 'POST':
         crear = request.POST
         nit = crear.get('nitProveedor')
@@ -1085,10 +1086,13 @@ def aniadirProveedor(request, *args, **kwargs):
             aux.full_clean()
         except ValidationError as e:
             messages.info(request, 'Alguno(s) campo(s) no son validos')
-            context={'categorias':categorias}
+            context={'nit':nit, 'direccion':direccion, 'telefono':telefono}
             return render(request, "inventario/proveedorCrear.html",context,{})
         aux.save()
         messages.success(request, 'Proveedor agregado con exito')
+        context={'nit':"", 'direccion':"", 'telefono':""}
+        return render(request, "inventario/proveedorCrear.html",context,{})
+    context={'nit':nit, 'direccion':direccion, 'telefono':telefono}
     return render(request, "inventario/proveedorCrear.html",context ,{})
 
 
