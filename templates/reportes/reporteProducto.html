@@ -20,34 +20,19 @@
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
-        <h1> Reporte de ventas </h1>
+        <h1> Reporte de ventas por producto</h1>
       </center>
     </div>
   </div>
       <form id="login-form" name='crearDescuento' method="post">
         {% csrf_token %}
         <div class="form-group">
-          <label for="fecha_inicio">Fecha de inicio</label>
-          <input id="fecha_inicio" name='fecha_inicio' class="form-control" autocomplete="off">
-          <script>
-            $(function () {
-              $("#fecha_inicio").datepicker({format:'yyyy-mm-dd'},);
-            });
-          </script>
-          <label for="fecha_fin">Fecha de fin</label>
-          <input id="fecha_fin" name='fecha_fin' class="form-control" autocomplete="off">
-          <script>
-            $(function () {
-              $("#fecha_fin").datepicker({format:'yyyy-mm-dd'},);
-            });
-          </script>
-
           <div class="form-group">
-            <label for="tipoReporte">Ingrese el tipo de reporte</label>
-              <select class="form-control" id="tipoReporte" name="tipoReporte">
-                  <option value=1>Dia</option>
-                  <option value=2>Mes</option>
-                  <option value=3>Año</option>
+            <label for="producto">Seleccione un producto</label>
+              <select class="form-control" id="producto" name="producto">
+                  {% for prod in productos%}
+                    <option value={{prod.pkProducto}} >{{prod.nombre}}</option>
+                  {% endfor %}
               </select>
           </div>
 
@@ -65,7 +50,8 @@
   <div class="panel-login panel">
     <div class="panel-heading">
       <center>
-        <h3>Reporte de desde {{fechaInicio}} hasta {{fechaFin}}</h3>
+        <h3>Reporte de desde {{fechaInicio}} hasta {{fechaFin}} de {{producto.nombre}}</h3>
+        <br>
         <div id="tester" style="width:600px;height:250px;"></div>
       </center>
     </div>
